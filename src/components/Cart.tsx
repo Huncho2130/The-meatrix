@@ -1,192 +1,303 @@
-
 'use client'
 import { useCart } from '@/context/cartContext'
-import { MessageCircle, X, ShoppingBag, Trash2 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 export default function Cart() {
-  const { cart, updateQuantity, removeFromCart } = useCart()
-  const [isOpen, setIsOpen] = useState(false)
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    isOpen,
+    setIsOpen,
+    totalPrice,
+    totalKilos
+  } = useCart()
+
   const [isProcessing, setIsProcessing] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [showCustomerForm, setShowCustomerForm] = useState(false)
+  const [customerDetails, setCustomerDetails] = useState({
+    name: '',
+    address: '', 
+    phone: '',
+    instructions: ''
+  })
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const totalKg = cart.reduce((sum, item) => sum + item.quantity, 0)
-
-  const sendWhatsAppOrder = () => {
-    if (cart.length === 0) return
-    setIsProcessing(true)
-    const orderNumber = `PC${Date.now().toString().slice(-6)}`
-    const message = `
-*PRIME CUTS KENYA ORDER*
-Order #: ${orderNumber}
-
-${cart.map(i => `• ${i.name} ${i.quantity}kg - KSh ${(i.price * i.quantity).toLocaleString()}`).join('\n')}
-Total: ${totalKg.toFixed(1)}kg — KSh ${total.toLocaleString()}
-`.trim()
-    const businessPhone = '254707636105'
-    window.open(`https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`, '_blank')
-    setTimeout(() => setIsProcessing(false), 1500)
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setCustomerDetails(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
-  if (cart.length === 0) return null
+  const sendWhatsAppOrder = () => {
+    if (!customerDetails.name || !customerDetails.address || !customerDetails.phone) {
+      alert('Please fill in all required customer details')
+      return
+    }
+
+    setIsProcessing(true)
+
+    const orderItems = cart.map(item => 
+      `• ${item.name} - ${item.quantity}kg - KSh ${(item.price * item.quantity).toLocaleString()}`
+    ).join('%0A')
+
+    const message = `*NEW ORDER - THE MEATRIX CO.*%0A%0A*🧾 ORDER SUMMARY*%0A${orderItems}%0A%0A*💰 TOTAL: KSh ${totalPrice.toLocaleString()}*%0A*⚖️ TOTAL WEIGHT: ${totalKilos}kg*%0A%0A*👤 CUSTOMER DETAILS*%0A• Name: ${customerDetails.name}%0A• Address: ${customerDetails.address}%0A• Phone: ${customerDetails.phone}%0A• Special Instructions: ${customerDetails.instructions || 'None'}%0A%0A*📍 Delivery requested via website*`
+
+    window.open(`https://wa.me/254707636105?text=${message}`, '_blank')
+    
+    setTimeout(() => {
+      setIsProcessing(false)
+      clearCart()
+      setShowCustomerForm(false)
+      setCustomerDetails({ name: '', address: '', phone: '', instructions: '' })
+    }, 2000)
+  }
+
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const totalKg = cart.reduce((sum, item) => sum + item.quantity, 0)
+
+  if (!isOpen) return null
 
   return (
-    <>
-      {/* Floating button */}
-      {!isOpen && (
+    <div style={{
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      width: '400px',
+      maxWidth: '90vw',
+      background: 'white',
+      borderRadius: '16px',
+      boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
+      zIndex: 1000,
+      border: '2px solid #D4AF37'
+    }}>
+      {/* Cart Header */}
+      <div style={{
+        background: 'linear-gradient(135deg, #36454F 0%, #2f3a42 100%)',
+        color: 'white',
+        padding: '20px',
+        borderRadius: '14px 14px 0 0',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 'bold' }}>
+          🛒 Your Cart ({cart.length} items)
+        </h3>
         <button
-          onClick={() => setIsOpen(true)}
+          onClick={() => setIsOpen(false)}
           style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            background: '#800020',
-            color: 'white',
-            padding: '14px 20px',
-            borderRadius: '50px',
-            boxShadow: '0 6px 20px rgba(128,0,32,0.4)',
+            background: 'none',
             border: 'none',
-            fontWeight: '600',
-            cursor: 'pointer',
-            zIndex: 9999,
+            color: 'white',
+            fontSize: '20px',
+            cursor: 'pointer'
           }}
         >
-          🛒 View Cart ({cart.length})
+          ✕
         </button>
-      )}
+      </div>
 
-      {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            zIndex: 9999,
-            background: 'rgba(255,255,255,0.98)',
-            backdropFilter: 'blur(20px)',
-            borderRadius: '20px',
-            boxShadow: '0 25px 50px rgba(0,0,0,0.3)',
-            padding: '20px',
-            width: isMobile ? 'calc(100% - 40px)' : '350px',
-            maxHeight: '70vh',
-            overflowY: 'auto',
-            border: '2px solid rgba(128,0,32,0.1)',
-            animation: 'slideUp 0.3s ease-in-out',
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '15px',
-              borderBottom: '2px solid rgba(128,0,32,0.2)',
-              paddingBottom: '10px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ShoppingBag color="#800020" size={20} />
-              <h2 style={{ margin: 0, fontWeight: 700, fontSize: '1rem', color: '#800020' }}>
-                Your Cart ({cart.length})
-              </h2>
-            </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{
-                background: 'rgba(128,0,32,0.1)',
-                border: 'none',
-                borderRadius: '6px',
-                color: '#800020',
-                padding: '4px',
-                cursor: 'pointer',
-              }}
-            >
-              <X size={16} />
-            </button>
+      {/* Cart Items */}
+      <div style={{ maxHeight: '400px', overflowY: 'auto', padding: '20px' }}>
+        {cart.length === 0 ? (
+          <div style={{ textAlign: 'center', color: '#666', padding: '40px 20px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '10px' }}>🛒</div>
+            <p>Your cart is empty</p>
+            <p style={{ fontSize: '14px', marginTop: '5px' }}>Add some premium cuts to get started!</p>
           </div>
-
-          {/* Cart Items */}
-          {cart.map(item => (
-            <div
-              key={item.id}
-              style={{
-                background: 'rgba(255,255,255,0.9)',
-                border: '1.5px solid rgba(128,0,32,0.15)',
-                borderRadius: '12px',
-                padding: '10px',
-                marginBottom: '10px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <strong style={{ color: '#2b2b2b' }}>{item.name}</strong>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#a00',
-                    cursor: 'pointer',
-                  }}
-                  title="Remove item"
-                >
-                  <Trash2 size={16} />
-                </button>
+        ) : (
+          cart.map(item => (
+            <div key={item.id} style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '15px 0',
+              borderBottom: '1px solid #eee'
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 'bold', color: '#36454F' }}>{item.name}</div>
+                <div style={{ fontSize: '14px', color: '#D4AF37', fontWeight: '600' }}>
+                  KSh {item.price.toLocaleString()}/kg
+                </div>
               </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+              
+              {/* Quantity Controls */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity - 0.5)}
                   style={{
-                    width: '28px',
-                    height: '28px',
+                    background: '#800020',
+                    color: 'white',
+                    border: 'none',
+                    width: '30px',
+                    height: '30px',
                     borderRadius: '50%',
-                    border: '2px solid #800020',
-                    background: 'white',
-                    color: '#800020',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
                     cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'bold'
                   }}
                 >
-                  –
+                  -
                 </button>
-                <span style={{ minWidth: '60px', textAlign: 'center', color: '#800020', fontWeight: 600 }}>
-                  {item.quantity.toFixed(1)} kg
+                
+                <span style={{
+                  minWidth: '50px',
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  color: '#36454F'
+                }}>
+                  {item.quantity} kg
                 </span>
+                
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity + 0.5)}
                   style={{
-                    width: '28px',
-                    height: '28px',
-                    borderRadius: '50%',
-                    border: '2px solid #800020',
-                    background: '#800020',
+                    background: '#25D366',
                     color: 'white',
-                    fontSize: '18px',
-                    fontWeight: 'bold',
+                    border: 'none',
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
                     cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'bold'
                   }}
                 >
                   +
                 </button>
               </div>
-
-              <p style={{ marginTop: '8px', color: '#800020', fontWeight: 600, fontSize: '13px' }}>
-                KSh {(item.price * item.quantity).toLocaleString()}
-              </p>
+              
+              <div style={{ textAlign: 'right', minWidth: '80px' }}>
+                <div style={{ fontWeight: 'bold', color: '#36454F' }}>
+                  KSh {(item.price * item.quantity).toLocaleString()}
+                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#dc2626',
+                    cursor: 'pointer',
+                    fontSize: '12px',
+                    marginTop: '5px'
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
-          ))}
+          ))
+        )}
+      </div>
+
+      {/* Cart Footer */}
+      {cart.length > 0 && (
+        <div style={{
+          padding: '20px',
+          background: '#f8f9fa',
+          borderRadius: '0 0 14px 14px',
+          borderTop: '1px solid #eee'
+        }}>
+          {/* Customer Details Form */}
+          {!showCustomerForm ? (
+            <button
+              onClick={() => setShowCustomerForm(true)}
+              style={{
+                width: '100%',
+                background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                color: 'white',
+                padding: '12px',
+                borderRadius: '8px',
+                fontWeight: 'bold',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '14px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                marginBottom: '15px'
+              }}
+            >
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+                alt="WhatsApp" 
+                style={{ width: '20px', height: '20px', filter: 'brightness(0) invert(1)' }} 
+              />
+              Add Delivery Details & Checkout
+            </button>
+          ) : (
+            <div style={{ marginBottom: '15px', padding: '15px', background: 'white', borderRadius: '10px', border: '2px solid #e5e7eb' }}>
+              <h4 style={{ marginBottom: '15px', color: '#36454F', fontSize: '16px', fontWeight: 'bold' }}>Delivery Information</h4>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Full Name *"
+                  value={customerDetails.name}
+                  onChange={handleInputChange}
+                  style={{ padding: '10px', borderRadius: '8px', border: '2px solid #e5e7eb', fontSize: '14px' }}
+                  required
+                />
+                
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Delivery Address *"
+                  value={customerDetails.address}
+                  onChange={handleInputChange}
+                  style={{ padding: '10px', borderRadius: '8px', border: '2px solid #e5e7eb', fontSize: '14px' }}
+                  required
+                />
+                
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number *"
+                  value={customerDetails.phone}
+                  onChange={handleInputChange}
+                  style={{ padding: '10px', borderRadius: '8px', border: '2px solid #e5e7eb', fontSize: '14px' }}
+                  required
+                />
+                
+                <textarea
+                  name="instructions"
+                  placeholder="Special Instructions (optional)"
+                  value={customerDetails.instructions}
+                  onChange={handleInputChange}
+                  rows={2}
+                  style={{ padding: '10px', borderRadius: '8px', border: '2px solid #e5e7eb', resize: 'vertical', fontSize: '14px' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+                <button
+                  onClick={() => setShowCustomerForm(false)}
+                  style={{
+                    flex: 1,
+                    background: '#6c757d',
+                    color: 'white',
+                    border: 'none',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '14px'
+                  }}
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+            <span style={{ fontWeight: 'bold', color: '#36454F' }}>Total Weight:</span>
+            <span style={{ fontWeight: 'bold', color: '#D4AF37' }}>{totalKilos} kg</span>
+          </div>
 
           {/* Total */}
           <div
@@ -197,7 +308,7 @@ Total: ${totalKg.toFixed(1)}kg — KSh ${total.toLocaleString()}
               borderRadius: '10px',
               display: 'flex',
               justifyContent: 'space-between',
-              marginTop: '10px',
+              marginBottom: '15px',
               fontWeight: 600,
             }}
           >
@@ -205,29 +316,48 @@ Total: ${totalKg.toFixed(1)}kg — KSh ${total.toLocaleString()}
             <span>KSh {total.toLocaleString()}</span>
           </div>
 
-          {/* Order button */}
-          <button
-            onClick={sendWhatsAppOrder}
-            disabled={isProcessing}
-            style={{
-              width: '100%',
-              marginTop: '15px',
-              background: isProcessing
-                ? '#ccc'
-                : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              color: 'white',
-              padding: '12px',
-              borderRadius: '8px',
-              fontWeight: 'bold',
-              border: 'none',
-              cursor: isProcessing ? 'not-allowed' : 'pointer',
-              fontSize: '14px',
-            }}
-          >
-            {isProcessing ? '⏳ Processing...' : '📩 Complete Order'}
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              onClick={clearCart}
+              style={{
+                flex: 1,
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                padding: '12px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }}
+            >
+              Clear Cart
+            </button>
+            
+            {/* Order button - Only show when customer form is filled */}
+            {showCustomerForm && (
+              <button
+                onClick={sendWhatsAppOrder}
+                disabled={isProcessing || !customerDetails.name || !customerDetails.address || !customerDetails.phone}
+                style={{
+                  flex: 2,
+                  background: isProcessing || !customerDetails.name || !customerDetails.address || !customerDetails.phone
+                    ? '#ccc'
+                    : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                  color: 'white',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  fontWeight: 'bold',
+                  border: 'none',
+                  cursor: isProcessing || !customerDetails.name || !customerDetails.address || !customerDetails.phone ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                }}
+              >
+                {isProcessing ? '⏳ Processing...' : '📩 Complete Order via WhatsApp'}
+              </button>
+            )}
+          </div>
         </div>
       )}
-    </>
+    </div>
   )
-}
+  }
