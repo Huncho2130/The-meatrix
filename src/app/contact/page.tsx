@@ -1,9 +1,15 @@
 'use client'
 import { CartProvider } from '@/context/cartContext'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Contact() {
+  const [isMobile, setIsMobile] = useState(false)
+
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const navLinks = document.querySelectorAll('nav a')
     navLinks.forEach(link => {
       link.addEventListener('mouseenter', () => {
@@ -16,6 +22,8 @@ export default function Contact() {
         }
       }, { once: true })
     })
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, [])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,15 +39,19 @@ export default function Contact() {
 
   // Event handlers with proper TypeScript types
   const handleButtonHover = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.currentTarget;
-    target.style.transform = 'translateY(-2px)';
-    target.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.4)';
+    if (!isMobile) {
+      const target = e.currentTarget;
+      target.style.transform = 'translateY(-2px)';
+      target.style.boxShadow = '0 6px 20px rgba(37, 211, 102, 0.4)';
+    }
   };
 
   const handleButtonOut = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.currentTarget;
-    target.style.transform = 'translateY(0)';
-    target.style.boxShadow = '0 4px 15px rgba(37, 211, 102, 0.3)';
+    if (!isMobile) {
+      const target = e.currentTarget;
+      target.style.transform = 'translateY(0)';
+      target.style.boxShadow = '0 4px 15px rgba(37, 211, 102, 0.3)';
+    }
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -63,7 +75,7 @@ export default function Contact() {
         <header style={{
           background: '#36454F',
           color: 'white',
-          padding: '15px 20px',
+          padding: isMobile ? '12px 15px' : '15px 20px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
           position: 'sticky',
           top: 0,
@@ -74,12 +86,15 @@ export default function Contact() {
             justifyContent: 'space-between',
             alignItems: 'center',
             maxWidth: '1200px',
-            margin: '0 auto'
+            margin: '0 auto',
+            flexWrap: isMobile ? 'wrap' : 'nowrap',
+            gap: isMobile ? '10px' : '0',
+            flexDirection: isMobile ? 'column' : 'row'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '15px' }}>
               <div style={{
-                width: '60px',
-                height: '60px',
+                width: isMobile ? '50px' : '60px',
+                height: isMobile ? '50px' : '60px',
                 borderRadius: '12px',
                 overflow: 'hidden',
                 background: '#D4AF37',
@@ -95,9 +110,9 @@ export default function Contact() {
                   onError={handleImageError}
                 />
               </div>
-              <div>
+              <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
                 <h1 style={{
-                  fontSize: '1.8rem',
+                  fontSize: isMobile ? '1.4rem' : '1.8rem',
                   fontWeight: 'bold',
                   color: '#D4AF37',
                   margin: 0
@@ -106,7 +121,7 @@ export default function Contact() {
                 </h1>
                 <p style={{
                   color: 'white',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '12px' : '14px',
                   margin: 0,
                   fontWeight: '500',
                   opacity: '0.9'
@@ -116,34 +131,65 @@ export default function Contact() {
               </div>
             </div>
 
-            <nav style={{ display: 'flex', gap: '20px' }}>
-              <a href="/" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>HOME</a>
-              <a href="/products" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>PRODUCTS</a>
-              <a href="/about" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>ABOUT</a>
-              <a href="/contact" style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>CONTACT</a>
+            <nav style={{ 
+              display: 'flex', 
+              gap: isMobile ? '12px' : '20px',
+              flexWrap: 'wrap',
+              justifyContent: isMobile ? 'center' : 'flex-end'
+            }}>
+              <a href="/" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: isMobile ? '12px' : '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap'
+              }}>HOME</a>
+              <a href="/products" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: isMobile ? '12px' : '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap'
+              }}>PRODUCTS</a>
+              <a href="/about" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: isMobile ? '12px' : '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap'
+              }}>ABOUT</a>
+              <a href="/contact" style={{ 
+                color: '#D4AF37', 
+                textDecoration: 'none', 
+                fontSize: isMobile ? '12px' : '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap'
+              }}>CONTACT</a>
             </nav>
           </div>
 
-          {/* Top Info Bar - Updated */}
+          {/* Top Info Bar */}
           <div style={{
             background: '#2f3a42',
             color: '#D4AF37',
-            padding: '6px 20px',
-            fontSize: '13px',
+            padding: isMobile ? '8px 15px' : '6px 20px',
+            fontSize: isMobile ? '11px' : '13px',
             fontWeight: '500',
             textAlign: 'center',
+            marginTop: isMobile ? '8px' : '0'
           }}>
             <div style={{
               maxWidth: '1200px',
               margin: '0 auto',
               display: 'flex',
               justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '5px',
+              flexWrap: isMobile ? 'wrap' : 'nowrap',
+              gap: isMobile ? '8px' : '5px',
+              alignItems: 'center'
             }}>
-              <span>📍 City Market, Nairobi CBD</span>
-              <span>📞 +254 707 636105</span>
-              <span>⭐ Premium Quality Guaranteed</span>
+              <span style={{ whiteSpace: 'nowrap' }}>📍 City Market, Nairobi CBD</span>
+              <span style={{ whiteSpace: 'nowrap' }}>📞 +254 707 636105</span>
+              <span style={{ whiteSpace: 'nowrap' }}>⭐ Premium Quality</span>
             </div>
           </div>
         </header>
@@ -152,9 +198,9 @@ export default function Contact() {
         <section style={{
           position: 'relative',
           color: 'white',
-          padding: '80px 20px',
+          padding: isMobile ? '50px 20px' : '80px 20px',
           textAlign: 'center',
-          minHeight: '400px',
+          minHeight: isMobile ? '300px' : '400px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -176,31 +222,59 @@ export default function Contact() {
           }} />
           <div style={{ position: 'relative', zIndex: 3 }}>
             <h1 style={{
-              fontSize: '3.5rem',
+              fontSize: isMobile ? '2.2rem' : '3.5rem',
               fontWeight: 'bold',
-              marginBottom: '20px'
+              marginBottom: isMobile ? '15px' : '20px'
             }}>
               GET IN TOUCH
             </h1>
-            <p style={{ fontSize: '1.3rem', maxWidth: '600px', margin: '0 auto' }}>
+            <p style={{ 
+              fontSize: isMobile ? '1.1rem' : '1.3rem', 
+              maxWidth: isMobile ? '90vw' : '600px', 
+              margin: '0 auto' 
+            }}>
               We're here to serve you with the finest cuts and exceptional service.
             </p>
           </div>
         </section>
 
         {/* CONTACT SECTION */}
-        <section style={{ padding: '80px 20px' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '60px' }}>
+        <section style={{ padding: isMobile ? '40px 15px' : '80px 20px' }}>
+          <div style={{ 
+            maxWidth: '1200px', 
+            margin: '0 auto', 
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(350px, 1fr))', 
+            gap: isMobile ? '40px' : '60px' 
+          }}>
 
             {/* LEFT SIDE */}
             <div>
-              <h2 style={{ fontSize: '2.2rem', fontWeight: 'bold', color: '#36454F', marginBottom: '30px' }}>
+              <h2 style={{ 
+                fontSize: isMobile ? '1.8rem' : '2.2rem', 
+                fontWeight: 'bold', 
+                color: '#36454F', 
+                marginBottom: isMobile ? '20px' : '30px',
+                textAlign: isMobile ? 'center' : 'left'
+              }}>
                 Contact Information
               </h2>
 
               {/* LOCATION */}
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px', marginBottom: '25px' }}>
-                <div style={{ background: '#D4AF37', padding: '12px', borderRadius: '12px' }}>📍</div>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'flex-start', 
+                gap: '15px', 
+                marginBottom: '25px',
+                flexDirection: isMobile ? 'column' : 'row',
+                textAlign: isMobile ? 'center' : 'left'
+              }}>
+                <div style={{ 
+                  background: '#D4AF37', 
+                  padding: isMobile ? '10px' : '12px', 
+                  borderRadius: '12px',
+                  alignSelf: isMobile ? 'center' : 'flex-start'
+                }}>📍</div>
                 <div>
                   <h3 style={{ margin: 0 }}>Visit Our Store</h3>
                   <p>City Market, Nairobi CBD<br />Ground Floor, Stall 63</p>
@@ -208,8 +282,21 @@ export default function Contact() {
               </div>
 
               {/* WHATSAPP */}
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px', marginBottom: '25px' }}>
-                <div style={{ background: '#25D366', padding: '12px', borderRadius: '12px', color: 'white' }}>💬</div>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'flex-start', 
+                gap: '15px', 
+                marginBottom: '25px',
+                flexDirection: isMobile ? 'column' : 'row',
+                textAlign: isMobile ? 'center' : 'left'
+              }}>
+                <div style={{ 
+                  background: '#25D366', 
+                  padding: isMobile ? '10px' : '12px', 
+                  borderRadius: '12px', 
+                  color: 'white',
+                  alignSelf: isMobile ? 'center' : 'flex-start'
+                }}>💬</div>
                 <div>
                   <h3 style={{ margin: 0 }}>Call or WhatsApp</h3>
                   <a href="https://wa.me/254707636105" target="_blank" rel="noopener noreferrer" style={{ color: '#25D366', textDecoration: 'none', fontWeight: '600' }}>
@@ -219,8 +306,21 @@ export default function Contact() {
               </div>
 
               {/* EMAIL */}
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '15px', marginBottom: '25px' }}>
-                <div style={{ background: '#800020', padding: '12px', borderRadius: '12px', color: 'white' }}>✉️</div>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'flex-start', 
+                gap: '15px', 
+                marginBottom: '25px',
+                flexDirection: isMobile ? 'column' : 'row',
+                textAlign: isMobile ? 'center' : 'left'
+              }}>
+                <div style={{ 
+                  background: '#800020', 
+                  padding: isMobile ? '10px' : '12px', 
+                  borderRadius: '12px', 
+                  color: 'white',
+                  alignSelf: isMobile ? 'center' : 'flex-start'
+                }}>✉️</div>
                 <div>
                   <h3 style={{ margin: 0 }}>Email Us</h3>
                   <a href="mailto:info@themeatrix.co.ke" style={{ color: '#800020', textDecoration: 'none', fontWeight: '600' }}>
@@ -230,41 +330,155 @@ export default function Contact() {
               </div>
 
               {/* SOCIALS */}
-              <div style={{ marginTop: '40px' }}>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 'bold', color: '#36454F', marginBottom: '20px' }}>
+              <div style={{ marginTop: '40px', textAlign: isMobile ? 'center' : 'left' }}>
+                <h3 style={{ 
+                  fontSize: isMobile ? '1.2rem' : '1.3rem', 
+                  fontWeight: 'bold', 
+                  color: '#36454F', 
+                  marginBottom: '20px' 
+                }}>
                   Follow Us
                 </h3>
-                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                  <a href="#" target="_blank" rel="noopener noreferrer" style={{ background: '#1877F2', color: 'white', padding: '12px 16px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Facebook</a>
-                  <a href="https://instagram.com/themeatrixco" target="_blank" rel="noopener noreferrer" style={{ background: 'linear-gradient(45deg,#E4405F,#833AB4,#405DE6)', color: 'white', padding: '12px 16px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>Instagram</a>
-                  <a href="#" target="_blank" rel="noopener noreferrer" style={{ background: '#000', color: 'white', padding: '12px 16px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>TikTok</a>
-                  <a href="https://twitter.com/themeatrixco" target="_blank" rel="noopener noreferrer" style={{ background: '#000', color: 'white', padding: '12px 16px', borderRadius: '10px', textDecoration: 'none', fontWeight: '600', fontSize: '14px' }}>X</a>
+                <div style={{ 
+                  display: 'flex', 
+                  gap: '15px', 
+                  flexWrap: 'wrap',
+                  justifyContent: isMobile ? 'center' : 'flex-start'
+                }}>
+                  <a href="#" target="_blank" rel="noopener noreferrer" style={{ 
+                    background: '#1877F2', 
+                    color: 'white', 
+                    padding: isMobile ? '10px 14px' : '12px 16px', 
+                    borderRadius: '10px', 
+                    textDecoration: 'none', 
+                    fontWeight: '600', 
+                    fontSize: isMobile ? '12px' : '14px',
+                    whiteSpace: 'nowrap'
+                  }}>Facebook</a>
+                  <a href="https://instagram.com/themeatrixco" target="_blank" rel="noopener noreferrer" style={{ 
+                    background: 'linear-gradient(45deg,#E4405F,#833AB4,#405DE6)', 
+                    color: 'white', 
+                    padding: isMobile ? '10px 14px' : '12px 16px', 
+                    borderRadius: '10px', 
+                    textDecoration: 'none', 
+                    fontWeight: '600', 
+                    fontSize: isMobile ? '12px' : '14px',
+                    whiteSpace: 'nowrap'
+                  }}>Instagram</a>
+                  <a href="#" target="_blank" rel="noopener noreferrer" style={{ 
+                    background: '#000', 
+                    color: 'white', 
+                    padding: isMobile ? '10px 14px' : '12px 16px', 
+                    borderRadius: '10px', 
+                    textDecoration: 'none', 
+                    fontWeight: '600', 
+                    fontSize: isMobile ? '12px' : '14px',
+                    whiteSpace: 'nowrap'
+                  }}>TikTok</a>
+                  <a href="https://twitter.com/themeatrixco" target="_blank" rel="noopener noreferrer" style={{ 
+                    background: '#000', 
+                    color: 'white', 
+                    padding: isMobile ? '10px 14px' : '12px 16px', 
+                    borderRadius: '10px', 
+                    textDecoration: 'none', 
+                    fontWeight: '600', 
+                    fontSize: isMobile ? '12px' : '14px',
+                    whiteSpace: 'nowrap'
+                  }}>X</a>
                 </div>
               </div>
             </div>
 
             {/* RIGHT SIDE FORM */}
-            <div style={{ background: '#f9fafb', padding: '40px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)' }}>
-              <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#36454F', marginBottom: '30px' }}>
+            <div style={{ 
+              background: '#f9fafb', 
+              padding: isMobile ? '25px' : '40px', 
+              borderRadius: '20px', 
+              boxShadow: '0 10px 30px rgba(0,0,0,0.08)' 
+            }}>
+              <h2 style={{ 
+                fontSize: isMobile ? '1.6rem' : '2rem', 
+                fontWeight: 'bold', 
+                color: '#36454F', 
+                marginBottom: isMobile ? '20px' : '30px',
+                textAlign: isMobile ? 'center' : 'left'
+              }}>
                 Send Us a Message
               </h2>
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-                  <input name="first_name" placeholder="First Name *" required style={{ padding: '15px', borderRadius: '10px', border: '2px solid #e5e7eb' }} />
-                  <input name="last_name" placeholder="Last Name *" required style={{ padding: '15px', borderRadius: '10px', border: '2px solid #e5e7eb' }} />
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', 
+                  gap: '15px' 
+                }}>
+                  <input 
+                    name="first_name" 
+                    placeholder="First Name *" 
+                    required 
+                    style={{ 
+                      padding: isMobile ? '12px' : '15px', 
+                      borderRadius: '10px', 
+                      border: '2px solid #e5e7eb',
+                      fontSize: isMobile ? '14px' : '16px'
+                    }} 
+                  />
+                  <input 
+                    name="last_name" 
+                    placeholder="Last Name *" 
+                    required 
+                    style={{ 
+                      padding: isMobile ? '12px' : '15px', 
+                      borderRadius: '10px', 
+                      border: '2px solid #e5e7eb',
+                      fontSize: isMobile ? '14px' : '16px'
+                    }} 
+                  />
                 </div>
-                <input name="email" type="email" placeholder="Email Address *" required style={{ padding: '15px', borderRadius: '10px', border: '2px solid #e5e7eb' }} />
-                <input name="phone" type="tel" placeholder="Phone Number" style={{ padding: '15px', borderRadius: '10px', border: '2px solid #e5e7eb' }} />
-                <textarea name="message" placeholder="Your Message *" rows={5} required style={{ padding: '15px', borderRadius: '10px', border: '2px solid #e5e7eb', resize: 'vertical' }} />
+                <input 
+                  name="email" 
+                  type="email" 
+                  placeholder="Email Address *" 
+                  required 
+                  style={{ 
+                    padding: isMobile ? '12px' : '15px', 
+                    borderRadius: '10px', 
+                    border: '2px solid #e5e7eb',
+                    fontSize: isMobile ? '14px' : '16px'
+                  }} 
+                />
+                <input 
+                  name="phone" 
+                  type="tel" 
+                  placeholder="Phone Number" 
+                  style={{ 
+                    padding: isMobile ? '12px' : '15px', 
+                    borderRadius: '10px', 
+                    border: '2px solid #e5e7eb',
+                    fontSize: isMobile ? '14px' : '16px'
+                  }} 
+                />
+                <textarea 
+                  name="message" 
+                  placeholder="Your Message *" 
+                  rows={5} 
+                  required 
+                  style={{ 
+                    padding: isMobile ? '12px' : '15px', 
+                    borderRadius: '10px', 
+                    border: '2px solid #e5e7eb', 
+                    resize: 'vertical',
+                    fontSize: isMobile ? '14px' : '16px'
+                  }} 
+                />
                 <button 
                   type="submit" 
                   style={{
                     background: 'linear-gradient(135deg,#25D366,#128C7E)',
                     color: 'white',
-                    padding: '18px 24px',
+                    padding: isMobile ? '16px 20px' : '18px 24px',
                     borderRadius: '10px',
                     border: 'none',
-                    fontSize: '16px',
+                    fontSize: isMobile ? '14px' : '16px',
                     fontWeight: 'bold',
                     cursor: 'pointer',
                     display: 'flex',
@@ -272,7 +486,8 @@ export default function Contact() {
                     justifyContent: 'center',
                     gap: '12px',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)'
+                    boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
+                    width: isMobile ? '100%' : 'auto'
                   }}
                   onMouseOver={handleButtonHover}
                   onMouseOut={handleButtonOut}
@@ -281,8 +496,8 @@ export default function Contact() {
                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
                     alt="WhatsApp" 
                     style={{ 
-                      width: '24px', 
-                      height: '24px',
+                      width: isMobile ? '20px' : '24px', 
+                      height: isMobile ? '20px' : '24px',
                       filter: 'brightness(0) invert(1)'
                     }} 
                   />
@@ -297,15 +512,24 @@ export default function Contact() {
         <footer style={{
           background: '#1a202c',
           color: 'white',
-          padding: '40px 20px',
+          padding: isMobile ? '30px 20px' : '40px 20px',
           textAlign: 'center'
         }}>
           <div style={{ 
             maxWidth: '1200px', 
             margin: '0 auto' 
           }}>
-            <p style={{ margin: 0 }}>&copy; 2025 THE MEATRIX CO. All rights reserved.</p>
-            <p style={{ margin: '10px 0 0 0', color: '#D4AF37', fontSize: '14px' }}>
+            <p style={{ 
+              margin: 0, 
+              fontSize: isMobile ? '14px' : '16px' 
+            }}>
+              &copy; 2025 THE MEATRIX CO. All rights reserved.
+            </p>
+            <p style={{ 
+              margin: '10px 0 0 0', 
+              color: '#D4AF37', 
+              fontSize: isMobile ? '12px' : '14px' 
+            }}>
               Premium Meats & Seafood • Nairobi's Finest Butcher
             </p>
           </div>
