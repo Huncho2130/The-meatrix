@@ -28,15 +28,61 @@ const products = [
   { id: '14', name: 'Salmon Fillet', price: 5500, category: 'Seafood' },
 ]
 
-function ProductCard({ product }) {
+function ProductCard({ product, isMobile }) {
   const { addToCart } = useCart();
+
+  const handleCardHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isMobile) {
+      e.currentTarget.style.transform = "translateY(-8px)";
+      e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
+      e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.3)";
+    }
+  };
+
+  const handleCardOut = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isMobile) {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.08)";
+      e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.1)";
+    }
+  };
+
+  const handleButtonHover = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isMobile) {
+      e.currentTarget.style.background = "linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)";
+      e.currentTarget.style.transform = "translateY(-2px)";
+      e.currentTarget.style.boxShadow = "0 6px 20px rgba(212, 175, 55, 0.4)";
+    }
+  };
+
+  const handleButtonOut = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isMobile) {
+      e.currentTarget.style.background = "linear-gradient(135deg, #800020 0%, #600018 100%)";
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "0 4px 15px rgba(128, 0, 32, 0.3)";
+    }
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.style.display = 'none';
+    const parent = target.parentElement as HTMLDivElement;
+    if (parent) {
+      parent.innerHTML = '🥩';
+      parent.style.fontSize = '24px';
+      parent.style.color = '#36454F';
+      parent.style.display = 'flex';
+      parent.style.alignItems = 'center';
+      parent.style.justifyContent = 'center';
+    }
+  };
 
   return (
     <div
       style={{
         background: "white",
         borderRadius: "16px",
-        padding: "25px",
+        padding: isMobile ? "20px" : "25px",
         textAlign: "center",
         boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
         border: "1px solid rgba(212, 175, 55, 0.1)",
@@ -45,28 +91,20 @@ function ProductCard({ product }) {
         position: "relative",
         overflow: "hidden",
       }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.transform = "translateY(-8px)";
-        e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.15)";
-        e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.3)";
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.08)";
-        e.currentTarget.style.borderColor = "rgba(212, 175, 55, 0.1)";
-      }}
+      onMouseOver={handleCardHover}
+      onMouseOut={handleCardOut}
     >
       {/* Premium badge */}
       <div
         style={{
           position: "absolute",
-          top: "15px",
-          right: "15px",
+          top: isMobile ? "12px" : "15px",
+          right: isMobile ? "12px" : "15px",
           background: "linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)",
           color: "#36454F",
           padding: "4px 12px",
           borderRadius: "20px",
-          fontSize: "12px",
+          fontSize: isMobile ? "10px" : "12px",
           fontWeight: "bold",
           boxShadow: "0 2px 8px rgba(212, 175, 55, 0.3)",
         }}
@@ -74,15 +112,15 @@ function ProductCard({ product }) {
         PREMIUM
       </div>
 
-      {/* Larger Product Image */}
+      {/* Product Image */}
       <div
         style={{
-          height: "240px",
+          height: isMobile ? "180px" : "240px",
           background: `url('/${product.name.toLowerCase().replace(/\s+/g, "-")}.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "12px",
-          marginBottom: "20px",
+          marginBottom: isMobile ? "15px" : "20px",
         }}
       />
 
@@ -90,9 +128,14 @@ function ProductCard({ product }) {
       <h3
         style={{
           color: "#36454F",
-          fontSize: "1.25rem",
+          fontSize: isMobile ? "1.1rem" : "1.25rem",
           fontWeight: "700",
-          marginBottom: "10px",
+          marginBottom: "8px",
+          lineHeight: "1.3",
+          minHeight: isMobile ? "auto" : "48px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
         {product.name}
@@ -101,9 +144,9 @@ function ProductCard({ product }) {
       <p
         style={{
           color: "#D4AF37",
-          fontSize: "1.75rem",
+          fontSize: isMobile ? "1.5rem" : "1.75rem",
           fontWeight: "bold",
-          marginBottom: "20px",
+          marginBottom: isMobile ? "15px" : "20px",
         }}
       >
         KSh {product.price.toLocaleString()}
@@ -116,6 +159,8 @@ function ProductCard({ product }) {
           alignItems: "center",
           paddingTop: "15px",
           borderTop: "1px solid rgba(0,0,0,0.1)",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "12px" : "0"
         }}
       >
         <span
@@ -124,9 +169,10 @@ function ProductCard({ product }) {
             color: "#4a5568",
             padding: "6px 14px",
             borderRadius: "20px",
-            fontSize: "13px",
+            fontSize: isMobile ? "12px" : "13px",
             fontWeight: "600",
             border: "1px solid #e2e8f0",
+            whiteSpace: "nowrap"
           }}
         >
           {product.category}
@@ -138,31 +184,20 @@ function ProductCard({ product }) {
             background: "linear-gradient(135deg, #800020 0%, #600018 100%)",
             color: "white",
             border: "none",
-            padding: "12px 20px",
+            padding: isMobile ? "10px 16px" : "12px 20px",
             borderRadius: "10px",
             cursor: "pointer",
             fontWeight: "bold",
-            fontSize: "14px",
+            fontSize: isMobile ? "13px" : "14px",
             boxShadow: "0 4px 15px rgba(128, 0, 32, 0.3)",
             transition: "all 0.3s ease",
             display: "flex",
             alignItems: "center",
-            gap: "8px",
+            gap: "6px",
+            width: isMobile ? "100%" : "auto"
           }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)";
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow =
-              "0 6px 20px rgba(212, 175, 55, 0.4)";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, #800020 0%, #600018 100%)";
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow =
-              "0 4px 15px rgba(128, 0, 32, 0.3)";
-          }}
+          onMouseOver={handleButtonHover}
+          onMouseOut={handleButtonOut}
         >
           🛒 Add to Cart
         </button>
@@ -171,13 +206,16 @@ function ProductCard({ product }) {
   );
 }
 
-
 function ProductsContent() {
   const { cart, itemCount } = useCart()
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  // ADD PRELOAD EFFECT HERE
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     setIsMounted(true)
     
     // Preload other pages when user hovers over nav links
@@ -187,7 +225,6 @@ function ProductsContent() {
       link.addEventListener('mouseenter', () => {
         const href = link.getAttribute('href')
         if (href && href !== window.location.pathname) {
-          // Prefetch the page
           const linkElement = document.createElement('link')
           linkElement.rel = 'prefetch'
           linkElement.href = href
@@ -195,6 +232,8 @@ function ProductsContent() {
         }
       }, { once: true })
     })
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, [])
 
   // Prevent hydration by not rendering cart-dependent UI until mounted
@@ -205,14 +244,22 @@ function ProductsContent() {
         <header style={{
           background: '#36454F',
           color: 'white',
-          padding: '15px 20px',
+          padding: isMobile ? '12px 15px' : '15px 20px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            maxWidth: '1200px', 
+            margin: '0 auto',
+            flexWrap: isMobile ? 'wrap' : 'nowrap',
+            gap: isMobile ? '10px' : '0'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '15px' }}>
               <div style={{
-                width: '60px',
-                height: '60px',
+                width: isMobile ? '50px' : '60px',
+                height: isMobile ? '50px' : '60px',
                 borderRadius: '12px',
                 background: '#D4AF37',
                 display: 'flex',
@@ -223,10 +270,20 @@ function ProductsContent() {
                 🥩
               </div>
               <div>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#D4AF37', margin: 0 }}>
+                <h1 style={{ 
+                  fontSize: isMobile ? '1.4rem' : '1.8rem', 
+                  fontWeight: 'bold', 
+                  color: '#D4AF37', 
+                  margin: 0 
+                }}>
                   THE MEATRIX CO.
                 </h1>
-                <p style={{ color: 'white', fontSize: '14px', margin: '2px 0 0 0', fontWeight: '500' }}>
+                <p style={{ 
+                  color: 'white', 
+                  fontSize: isMobile ? '12px' : '14px', 
+                  margin: '2px 0 0 0', 
+                  fontWeight: '500' 
+                }}>
                   📍 City Market, Nairobi CBD
                 </p>
               </div>
@@ -235,7 +292,12 @@ function ProductsContent() {
         </header>
         
         {/* Loading content */}
-        <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+        <div style={{ 
+          padding: isMobile ? '30px 20px' : '40px 20px', 
+          maxWidth: '1200px', 
+          margin: '0 auto', 
+          textAlign: 'center' 
+        }}>
           <div style={{ fontSize: '3rem', marginBottom: '20px' }}>🥩</div>
           <p>Loading premium selection...</p>
         </div>
@@ -243,22 +305,50 @@ function ProductsContent() {
     )
   }
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.style.display = 'none';
+    const parent = target.parentElement as HTMLDivElement;
+    if (parent) {
+      parent.innerHTML = '🥩';
+      parent.style.fontSize = '24px';
+      parent.style.color = '#36454F';
+      parent.style.display = 'flex';
+      parent.style.alignItems = 'center';
+      parent.style.justifyContent = 'center';
+    }
+  };
+
   return (
     <div style={{ minHeight: '100vh', background: '#f7fafc' }}>
       {/* Header */}
       <header style={{
         background: '#36454F',
         color: 'white',
-        padding: '15px 20px',
+        padding: isMobile ? '12px 15px' : '15px 20px',
         boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          maxWidth: '1200px', 
+          margin: '0 auto',
+          flexWrap: isMobile ? 'wrap' : 'nowrap',
+          gap: isMobile ? '10px' : '0',
+          flexDirection: isMobile ? 'column' : 'row'
+        }}>
           {/* Logo and Brand Section */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: isMobile ? '12px' : '15px',
+            flexShrink: 0 
+          }}>
             {/* Logo Image */}
             <div style={{
-              width: '60px',
-              height: '60px',
+              width: isMobile ? '50px' : '60px',
+              height: isMobile ? '50px' : '60px',
               borderRadius: '12px',
               overflow: 'hidden',
               background: '#D4AF37',
@@ -270,28 +360,20 @@ function ProductsContent() {
             }}>
               <img 
                 src="/log.png" 
-                alt="Prime Cuts Kenya Logo"
+                alt="The Matrix Co. Logo"
                 style={{
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover'
                 }}
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-              
-                  
-                  
-                  
-                  
-                  
-                }}
+                onError={handleImageError}
               />
             </div>
             
             {/* Brand Name and Location */}
-            <div>
+            <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
               <h1 style={{ 
-                fontSize: '1.8rem', 
+                fontSize: isMobile ? '1.4rem' : '1.8rem', 
                 fontWeight: 'bold',
                 color: '#D4AF37',
                 margin: 0,
@@ -301,21 +383,51 @@ function ProductsContent() {
               </h1>
               <p style={{
                 color: 'white',
-                fontSize: '14px',
+                fontSize: isMobile ? '12px' : '14px',
                 margin: '2px 0 0 0',
                 fontWeight: '500',
                 opacity: '0.9'
               }}>
-              
+                Premium Meats & Seafood
               </p>
             </div>
           </div>
 
-          <nav style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-            <a href="/" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>HOME</a>
-            <a href="/products" style={{ color: '#D4AF37', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>PRODUCTS</a>
-            <a href="/about" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>ABOUT</a>
-            <a href="/contact" style={{ color: 'white', textDecoration: 'none', fontSize: '14px', fontWeight: '600' }}>CONTACT</a>
+          <nav style={{ 
+            display: 'flex', 
+            gap: isMobile ? '12px' : '20px', 
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: isMobile ? 'center' : 'flex-end'
+          }}>
+            <a href="/" style={{ 
+              color: 'white', 
+              textDecoration: 'none', 
+              fontSize: isMobile ? '12px' : '14px', 
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}>HOME</a>
+            <a href="/products" style={{ 
+              color: '#D4AF37', 
+              textDecoration: 'none', 
+              fontSize: isMobile ? '12px' : '14px', 
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}>PRODUCTS</a>
+            <a href="/about" style={{ 
+              color: 'white', 
+              textDecoration: 'none', 
+              fontSize: isMobile ? '12px' : '14px', 
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}>ABOUT</a>
+            <a href="/contact" style={{ 
+              color: 'white', 
+              textDecoration: 'none', 
+              fontSize: isMobile ? '12px' : '14px', 
+              fontWeight: '600',
+              whiteSpace: 'nowrap'
+            }}>CONTACT</a>
             
             {itemCount > 0 && (
               <div style={{
@@ -336,49 +448,54 @@ function ProductsContent() {
           </nav>
         </div>
         
-         {/* Top Info Bar - Updated */}
-<div style={{
-  background: '#2f3a42', // dark variant of header
-  color: '#D4AF37',
-  padding: '6px 20px',
-  fontSize: '13px',
-  fontWeight: '500',
-  textAlign: 'center',
-}}>
-  <div style={{
-    maxWidth: '1200px',
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-    gap: '5px',
-  }}>
-
-  </div>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between' }}>
-            <span>📍 City Market, Nairobi CBD</span>
-            <span>📞 +254 707 636105</span>
-            <span>⭐ Premium Quality Guaranteed</span>
+        {/* Top Info Bar */}
+        <div style={{
+          background: '#2f3a42',
+          color: '#D4AF37',
+          padding: isMobile ? '8px 15px' : '6px 20px',
+          fontSize: isMobile ? '11px' : '13px',
+          fontWeight: '500',
+          textAlign: 'center',
+          marginTop: isMobile ? '8px' : '0'
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexWrap: isMobile ? 'wrap' : 'nowrap',
+            gap: isMobile ? '8px' : '5px',
+            alignItems: 'center'
+          }}>
+            <span style={{ whiteSpace: 'nowrap' }}>📍 City Market, Nairobi CBD</span>
+            <span style={{ whiteSpace: 'nowrap' }}>📞 +254 707 636105</span>
+            <span style={{ whiteSpace: 'nowrap' }}>⭐ Premium Quality</span>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <div style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+      <div style={{ 
+        padding: isMobile ? '25px 15px' : '40px 20px', 
+        maxWidth: '1200px', 
+        margin: '0 auto' 
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: isMobile ? '30px' : '50px' }}>
           <h1 style={{ 
-            fontSize: '3rem', 
+            fontSize: isMobile ? '2rem' : '3rem', 
             color: '#36454F',
-            marginBottom: '15px',
-            fontWeight: 'bold'
+            marginBottom: isMobile ? '12px' : '15px',
+            fontWeight: 'bold',
+            lineHeight: '1.2'
           }}>
             OUR PREMIUM SELECTION
           </h1>
           <p style={{ 
-            fontSize: '1.2rem',
+            fontSize: isMobile ? '1rem' : '1.2rem',
             color: '#4a5568',
             maxWidth: '600px',
-            margin: '0 auto'
+            margin: '0 auto',
+            lineHeight: '1.5'
           }}>
             Handpicked cuts of the finest quality, curated for discerning palates
           </p>
@@ -387,13 +504,14 @@ function ProductsContent() {
             <div style={{
               background: '#D4AF37',
               color: '#36454F',
-              padding: '10px 20px',
+              padding: isMobile ? '8px 16px' : '10px 20px',
               borderRadius: '5px',
-              marginTop: '20px',
+              marginTop: isMobile ? '15px' : '20px',
               display: 'inline-block',
-              fontWeight: '600'
+              fontWeight: '600',
+              fontSize: isMobile ? '12px' : '14px'
             }}>
-              🛒 {cart.length} item(s) in cart - Checkout panel appears on the bottom right!
+              🛒 {cart.length} item(s) in cart
             </div>
           )}
         </div>
@@ -401,14 +519,12 @@ function ProductsContent() {
         {/* Products Grid */}
         <div style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-          gap: '30px'
-        
-          
-          
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: isMobile ? '20px' : '30px',
+          padding: isMobile ? '0 5px' : '0'
         }}>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} isMobile={isMobile} />
           ))}
         </div>
       </div>
@@ -417,14 +533,28 @@ function ProductsContent() {
       <footer style={{
         background: '#1a202c',
         color: 'white',
-        padding: '30px 20px',
+        padding: isMobile ? '25px 20px' : '30px 20px',
         textAlign: 'center',
-        marginTop: '50px'
+        marginTop: isMobile ? '30px' : '50px'
       }}>
-        <p style={{ margin: 0 }}>&copy; 2025 THE MEATRIX CO. . All rights reserved.</p>
-        <p style={{ margin: '10px 0 0 0', color: '#D4AF37', fontSize: '14px' }}>
-          Premium Meats & Seafood • Nairobi's Finest Butcher
-        </p>
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto' 
+        }}>
+          <p style={{ 
+            margin: 0, 
+            fontSize: isMobile ? '14px' : '16px' 
+          }}>
+            &copy; 2025 THE MEATRIX CO. All rights reserved.
+          </p>
+          <p style={{ 
+            margin: '10px 0 0 0', 
+            color: '#D4AF37', 
+            fontSize: isMobile ? '12px' : '14px' 
+          }}>
+            Premium Meats & Seafood • Nairobi's Finest Butcher
+          </p>
+        </div>
       </footer>
 
       <Cart />
@@ -437,4 +567,5 @@ export default function ProductsPage() {
     <CartProvider>
       <ProductsContent />
     </CartProvider>
-  )}
+  )
+}
