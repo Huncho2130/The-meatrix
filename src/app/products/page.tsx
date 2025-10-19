@@ -1,4 +1,3 @@
-
 'use client'
 import { CartProvider, useCart } from '@/context/cartContext'
 import Cart from '@/components/Cart'
@@ -210,6 +209,7 @@ function ProductsContent() {
   const { cart, itemCount } = useCart()
   const [isMounted, setIsMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -236,6 +236,24 @@ function ProductsContent() {
     return () => window.removeEventListener('resize', checkMobile);
   }, [])
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.style.display = 'none';
+    const parent = target.parentElement as HTMLDivElement;
+    if (parent) {
+      parent.innerHTML = '🥩';
+      parent.style.fontSize = '24px';
+      parent.style.color = '#36454F';
+      parent.style.display = 'flex';
+      parent.style.alignItems = 'center';
+      parent.style.justifyContent = 'center';
+    }
+  };
+
   // Prevent hydration by not rendering cart-dependent UI until mounted
   if (!isMounted) {
     return (
@@ -244,22 +262,28 @@ function ProductsContent() {
         <header style={{
           background: '#36454F',
           color: 'white',
-          padding: isMobile ? '12px 15px' : '15px 20px',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+          padding: isMobile ? '15px 20px' : '20px 40px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50
         }}>
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center', 
             maxWidth: '1200px', 
-            margin: '0 auto',
-            flexWrap: isMobile ? 'wrap' : 'nowrap',
-            gap: isMobile ? '10px' : '0'
+            margin: '0 auto'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '12px' : '15px' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '15px',
+              flexShrink: 0 
+            }}>
               <div style={{
-                width: isMobile ? '50px' : '60px',
-                height: isMobile ? '50px' : '60px',
+                width: isMobile ? '45px' : '55px',
+                height: isMobile ? '45px' : '55px',
                 borderRadius: '12px',
                 background: '#D4AF37',
                 display: 'flex',
@@ -269,22 +293,24 @@ function ProductsContent() {
               }}>
                 🥩
               </div>
-              <div>
+              <div style={{ textAlign: 'left' }}>
                 <h1 style={{ 
-                  fontSize: isMobile ? '1.4rem' : '1.8rem', 
+                  fontSize: isMobile ? '1.3rem' : '1.6rem', 
                   fontWeight: 'bold', 
                   color: '#D4AF37', 
-                  margin: 0 
+                  margin: 0, 
+                  lineHeight: '1.1' 
                 }}>
                   THE MEATRIX CO.
                 </h1>
-                <p style={{ 
-                  color: 'white', 
-                  fontSize: isMobile ? '12px' : '14px', 
-                  margin: '2px 0 0 0', 
-                  fontWeight: '500' 
+                <p style={{
+                  color: 'white',
+                  fontSize: isMobile ? '10px' : '12px',
+                  margin: '2px 0 0 0',
+                  fontWeight: '500',
+                  opacity: '0.9'
                 }}>
-                  📍 City Market, Nairobi CBD
+                  Premium Meats & Seafood
                 </p>
               </div>
             </div>
@@ -305,50 +331,35 @@ function ProductsContent() {
     )
   }
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.currentTarget;
-    target.style.display = 'none';
-    const parent = target.parentElement as HTMLDivElement;
-    if (parent) {
-      parent.innerHTML = '🥩';
-      parent.style.fontSize = '24px';
-      parent.style.color = '#36454F';
-      parent.style.display = 'flex';
-      parent.style.alignItems = 'center';
-      parent.style.justifyContent = 'center';
-    }
-  };
-
   return (
     <div style={{ minHeight: '100vh', background: '#f7fafc' }}>
-      {/* Header */}
+      {/* Header - Clean & Minimal */}
       <header style={{
         background: '#36454F',
         color: 'white',
-        padding: isMobile ? '12px 15px' : '15px 20px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        padding: isMobile ? '15px 20px' : '20px 40px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        position: 'sticky',
+        top: 0,
+        zIndex: 50
       }}>
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center', 
           maxWidth: '1200px', 
-          margin: '0 auto',
-          flexWrap: isMobile ? 'wrap' : 'nowrap',
-          gap: isMobile ? '10px' : '0',
-          flexDirection: isMobile ? 'column' : 'row'
+          margin: '0 auto'
         }}>
-          {/* Logo and Brand Section */}
+          {/* Logo & Brand */}
           <div style={{ 
             display: 'flex', 
             alignItems: 'center', 
-            gap: isMobile ? '12px' : '15px',
+            gap: '15px',
             flexShrink: 0 
           }}>
-            {/* Logo Image */}
             <div style={{
-              width: isMobile ? '50px' : '60px',
-              height: isMobile ? '50px' : '60px',
+              width: isMobile ? '45px' : '55px',
+              height: isMobile ? '45px' : '55px',
               borderRadius: '12px',
               overflow: 'hidden',
               background: '#D4AF37',
@@ -360,30 +371,24 @@ function ProductsContent() {
             }}>
               <img 
                 src="/log.png" 
-                alt="The Matrix Co. Logo"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
+                alt="The Matrix Co. Logo" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={handleImageError}
               />
             </div>
-            
-            {/* Brand Name and Location */}
-            <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+            <div style={{ textAlign: 'left' }}>
               <h1 style={{ 
-                fontSize: isMobile ? '1.4rem' : '1.8rem', 
-                fontWeight: 'bold',
-                color: '#D4AF37',
-                margin: 0,
-                lineHeight: '1.2'
+                fontSize: isMobile ? '1.3rem' : '1.6rem', 
+                fontWeight: 'bold', 
+                color: '#D4AF37', 
+                margin: 0, 
+                lineHeight: '1.1' 
               }}>
                 THE MEATRIX CO.
               </h1>
               <p style={{
                 color: 'white',
-                fontSize: isMobile ? '12px' : '14px',
+                fontSize: isMobile ? '10px' : '12px',
                 margin: '2px 0 0 0',
                 fontWeight: '500',
                 opacity: '0.9'
@@ -392,87 +397,236 @@ function ProductsContent() {
               </p>
             </div>
           </div>
+          
+          {/* Desktop Navigation - HIDDEN on mobile */}
+          {!isMobile ? (
+            <nav style={{ 
+              display: 'flex', 
+              gap: '25px',
+              alignItems: 'center'
+            }}>
+              <a href="/" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>HOME</a>
+              <a href="/products" style={{ 
+                color: '#D4AF37', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>PRODUCTS</a>
+              <a href="/about" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>ABOUT</a>
+              <a href="/contact" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>CONTACT</a>
+              
+              {itemCount > 0 && (
+                <div style={{
+                  background: '#D4AF37',
+                  color: '#36454F',
+                  borderRadius: '50%',
+                  width: '22px',
+                  height: '22px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  marginLeft: '10px'
+                }}>
+                  {itemCount}
+                </div>
+              )}
+            </nav>
+          ) : (
+            /* Mobile Hamburger Menu - ONLY show on mobile */
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '15px' }}>
+              {itemCount > 0 && (
+                <div style={{
+                  background: '#D4AF37',
+                  color: '#36454F',
+                  borderRadius: '50%',
+                  width: '22px',
+                  height: '22px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '12px',
+                  fontWeight: 'bold'
+                }}>
+                  {itemCount}
+                </div>
+              )}
+              
+              <button
+                onClick={toggleMenu}
+                style={{
+                  background: 'transparent',
+                  border: '2px solid #D4AF37',
+                  color: '#D4AF37',
+                  fontSize: '20px',
+                  cursor: 'pointer',
+                  padding: '8px 12px',
+                  borderRadius: '6px',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                }}
+              >
+                ☰
+              </button>
 
-          <nav style={{ 
-            display: 'flex', 
-            gap: isMobile ? '12px' : '20px', 
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            justifyContent: isMobile ? 'center' : 'flex-end'
-          }}>
-            <a href="/" style={{ 
-              color: 'white', 
-              textDecoration: 'none', 
-              fontSize: isMobile ? '12px' : '14px', 
-              fontWeight: '600',
-              whiteSpace: 'nowrap'
-            }}>HOME</a>
-            <a href="/products" style={{ 
-              color: '#D4AF37', 
-              textDecoration: 'none', 
-              fontSize: isMobile ? '12px' : '14px', 
-              fontWeight: '600',
-              whiteSpace: 'nowrap'
-            }}>PRODUCTS</a>
-            <a href="/about" style={{ 
-              color: 'white', 
-              textDecoration: 'none', 
-              fontSize: isMobile ? '12px' : '14px', 
-              fontWeight: '600',
-              whiteSpace: 'nowrap'
-            }}>ABOUT</a>
-            <a href="/contact" style={{ 
-              color: 'white', 
-              textDecoration: 'none', 
-              fontSize: isMobile ? '12px' : '14px', 
-              fontWeight: '600',
-              whiteSpace: 'nowrap'
-            }}>CONTACT</a>
-            
-            {itemCount > 0 && (
-              <div style={{
-                background: '#D4AF37',
-                color: '#36454F',
-                borderRadius: '50%',
-                width: '20px',
-                height: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '12px',
-                fontWeight: 'bold'
-              }}>
-                {itemCount}
-              </div>
-            )}
-          </nav>
-        </div>
-        
-        {/* Top Info Bar */}
-        <div style={{
-          background: '#2f3a42',
-          color: '#D4AF37',
-          padding: isMobile ? '8px 15px' : '6px 20px',
-          fontSize: isMobile ? '11px' : '13px',
-          fontWeight: '500',
-          textAlign: 'center',
-          marginTop: isMobile ? '8px' : '0'
-        }}>
-          <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: isMobile ? 'wrap' : 'nowrap',
-            gap: isMobile ? '8px' : '5px',
-            alignItems: 'center'
-          }}>
-            <span style={{ whiteSpace: 'nowrap' }}>📍 City Market, Nairobi CBD</span>
-            <span style={{ whiteSpace: 'nowrap' }}>📞 +254 707 636105</span>
-            <span style={{ whiteSpace: 'nowrap' }}>⭐ Premium Quality</span>
-          </div>
+              {/* Dropdown Menu */}
+              {isMenuOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  background: '#36454F',
+                  border: '2px solid #D4AF37',
+                  borderRadius: '12px',
+                  padding: '15px 0',
+                  minWidth: '180px',
+                  boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
+                  zIndex: 100,
+                  marginTop: '10px'
+                }}>
+                  <a 
+                    href="/" 
+                    style={{ 
+                      display: 'block', 
+                      color: 'white', 
+                      textDecoration: 'none', 
+                      padding: '15px 25px',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onClick={() => setIsMenuOpen(false)}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    🏠 HOME
+                  </a>
+                  <a 
+                    href="/products" 
+                    style={{ 
+                      display: 'block', 
+                      color: '#D4AF37', 
+                      textDecoration: 'none', 
+                      padding: '15px 25px',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onClick={() => setIsMenuOpen(false)}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    🛒 PRODUCTS
+                  </a>
+                  <a 
+                    href="/about" 
+                    style={{ 
+                      display: 'block', 
+                      color: 'white', 
+                      textDecoration: 'none', 
+                      padding: '15px 25px',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onClick={() => setIsMenuOpen(false)}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    📖 ABOUT
+                  </a>
+                  <a 
+                    href="/contact" 
+                    style={{ 
+                      display: 'block', 
+                      color: 'white', 
+                      textDecoration: 'none', 
+                      padding: '15px 25px',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onClick={() => setIsMenuOpen(false)}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    📞 CONTACT
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </header>
+
+      {/* Close menu when clicking outside - Only show when menu is open */}
+      {isMenuOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 45,
+            background: 'transparent'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
 
       {/* Main Content */}
       <div style={{ 
