@@ -415,7 +415,7 @@ function ProductsContent() {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: isMobile ? '15px' : '25px'
+            gap: isMobile ? '10px' : '25px'
           }}>
             <button
               onClick={() => setIsCartOpen(true)}
@@ -423,18 +423,19 @@ function ProductsContent() {
                 background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
                 color: '#36454F',
                 border: 'none',
-                padding: isMobile ? '8px 12px' : '10px 20px',
+                padding: isMobile ? '6px 10px' : '10px 20px',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontWeight: 'bold',
-                fontSize: isMobile ? '12px' : '14px',
+                fontSize: isMobile ? '11px' : '14px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '8px',
+                gap: isMobile ? '4px' : '8px',
                 transition: 'all 0.3s ease'
               }}
             >
-              <span>🛒</span>
+              
+              <span style={{ fontSize: isMobile ? '14px' : '16px' }}>🛒</span>
               <span>{itemCount}</span>
             </button>
 
@@ -692,4 +693,5 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
