@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { getCurrentPromotion, type Promotion } from '@/utils/promotions'
 
+// To this (remove the @/):
+import { getCurrentPromotion, type Promotion } from '../utils/promotions';
 interface PromotionPopupProps {
   isMobile: boolean;
   onClose: () => void;
