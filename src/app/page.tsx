@@ -65,11 +65,9 @@ function HomePage() {
           color: 'white',
           padding: isMobile ? '15px 20px' : '20px 40px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          position: 'fixed', // Changed to fixed
+          position: 'sticky',
           top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 100 // Higher z-index to stay above hero
+          zIndex: 50
         }}>
           <div style={{ 
             display: 'flex', 
@@ -272,22 +270,19 @@ function HomePage() {
           </div>
         </header>
 
-        {/* Fixed Hero Section */}
+        {/* Hero Section - Spacious & Clean */}
         <section style={{ 
-          position: 'fixed', // Fixed position
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          position: 'fixed', 
           color: 'white', 
           padding: isMobile ? '80px 20px' : '140px 20px', 
           textAlign: 'center', 
-          minHeight: '100vh', 
+          //minHeight: isMobile ? '70vh' : '85vh', 
+          minHeight: '100vh',
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
           overflow: 'hidden',
-          zIndex: 10 // Below header but above content
+           zIndex: 10
         }}>
           <div style={{ 
             position: 'absolute', 
@@ -401,131 +396,12 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Scrollable Content Below Hero */}
-        <div style={{ 
-          position: 'relative',
-          zIndex: 20, // Above the hero
-          marginTop: '100vh', // Starts below the hero
-          background: 'white',
-          minHeight: '100vh'
-        }}>
-          {/* Featured Products Section */}
-          <section style={{
-            padding: isMobile ? '80px 20px' : '120px 40px',
-            background: 'linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%)'
-          }}>
-            <div style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              textAlign: 'center'
-            }}>
-              <h2 style={{
-                fontSize: isMobile ? '2rem' : '3rem',
-                color: '#36454F',
-                marginBottom: '20px',
-                fontWeight: 'bold'
-              }}>
-                PREMIUM SELECTION
-              </h2>
-              <p style={{
-                fontSize: isMobile ? '1.1rem' : '1.3rem',
-                color: '#4a5568',
-                marginBottom: '60px',
-                maxWidth: '600px',
-                margin: '0 auto 60px auto'
-              }}>
-                Handpicked cuts of the finest quality, curated for discerning palates
-              </p>
-              
-              <a 
-                href="/products"
-                style={{
-                  background: 'linear-gradient(135deg, #800020 0%, #600018 100%)',
-                  color: 'white',
-                  padding: '16px 32px',
-                  borderRadius: '10px',
-                  textDecoration: 'none',
-                  fontWeight: 'bold',
-                  fontSize: '1.1rem',
-                  boxShadow: '0 4px 15px rgba(128, 0, 32, 0.3)',
-                  transition: 'all 0.3s ease',
-                  display: 'inline-block'
-                }}
-                onMouseOver={handleButtonHover}
-                onMouseOut={handleButtonOut}
-              >
-                🥩 Explore All Products
-              </a>
-            </div>
-          </section>
-
-          {/* About Preview Section */}
-          <section style={{
-            padding: isMobile ? '80px 20px' : '120px 40px',
-            background: 'white'
-          }}>
-            <div style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              textAlign: 'center'
-            }}>
-              <h2 style={{
-                fontSize: isMobile ? '2rem' : '3rem',
-                color: '#36454F',
-                marginBottom: '20px',
-                fontWeight: 'bold'
-              }}>
-                WHY CHOOSE US
-              </h2>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
-                gap: '40px',
-                marginTop: '60px'
-              }}>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    fontSize: '3rem',
-                    marginBottom: '20px'
-                  }}>
-                    🎯
-                  </div>
-                  <h3 style={{ color: '#36454F', marginBottom: '15px' }}>Premium Quality</h3>
-                  <p style={{ color: '#4a5568' }}>Hand-selected cuts from trusted local farms</p>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    fontSize: '3rem',
-                    marginBottom: '20px'
-                  }}>
-                    🚚
-                  </div>
-                  <h3 style={{ color: '#36454F', marginBottom: '15px' }}>Free CBD Delivery</h3>
-                  <p style={{ color: '#4a5568' }}>Fresh delivery right to your doorstep</p>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{
-                    fontSize: '3rem',
-                    marginBottom: '20px'
-                  }}>
-                    ⭐
-                  </div>
-                  <h3 style={{ color: '#36454F', marginBottom: '15px' }}>Expert Curation</h3>
-                  <p style={{ color: '#4a5568' }}>Years of expertise in premium meat selection</p>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
         {/* Simple Footer */}
         <footer style={{
           background: '#1a202c',
           color: 'white',
           padding: isMobile ? '30px 20px' : '40px 20px',
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 20
+          textAlign: 'center'
         }}>
           <div style={{ 
             maxWidth: '1200px', 
