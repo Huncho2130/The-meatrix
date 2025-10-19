@@ -69,7 +69,7 @@ export default function Contact() {
   }
 
   const submitViaWhatsApp = async (data: any) => {
-  const message = `New Customer Inquiry - The Matrix Co.
+    const message = `New Customer Inquiry - The Matrix Co.
 
 Name: ${data.first_name} ${data.last_name}
 Email: ${data.email}
@@ -93,44 +93,10 @@ Sent via The Matrix Co. Website
   }
   
   alert('✅ Opening WhatsApp to send your message...')
-}
+  }
 
   const submitViaEmail = async (data: any) => {
-  const subject = `New Customer Inquiry - The Matrix Co.`
-  const body = `
-Dear The Matrix Co. Team,
-
-I would like to get in touch with you regarding the following:
-
-${data.message}
-
-Please find my contact details below:
-Name: ${data.first_name} ${data.last_name}
-Email: ${data.email}
-Phone: ${data.phone || 'Not provided'}
-
-I look forward to hearing from you.
-
-Best regards,
-${data.first_name} ${data.last_name}
-  `.trim()
-
-  const mailtoUrl = `mailto:info@themeatrix.co.ke?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-  
-  window.location.href = mailtoUrl
-  alert('✅ Opening your email client to send the message...')
-}
-
-  const submitViaSMS = async (data: any) => {
-    const message = `New message from ${data.first_name} ${data.last_name}: ${data.message}. Email: ${data.email}${data.phone ? ` Phone: ${data.phone}` : ''}`
-    
-    const smsUrl = `sms:+254707636105?body=${encodeURIComponent(message)}`
-    
-    window.location.href = smsUrl
-    alert('✅ Opening SMS to send your message...')
-  }
-const fallbackToClipboard = async (data: any) => {
-  const message = `
+    const body = `
 Dear The Matrix Co. Team,
 
 I would like to get in touch with you regarding the following:
@@ -149,12 +115,54 @@ ${data.first_name} ${data.last_name}
   `.trim()
 
   try {
-    await navigator.clipboard.writeText(message)
-    alert(`📋 Message copied to clipboard! Please paste it into an email to:\n\n📧 info@themeatrix.co.ke\n\nOr call us at: 📞 +254 707 636105`)
-  } catch (err) {
-    alert(`📝 Please copy this message and send it to info@themeatrix.co.ke:\n\n${message}`)
+    // Just copy to clipboard - most reliable method
+    await navigator.clipboard.writeText(body);
+    
+    // Show beautiful confirmation
+    alert(`✅ Perfect! Your message is ready.\n\n📧 We've COPIED your professional email to clipboard\n📧 Simply open your email app and PASTE\n📧 Send to: info@themeatrix.co.ke\n\nWe'll respond within 24 hours!`);
+    
+    // Optional: Try to open email client as convenience
+    setTimeout(() => {
+      const mailtoLink = `mailto:info@themeatrix.co.ke?subject=New Customer Inquiry - The Matrix Co.&body=${encodeURIComponent(body)}`
+      window.location.href = mailtoLink;
+    }, 1000);
+    
+  } catch (error) {
+    // Show the message directly
+    alert(`📧 Here's your ready-to-send email:\n\n${body}\n\nPlease send this to: info@themeatrix.co.ke`);
   }
-}
+  }
+
+  const submitViaSMS = async (data: any) => {
+    const message = `New message from ${data.first_name} ${data.last_name}: ${data.message}. Email: ${data.email}${data.phone ? ` Phone: ${data.phone}` : ''}`
+    
+    const smsUrl = `sms:+254707636105?body=${encodeURIComponent(message)}`
+    
+    window.location.href = smsUrl
+    alert('✅ Opening SMS to send your message...')
+  }
+
+  const fallbackToClipboard = async (data: any) => {
+    const message = `
+THE MEATRIX CO. - CUSTOMER MESSAGE
+-----------------------------------
+Name: ${data.first_name} ${data.last_name}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+
+Message:
+${data.message}
+
+Please contact: +254 707 636105 or info@themeatrix.co.ke
+    `.trim()
+
+    try {
+      await navigator.clipboard.writeText(message)
+      alert(`📋 Message copied to clipboard! Please send it to:\n\n📞 Phone: +254 707 636105\n📧 Email: info@themeatrix.co.ke\n\nWe'll get back to you shortly!`)
+    } catch (err) {
+      alert(`📝 Please send this message to +254 707 636105:\n\n${message}`)
+    }
+  }
 
   const handleMethodChange = (method: 'whatsapp' | 'email' | 'sms') => {
     setSubmitMethod(method)
@@ -644,7 +652,7 @@ ${data.first_name} ${data.last_name}
                   fontStyle: 'italic'
                 }}>
                   {submitMethod === 'whatsapp' && 'Opens WhatsApp to send your message directly'}
-                  {submitMethod === 'email' && 'Opens your email client with pre-filled message'}
+                  {submitMethod === 'email' && 'Copies professional email to clipboard + opens email client'}
                   {submitMethod === 'sms' && 'Opens your messaging app to send as SMS'}
                 </p>
               </div>
@@ -781,11 +789,11 @@ ${data.first_name} ${data.last_name}
                 fontSize: '14px',
                 color: '#92400e'
               }}>
-                <strong>💡 Having trouble sending?</strong>
+                <strong>💡 Prefer to contact directly?</strong>
                 <p style={{ margin: '8px 0 0 0' }}>
-                  You can always reach us directly at:<br />
-                  📞 <strong>+254 707 636105</strong><br />
-                  📧 <strong>info@themeatrix.co.ke</strong>
+                  📧 <strong>Email:</strong> info@themeatrix.co.ke<br />
+                  📞 <strong>Call/WhatsApp:</strong> +254 707 636105<br />
+                  📍 <strong>Visit:</strong> City Market, Nairobi CBD - Stall 63
                 </p>
               </div>
             </div>
@@ -822,4 +830,3 @@ ${data.first_name} ${data.last_name}
     </CartProvider>
   )
 }
-
