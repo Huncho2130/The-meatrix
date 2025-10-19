@@ -27,7 +27,7 @@ const products = [
   { id: '14', name: 'Salmon Fillet', price: 5500, category: 'Seafood' },
 ]
 
-function ProductCard({ product, isMobile }) { // Removed currentPromotion parameter
+function ProductCard({ product, isMobile }) {
   const { addToCart } = useCart();
 
   const handleCardHover = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -501,16 +501,14 @@ function ProductsContent() {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Footer - COMPLETE FOOTER PRESERVED */}
       <footer style={{
         background: 'linear-gradient(135deg, #36454F 0%, #2a363f 100%)',
         color: 'white',
         padding: isMobile ? '30px 15px' : '50px 40px',
         marginTop: '60px'
       }}>
-        
-
- <div style={{
+        <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
           display: 'grid',
@@ -657,14 +655,6 @@ function ProductsContent() {
         }}>
           <p>&copy; 2024 THE MEATRIX CO. All rights reserved. Premium meats, unparalleled quality.</p>
         </div>
-
-
-
-
-
-
-
-        
       </footer>
     </div>
   )
