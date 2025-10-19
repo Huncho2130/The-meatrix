@@ -162,6 +162,15 @@ function HomePage() {
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s ease'
                 }}>CONTACT</a>
+                {/* Add Terms Link */}
+    <a href="/terms" style={{ 
+      color: 'white', 
+      textDecoration: 'none', 
+      fontSize: '14px', 
+      fontWeight: '600',
+      whiteSpace: 'nowrap',
+      transition: 'color 0.2s ease'
+    }}>TERMS</a>
               </nav>
             )}
 
@@ -263,6 +272,21 @@ function HomePage() {
                     >
                       CONTACT
                     </a>
+                    {/* Add Terms to Mobile Menu */}
+    <a 
+      href="/terms" 
+      style={{ 
+        display: 'block', 
+        color: 'white', 
+        textDecoration: 'none', 
+        padding: '12px 20px',
+        fontSize: '14px',
+        fontWeight: '600'
+      }}
+      onClick={() => setIsMenuOpen(false)}
+    >
+      TERMS
+    </a>
                   </div>
                 )}
               </div>
