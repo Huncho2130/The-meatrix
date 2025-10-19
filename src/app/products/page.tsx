@@ -2,7 +2,8 @@
 import { CartProvider, useCart } from '@/context/cartContext'
 import Cart from '@/components/Cart'
 import { useEffect, useState } from 'react'
-import { getCurrentPromotion, isPromotionActive } from '@/utils/promotions'
+// To this (remove the @/):
+import { getCurrentPromotion, isPromotionActive } from '../../../utils/promotions';
 import PromotionPopup from '@/components/PromotionPopup'
 
 const products = [
@@ -865,4 +866,5 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
