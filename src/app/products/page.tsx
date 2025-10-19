@@ -654,7 +654,7 @@ function ProductsContent() {
           fontSize: '14px'
         }}>
            &copy; 2025 THE MEATRIX CO. All rights reserved.
-            </p>
+          
             <p style={{ 
               margin: '10px 0 0 0', 
               color: '#D4AF37', 
@@ -675,5 +675,6 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
