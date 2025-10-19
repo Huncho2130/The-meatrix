@@ -1,5 +1,6 @@
 'use client'
-import { getCurrentPromotion } from '@/utils/promotions'
+// To this (remove the @/):
+import { getCurrentPromotion } from '../utils/promotions';
 import { useEffect, useState } from 'react'
 
 export default function HolidayBanner() {
