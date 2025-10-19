@@ -10,7 +10,7 @@ const products = [
   { id: '1', name: 'Rib Eye Steak', price: 1399, category: 'Beef' },
   { id: '2', name: 'Beef Steak', price: 799, category: 'Beef' },
   { id: '3', name: 'Beef on Bone', price: 680, category: 'Beef' },
-  
+  { id: '15', name: 'Beef fillet', price: 1400, category: 'Beef' },
   // Goat & Mutton
   { id: '4', name: 'Goat Meat', price: 750, category: 'Goat & Mutton' },
   
@@ -865,3 +865,4 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
