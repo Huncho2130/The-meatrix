@@ -19,6 +19,7 @@
     "next-auth": "^4.24.11",
     "react": "19.1.0",
     "react-dom": "19.1.0"
+    "@vercel/analytics": "latest"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -36,4 +37,4 @@
     "typescript": "^5"
   }
 }
-"@vercel/analytics": "latest"
+
