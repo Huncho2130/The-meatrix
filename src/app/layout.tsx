@@ -3,6 +3,7 @@ import './globals.css';
 
 // Import the promotion utilities
 import { getCurrentPromotion } from '@/utils/promotions';
+import HolidayBanner from '@/components/HolidayBanner';
 
 // Generate dynamic metadata based on current promotions
 export async function generateMetadata(): Promise<Metadata> {
@@ -233,12 +234,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         color: '#36454F',
         backgroundColor: 'white'
       }}>
-        {/* Holiday Banner Slot - This will be used by the HolidayBanner component */}
-        <div id="holiday-banner"></div>
+        {/* Holiday Banner - Shows automatic promotions */}
+        <HolidayBanner />
         
-        {/* Promotion Popup Slot - This will be used by the PromotionPopup component */}
-        <div id="promotion-popup"></div>
-        
+        {/* Main Content */}
         {children}
         
         {/* Performance Monitoring Script */}
@@ -255,6 +254,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 const promotion = ${JSON.stringify(currentPromo)};
                 if (promotion) {
                   console.log('Active promotion:', promotion.name);
+                  // You can add analytics tracking here
+                  if (typeof gtag !== 'undefined') {
+                    gtag('event', 'promotion_view', {
+                      'event_category': 'promotion',
+                      'event_label': promotion.name,
+                      'value': promotion.discount
+                    });
+                  }
+                }
+              });
+
+              // Enhanced error tracking for promotions
+              window.addEventListener('error', function(e) {
+                console.error('Page error:', e.error);
+                // You can send this to your error tracking service
+              });
+
+              // Track user engagement with promotions
+              document.addEventListener('click', function(e) {
+                if (e.target.closest('[data-promotion]')) {
+                  console.log('User clicked promotion element');
+                  // Add analytics tracking for promotion clicks
                 }
               });
             `
