@@ -308,7 +308,17 @@ function ProductsContent() {
               fontSize: isMobile ? '16px' : '18px',
               color: '#36454F'
             }}>
-              M
+
+
+<img 
+                  src="/log.png" 
+                  alt="The Matrix Co. Logo" 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={handleImageError}
+                />
+
+
+              
             </div>
             <h1 style={{
               fontSize: isMobile ? '1.2rem' : '1.5rem',
@@ -683,6 +693,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
