@@ -276,7 +276,7 @@ function HomePage() {
           color: 'white', 
           padding: isMobile ? '80px 20px' : '140px 20px', 
           textAlign: 'center', 
-          //minHeight: isMobile ? '70vh' : '85vh', 
+          minHeight: isMobile ? '70vh' : '85vh', 
           minHeight: '100vh',
           display: 'flex', 
           alignItems: 'center', 
