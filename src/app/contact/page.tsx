@@ -69,25 +69,7 @@ export default function Contact() {
   }
 
   const submitViaWhatsApp = async (data: any) => {
-    const message = `*NEW CUSTOMER MESSAGE*%0A%0A*👤 Name:* ${data.first_name} ${data.last_name}%0A*📧 Email:* ${data.email}%0A*📞 Phone:* ${data.phone || 'Not provided'}%0A*💬 Message:*%0A${data.message}%0A%0A*📍 Sent via The Matrix Co. Website*`
-    
-    const whatsappUrl = `https://wa.me/254707636105?text=${message}`
-    
-    const newWindow = window.open(whatsappUrl, '_blank')
-    
-    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-      setWhatsappAvailable(false)
-      setSubmitMethod('email')
-      throw new Error('WhatsApp not available')
-    }
-    
-    alert('✅ Opening WhatsApp to send your message...')
-  }
-
-  const submitViaEmail = async (data: any) => {
-    const subject = `New Customer Message from ${data.first_name} ${data.last_name}`
-    const body = `
-New Customer Message from The Matrix Co. Website:
+  const message = `New Customer Inquiry - The Matrix Co.
 
 Name: ${data.first_name} ${data.last_name}
 Email: ${data.email}
@@ -97,14 +79,47 @@ Message:
 ${data.message}
 
 ---
-Sent via The Matrix Co. Contact Form
-    `.trim()
-
-    const mailtoUrl = `mailto:info@themeatrix.co.ke?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    
-    window.location.href = mailtoUrl
-    alert('✅ Opening your email client to send the message...')
+Sent via The Matrix Co. Website
+  `.trim()
+  
+  const whatsappUrl = `https://wa.me/254707636105?text=${encodeURIComponent(message)}`
+  
+  const newWindow = window.open(whatsappUrl, '_blank')
+  
+  if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    setWhatsappAvailable(false)
+    setSubmitMethod('email')
+    throw new Error('WhatsApp not available')
   }
+  
+  alert('✅ Opening WhatsApp to send your message...')
+}
+
+  const submitViaEmail = async (data: any) => {
+  const subject = `New Customer Inquiry - The Matrix Co.`
+  const body = `
+Dear The Matrix Co. Team,
+
+I would like to get in touch with you regarding the following:
+
+${data.message}
+
+Please find my contact details below:
+Name: ${data.first_name} ${data.last_name}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+
+I look forward to hearing from you.
+
+Best regards,
+${data.first_name} ${data.last_name}
+  `.trim()
+
+  const mailtoUrl = `mailto:info@themeatrix.co.ke?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  
+  window.location.href = mailtoUrl
+  alert('✅ Opening your email client to send the message...')
+}
 
   const submitViaSMS = async (data: any) => {
     const message = `New message from ${data.first_name} ${data.last_name}: ${data.message}. Email: ${data.email}${data.phone ? ` Phone: ${data.phone}` : ''}`
@@ -114,28 +129,32 @@ Sent via The Matrix Co. Contact Form
     window.location.href = smsUrl
     alert('✅ Opening SMS to send your message...')
   }
+const fallbackToClipboard = async (data: any) => {
+  const message = `
+Dear The Matrix Co. Team,
 
-  const fallbackToClipboard = async (data: any) => {
-    const message = `
-THE MEATRIX CO. - CUSTOMER MESSAGE
------------------------------------
+I would like to get in touch with you regarding the following:
+
+${data.message}
+
+Please find my contact details below:
 Name: ${data.first_name} ${data.last_name}
 Email: ${data.email}
 Phone: ${data.phone || 'Not provided'}
 
-Message:
-${data.message}
+I look forward to hearing from you.
 
-Please contact: +254 707 636105 or info@themeatrix.co.ke
-    `.trim()
+Best regards,
+${data.first_name} ${data.last_name}
+  `.trim()
 
-    try {
-      await navigator.clipboard.writeText(message)
-      alert(`📋 Message copied to clipboard! Please send it to:\n\n📞 Phone: +254 707 636105\n📧 Email: info@themeatrix.co.ke\n\nWe'll get back to you shortly!`)
-    } catch (err) {
-      alert(`📝 Please send this message to +254 707 636105:\n\n${message}`)
-    }
+  try {
+    await navigator.clipboard.writeText(message)
+    alert(`📋 Message copied to clipboard! Please paste it into an email to:\n\n📧 info@themeatrix.co.ke\n\nOr call us at: 📞 +254 707 636105`)
+  } catch (err) {
+    alert(`📝 Please copy this message and send it to info@themeatrix.co.ke:\n\n${message}`)
   }
+}
 
   const handleMethodChange = (method: 'whatsapp' | 'email' | 'sms') => {
     setSubmitMethod(method)
@@ -803,3 +822,4 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
     </CartProvider>
   )
 }
+
