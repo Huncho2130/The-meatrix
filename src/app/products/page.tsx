@@ -653,9 +653,17 @@ function ProductsContent() {
           opacity: '0.8',
           fontSize: '14px'
         }}>
-          <p>&copy; 2025 THE MEATRIX CO. All rights reserved. Nairobi's trusted butcher since 2020.</p>
-        </div>
-      </footer>
+           &copy; 2025 THE MEATRIX CO. All rights reserved.
+            </p>
+            <p style={{ 
+              margin: '10px 0 0 0', 
+              color: '#D4AF37', 
+              fontSize: isMobile ? '12px' : '14px' 
+            }}>
+              Premium Meats & Seafood • Nairobi's Finest Butcher
+            </p>
+          </div>
+        </footer>
     </div>
   )
 }
@@ -667,4 +675,5 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
