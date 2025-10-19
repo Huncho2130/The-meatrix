@@ -3,8 +3,8 @@ import './globals.css';
 
 // Import the promotion utilities
 
-import { getCurrentPromotion } from '../../utils/promotions';
-import HolidayBanner from '@/components/HolidayBanner';
+//import { getCurrentPromotion } from '../../utils/promotions';
+//import HolidayBanner from '@/components/HolidayBanner';
 
 // Generate dynamic metadata based on current promotions
 export async function generateMetadata(): Promise<Metadata> {
