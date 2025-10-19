@@ -14,7 +14,8 @@ export default function TermsPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#f7fafc' }}>
-      {/* Header */}
+     
+ {/* Header */}
       <header style={{
         background: '#36454F',
         color: 'white',
@@ -60,23 +61,30 @@ export default function TermsPage() {
             style={{
               color: 'white',
               textDecoration: 'none',
-              fontSize: '14px',
+              fontSize: isMobile ? '12px' : '14px',
               fontWeight: '600',
-              padding: '8px 16px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
               border: '1px solid #D4AF37',
               borderRadius: '6px',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.background = '#D4AF37';
               e.currentTarget.style.color = '#36454F';
+              e.currentTarget.style.transform = 'translateY(-1px)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.background = 'transparent';
               e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(0)';
             }}
           >
-            ← Back to Home
+            <span style={{ fontSize: isMobile ? '14px' : '16px' }}>←</span>
+            {isMobile ? 'Home' : 'Back to Home'}
           </a>
         </div>
       </header>
