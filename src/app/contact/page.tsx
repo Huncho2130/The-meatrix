@@ -1144,9 +1144,28 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
             }}>
               Premium Meats & Seafood • Nairobi's Finest Butcher
             </p>
+
+            {/* Add Terms Link */}
+    <p style={{ 
+      margin: '15px 0 0 0', 
+      fontSize: isMobile ? '11px' : '13px',
+      opacity: '0.8'
+    }}>
+      <a 
+        href="/terms" 
+        style={{ 
+          color: '#D4AF37', 
+          textDecoration: 'none',
+          borderBottom: '1px solid #D4AF37'
+        }}
+      >
+        Terms & Conditions
+      </a>
+    </p>
           </div>
         </footer>
       </div>
     </CartProvider>
   )
 }
+
