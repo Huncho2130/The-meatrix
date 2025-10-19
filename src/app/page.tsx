@@ -272,7 +272,7 @@ function HomePage() {
 
         {/* Hero Section - Spacious & Clean */}
         <section style={{ 
-          position: 'fixed', 
+          position: 'relative', 
           color: 'white', 
           padding: isMobile ? '80px 20px' : '140px 20px', 
           textAlign: 'center', 
