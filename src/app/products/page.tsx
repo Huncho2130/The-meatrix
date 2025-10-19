@@ -537,21 +537,9 @@ function ProductsContent() {
               display: 'flex',
               gap: '15px'
             }}>
-              <a href="#" style={{
-                color: 'white',
-                fontSize: '1.5rem',
-                textDecoration: 'none'
-              }}>📘</a>
-              <a href="#" style={{
-                color: 'white',
-                fontSize: '1.5rem',
-                textDecoration: 'none'
-              }}>📷</a>
-              <a href="#" style={{
-                color: 'white',
-                fontSize: '1.5rem',
-                textDecoration: 'none'
-              }}>🐦</a>
+              
+              
+             
             </div>
           </div>
 
@@ -600,7 +588,7 @@ function ProductsContent() {
                 gap: '10px'
               }}>
                 <span>🕒</span>
-                <span>Mon-Sat: 7AM-8PM, Sun: 9AM-6PM</span>
+                <span>Mon-Sat: 7AM-8PM</span>
               </div>
             </div>
           </div>
@@ -675,6 +663,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
