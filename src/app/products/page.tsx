@@ -3,8 +3,8 @@ import { CartProvider, useCart } from '@/context/cartContext'
 import Cart from '@/components/Cart'
 import { useEffect, useState } from 'react'
 // To this (remove the @/):
-import { getCurrentPromotion, isPromotionActive } from '../../../utils/promotions';
-import PromotionPopup from '@/components/PromotionPopup'
+//import { getCurrentPromotion, isPromotionActive } from '../../../utils/promotions';
+//import PromotionPopup from '@/components/PromotionPopup'
 
 const products = [
   // Beef
@@ -866,5 +866,6 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
