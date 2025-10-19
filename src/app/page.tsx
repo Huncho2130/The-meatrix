@@ -162,15 +162,7 @@ function HomePage() {
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s ease'
                 }}>CONTACT</a>
-                {/* Add Terms Link */}
-    <a href="/terms" style={{ 
-      color: 'white', 
-      textDecoration: 'none', 
-      fontSize: '14px', 
-      fontWeight: '600',
-      whiteSpace: 'nowrap',
-      transition: 'color 0.2s ease'
-    }}>TERMS</a>
+               
               </nav>
             )}
 
