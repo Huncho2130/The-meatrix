@@ -7,6 +7,7 @@ export default function Contact() {
   const [whatsappAvailable, setWhatsappAvailable] = useState(true)
   const [submitMethod, setSubmitMethod] = useState<'whatsapp' | 'email' | 'sms'>('whatsapp')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -39,6 +40,10 @@ export default function Contact() {
 
     return () => window.removeEventListener('resize', checkMobile);
   }, [])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -215,37 +220,41 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
   return (
     <CartProvider>
       <div style={{ minHeight: '100vh', background: 'white' }}>
-        {/* HEADER */}
+        {/* Header - Clean & Minimal */}
         <header style={{
           background: '#36454F',
           color: 'white',
-          padding: isMobile ? '12px 15px' : '15px 20px',
+          padding: isMobile ? '15px 20px' : '20px 40px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
           position: 'sticky',
           top: 0,
-          zIndex: 40
+          zIndex: 50
         }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: '1200px',
-            margin: '0 auto',
-            flexWrap: isMobile ? 'wrap' : 'nowrap',
-            gap: isMobile ? '10px' : '0',
-            flexDirection: isMobile ? 'column' : 'row'
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            maxWidth: '1200px', 
+            margin: '0 auto'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '10px' : '15px' }}>
+            {/* Logo & Brand */}
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '15px',
+              flexShrink: 0 
+            }}>
               <div style={{
-                width: isMobile ? '50px' : '60px',
-                height: isMobile ? '50px' : '60px',
+                width: isMobile ? '45px' : '55px',
+                height: isMobile ? '45px' : '55px',
                 borderRadius: '12px',
                 overflow: 'hidden',
                 background: '#D4AF37',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '2px solid #D4AF37'
+                border: '2px solid #D4AF37',
+                flexShrink: 0
               }}>
                 <img
                   src="/log.png"
@@ -254,19 +263,20 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                   onError={handleImageError}
                 />
               </div>
-              <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+              <div style={{ textAlign: 'left' }}>
                 <h1 style={{
-                  fontSize: isMobile ? '1.4rem' : '1.8rem',
+                  fontSize: isMobile ? '1.3rem' : '1.6rem',
                   fontWeight: 'bold',
                   color: '#D4AF37',
-                  margin: 0
+                  margin: 0,
+                  lineHeight: '1.1'
                 }}>
                   THE MEATRIX CO.
                 </h1>
                 <p style={{
                   color: 'white',
-                  fontSize: isMobile ? '12px' : '14px',
-                  margin: 0,
+                  fontSize: isMobile ? '10px' : '12px',
+                  margin: '2px 0 0 0',
                   fontWeight: '500',
                   opacity: '0.9'
                 }}>
@@ -274,69 +284,200 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                 </p>
               </div>
             </div>
+            
+            {/* Desktop Navigation - HIDDEN on mobile */}
+            {!isMobile ? (
+              <nav style={{ 
+                display: 'flex', 
+                gap: '25px'
+              }}>
+                <a href="/" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>HOME</a>
+                <a href="/products" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>PRODUCTS</a>
+                <a href="/about" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>ABOUT</a>
+                <a href="/contact" style={{ 
+                  color: '#D4AF37', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>CONTACT</a>
+              </nav>
+            ) : (
+              /* Mobile Hamburger Menu - ONLY show on mobile */
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    background: 'transparent',
+                    border: '2px solid #D4AF37',
+                    color: '#D4AF37',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                    padding: '8px 12px',
+                    borderRadius: '6px',
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '44px',
+                    height: '44px'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  ☰
+                </button>
 
-            <nav style={{ 
-              display: 'flex', 
-              gap: isMobile ? '12px' : '20px',
-              flexWrap: 'wrap',
-              justifyContent: isMobile ? 'center' : 'flex-end'
-            }}>
-              <a href="/" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>HOME</a>
-              <a href="/products" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>PRODUCTS</a>
-              <a href="/about" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>ABOUT</a>
-              <a href="/contact" style={{ 
-                color: '#D4AF37', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>CONTACT</a>
-            </nav>
-          </div>
-
-          {/* Top Info Bar */}
-          <div style={{
-            background: '#2f3a42',
-            color: '#D4AF37',
-            padding: isMobile ? '8px 15px' : '6px 20px',
-            fontSize: isMobile ? '11px' : '13px',
-            fontWeight: '500',
-            textAlign: 'center',
-            marginTop: isMobile ? '8px' : '0'
-          }}>
-            <div style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: isMobile ? 'wrap' : 'nowrap',
-              gap: isMobile ? '8px' : '5px',
-              alignItems: 'center'
-            }}>
-              <span style={{ whiteSpace: 'nowrap' }}>📍 City Market, Nairobi CBD</span>
-              <span style={{ whiteSpace: 'nowrap' }}>📞 +254 707 636105</span>
-              <span style={{ whiteSpace: 'nowrap' }}>⭐ Premium Quality</span>
-            </div>
+                {/* Dropdown Menu */}
+                {isMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    background: '#36454F',
+                    border: '2px solid #D4AF37',
+                    borderRadius: '12px',
+                    padding: '15px 0',
+                    minWidth: '180px',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.4)',
+                    zIndex: 100,
+                    marginTop: '10px'
+                  }}>
+                    <a 
+                      href="/" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '15px 25px',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      🏠 HOME
+                    </a>
+                    <a 
+                      href="/products" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '15px 25px',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      🛒 PRODUCTS
+                    </a>
+                    <a 
+                      href="/about" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '15px 25px',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      📖 ABOUT
+                    </a>
+                    <a 
+                      href="/contact" 
+                      style={{ 
+                        display: 'block', 
+                        color: '#D4AF37', 
+                        textDecoration: 'none', 
+                        padding: '15px 25px',
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        transition: 'background 0.2s ease'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                      onMouseOver={(e) => {
+                        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+                      }}
+                      onMouseOut={(e) => {
+                        e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      📞 CONTACT
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </header>
+
+        {/* Close menu when clicking outside - Only show when menu is open */}
+        {isMenuOpen && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 45,
+              background: 'transparent'
+            }}
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
 
         {/* HERO SECTION */}
         <section style={{
@@ -422,6 +563,9 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                 <div>
                   <h3 style={{ margin: 0 }}>Visit Our Store</h3>
                   <p>City Market, Nairobi CBD<br />Ground Floor, Stall 63</p>
+                  <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '5px' }}>
+                    📍 Coordinates: -1.2841°, 36.8155°
+                  </p>
                 </div>
               </div>
 
@@ -794,6 +938,182 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                   📧 <strong>Email:</strong> info@themeatrix.co.ke<br />
                   📞 <strong>Call/WhatsApp:</strong> +254 707 636105<br />
                   📍 <strong>Visit:</strong> City Market, Nairobi CBD - Stall 63
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* GOOGLE MAP SECTION */}
+        <section style={{ 
+          padding: isMobile ? '40px 15px' : '60px 20px',
+          background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+        }}>
+          <div style={{ 
+            maxWidth: '1200px', 
+            margin: '0 auto',
+            textAlign: 'center'
+          }}>
+            <h2 style={{ 
+              fontSize: isMobile ? '1.8rem' : '2.5rem',
+              fontWeight: 'bold',
+              color: '#36454F',
+              marginBottom: isMobile ? '15px' : '20px'
+            }}>
+              Find Us at City Market
+            </h2>
+            <p style={{ 
+              fontSize: isMobile ? '1rem' : '1.1rem',
+              color: '#4a5568',
+              marginBottom: isMobile ? '25px' : '40px',
+              maxWidth: '600px',
+              margin: '0 auto 40px auto'
+            }}>
+              Visit our premium butcher shop in the heart of Nairobi CBD. We're located at City Market, Ground Floor, Stall 63.
+            </p>
+
+            {/* Interactive Google Map */}
+            <div style={{
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+              height: isMobile ? '400px' : '500px',
+              border: '2px solid #D4AF37'
+            }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8085999999996!2d36.8155!3d-1.2841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTcnMDIuOCJTIDM2wrA0OCc1NS44IkU!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="The Matrix Co. Location at City Market Nairobi"
+              />
+            </div>
+
+            {/* Map Info Cards */}
+            <div style={{ 
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '20px',
+              marginTop: '40px'
+            }}>
+              <div style={{
+                background: 'white',
+                padding: '25px',
+                borderRadius: '12px',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.08)',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 15px',
+                  fontSize: '20px'
+                }}>
+                  🕒
+                </div>
+                <h3 style={{ 
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  color: '#36454F',
+                  marginBottom: '8px'
+                }}>
+                  Opening Hours
+                </h3>
+                <p style={{ 
+                  color: '#4a5568',
+                  fontSize: '14px',
+                  lineHeight: '1.5'
+                }}>
+                  Mon - Sat: 7:00 AM - 8:00 PM<br />
+                  Sunday: 9:00 AM - 6:00 PM
+                </p>
+              </div>
+
+              <div style={{
+                background: 'white',
+                padding: '25px',
+                borderRadius: '12px',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.08)',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #800020 0%, #600018 100%)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 15px',
+                  fontSize: '20px',
+                  color: 'white'
+                }}>
+                  📍
+                </div>
+                <h3 style={{ 
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  color: '#36454F',
+                  marginBottom: '8px'
+                }}>
+                  Exact Location
+                </h3>
+                <p style={{ 
+                  color: '#4a5568',
+                  fontSize: '14px',
+                  lineHeight: '1.5'
+                }}>
+                  City Market Nairobi<br />
+                  Ground Floor, Stall 63<br />
+                  Coordinates: -1.2841°, 36.8155°
+                </p>
+              </div>
+
+              <div style={{
+                background: 'white',
+                padding: '25px',
+                borderRadius: '12px',
+                boxShadow: '0 8px 25px rgba(0,0,0,0.08)',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 15px',
+                  fontSize: '20px',
+                  color: 'white'
+                }}>
+                  🚗
+                </div>
+                <h3 style={{ 
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold',
+                  color: '#36454F',
+                  marginBottom: '8px'
+                }}>
+                  Parking & Access
+                </h3>
+                <p style={{ 
+                  color: '#4a5568',
+                  fontSize: '14px',
+                  lineHeight: '1.5'
+                }}>
+                  Ample parking available<br />
+                  CBD delivery service<br />
+                  Easy access from all routes
                 </p>
               </div>
             </div>
