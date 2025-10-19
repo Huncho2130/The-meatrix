@@ -310,12 +310,6 @@ function ProductsContent() {
             }}>
 
 
-<img 
-                  src="/log.png" 
-                  alt="The Matrix Co. Logo" 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={handleImageError}
-                />
 
 
               
@@ -693,6 +687,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
