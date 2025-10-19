@@ -214,6 +214,7 @@ function ProductsContent() {
   const { cart, itemCount } = useCart()
   const [isMounted, setIsMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
 
   useEffect(() => {
@@ -240,6 +241,36 @@ function ProductsContent() {
 
     return () => window.removeEventListener('resize', checkMobile);
   }, [])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleButtonHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = 'translateY(-2px)';
+    target.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.4)';
+  };
+
+  const handleButtonOut = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = e.currentTarget;
+    target.style.transform = 'translateY(0)';
+    target.style.boxShadow = '0 4px 15px rgba(212, 175, 55, 0.3)';
+  };
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.currentTarget;
+    target.style.display = 'none';
+    const parent = target.parentElement as HTMLDivElement;
+    if (parent) {
+      parent.innerHTML = '🥩';
+      parent.style.fontSize = '24px';
+      parent.style.color = '#36454F';
+      parent.style.display = 'flex';
+      parent.style.alignItems = 'center';
+      parent.style.justifyContent = 'center';
+    }
+  };
 
   if (!isMounted) {
     return (
@@ -273,93 +304,121 @@ function ProductsContent() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#f7fafc' }}>
-      {/* Header */}
+      {/* Header - Matching Home Page Structure */}
       <header style={{
-        background: 'linear-gradient(135deg, #36454F 0%, #2a363f 100%)',
+        background: '#36454F',
         color: 'white',
-        padding: isMobile ? '15px' : '20px 40px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        padding: isMobile ? '15px 20px' : '20px 40px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
         position: 'sticky',
         top: 0,
-        zIndex: 1000
+        zIndex: 50
       }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          maxWidth: '1200px',
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          maxWidth: '1200px', 
           margin: '0 auto'
         }}>
-          {/* Logo */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px'
+          {/* Logo & Brand - Matching Home Page */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '15px',
+            flexShrink: 0 
           }}>
             <div style={{
-              width: isMobile ? '32px' : '40px',
-              height: isMobile ? '32px' : '40px',
-              background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
-              borderRadius: '8px',
+              width: isMobile ? '45px' : '55px',
+              height: isMobile ? '45px' : '55px',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              background: '#D4AF37',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 'bold',
-              fontSize: isMobile ? '16px' : '18px',
-              color: '#36454F'
+              border: '2px solid #D4AF37',
+              flexShrink: 0
             }}>
-
-
-
-
-              
+              <img 
+                src="/log.png" 
+                alt="The Matrix Co. Logo" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={handleImageError}
+              />
             </div>
-            <h1 style={{
-              fontSize: isMobile ? '1.2rem' : '1.5rem',
-              fontWeight: 'bold',
-              margin: 0,
-              background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
-            }}>
-              THE MEATRIX CO.
-            </h1>
+            <div style={{ textAlign: 'left' }}>
+              <h1 style={{ 
+                fontSize: isMobile ? '1.3rem' : '1.6rem', 
+                fontWeight: 'bold', 
+                color: '#D4AF37', 
+                margin: 0, 
+                lineHeight: '1.1' 
+              }}>
+                THE MEATRIX CO.
+              </h1>
+              <p style={{
+                color: 'white',
+                fontSize: isMobile ? '10px' : '12px',
+                margin: '2px 0 0 0',
+                fontWeight: '500',
+                opacity: '0.9'
+              }}>
+                Premium Meats & Seafood
+              </p>
+            </div>
           </div>
 
-          {/* Navigation */}
-          <nav style={{
-            display: isMobile ? 'none' : 'flex',
-            gap: '30px',
-            alignItems: 'center'
-          }}>
-            <a href="/" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              transition: 'color 0.3s ease'
-            }}>Home</a>
-            <a href="/products" style={{
-              color: '#D4AF37',
-              textDecoration: 'none',
-              fontWeight: '700',
-              borderBottom: '2px solid #D4AF37',
-              paddingBottom: '5px'
-            }}>Products</a>
-            <a href="/about" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              transition: 'color 0.3s ease'
-            }}>About</a>
-            <a href="/contact" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              transition: 'color 0.3s ease'
-            }}>Contact</a>
-          </nav>
+          {/* Desktop Navigation */}
+          {!isMobile && (
+            <nav style={{ 
+              display: 'flex', 
+              gap: '25px'
+            }}>
+              <a href="/" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>HOME</a>
+              <a href="/products" style={{ 
+                color: '#D4AF37', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>PRODUCTS</a>
+              <a href="/about" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>ABOUT</a>
+              <a href="/contact" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>CONTACT</a>
+              <a href="/terms" style={{ 
+                color: 'white', 
+                textDecoration: 'none', 
+                fontSize: '14px', 
+                fontWeight: '600',
+                whiteSpace: 'nowrap',
+                transition: 'color 0.2s ease'
+              }}>TERMS</a>
+            </nav>
+          )}
 
-          {/* Cart Icon */}
+          {/* Cart Icon & Mobile Menu */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -386,60 +445,125 @@ function ProductsContent() {
               <span>{itemCount}</span>
             </button>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Hamburger Menu */}
             {isMobile && (
-              <button
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '1.5rem',
-                  cursor: 'pointer'
-                }}
-              >
-                ☰
-              </button>
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'white',
+                    fontSize: '24px',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    borderRadius: '6px',
+                    transition: 'background 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  ☰
+                </button>
+
+                {/* Dropdown Menu */}
+                {isMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    background: '#36454F',
+                    border: '1px solid #D4AF37',
+                    borderRadius: '8px',
+                    padding: '15px 0',
+                    minWidth: '150px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    zIndex: 100
+                  }}>
+                    <a 
+                      href="/" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      HOME
+                    </a>
+                    <a 
+                      href="/products" 
+                      style={{ 
+                        display: 'block', 
+                        color: '#D4AF37', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      PRODUCTS
+                    </a>
+                    <a 
+                      href="/about" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      ABOUT
+                    </a>
+                    <a 
+                      href="/contact" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      CONTACT
+                    </a>
+                    <a 
+                      href="/terms" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      TERMS
+                    </a>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobile && (
-          <nav style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            marginTop: '15px',
-            paddingTop: '15px',
-            borderTop: '1px solid rgba(255,255,255,0.2)'
-          }}>
-            <a href="/" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              fontSize: '14px'
-            }}>Home</a>
-            <a href="/products" style={{
-              color: '#D4AF37',
-              textDecoration: 'none',
-              fontWeight: '700',
-              fontSize: '14px'
-            }}>Products</a>
-            <a href="/about" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              fontSize: '14px'
-            }}>About</a>
-            <a href="/contact" style={{
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: '600',
-              fontSize: '14px'
-            }}>Contact</a>
-
-          
-          </nav>
-        )}
       </header>
 
       {/* Cart Sidebar */}
@@ -507,177 +631,63 @@ function ProductsContent() {
         </div>
       </div>
 
-      {/* Footer - COMPLETE FOOTER PRESERVED */}
+      {/* Footer - Matching Home Page */}
       <footer style={{
-        background: 'linear-gradient(135deg, #36454F 0%, #2a363f 100%)',
+        background: '#1a202c',
         color: 'white',
-        padding: isMobile ? '30px 15px' : '50px 40px',
-        marginTop: '60px'
+        padding: isMobile ? '30px 20px' : '40px 20px',
+        textAlign: 'center'
       }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: isMobile ? '30px' : '50px'
+        <div style={{ 
+          maxWidth: '1200px', 
+          margin: '0 auto' 
         }}>
-          {/* Company Info */}
-          <div>
-            <h3 style={{
-              color: '#D4AF37',
-              marginBottom: '20px',
-              fontSize: '1.5rem',
-              fontWeight: 'bold'
-            }}>
-              THE MEATRIX CO.
-            </h3>
-            <p style={{
-              lineHeight: '1.6',
-              opacity: '0.9',
-              marginBottom: '20px'
-            }}>
-              Nairobi's premier butcher shop offering premium quality meats and seafood. 
-              Experience the difference that quality makes.
-            </p>
-            <div style={{
-              display: 'flex',
-              gap: '15px'
-            }}>
-              
-              
-             
-            </div>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h4 style={{
-              color: '#D4AF37',
-              marginBottom: '20px',
-              fontSize: '1.2rem',
-              fontWeight: '600'
-            }}>
-              Contact Info
-            </h4>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span>📍</span>
-                <span>City Market, Ground Floor Stall 63, Nairobi</span>
-              </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span>📞</span>
-                <span>+254-707-636105</span>
-              </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span>✉️</span>
-                <span>info@themeatrix.co.ke</span>
-              </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <span>🕒</span>
-                <span>Mon-Sat: 7AM-8PM</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 style={{
-              color: '#D4AF37',
-              marginBottom: '20px',
-              fontSize: '1.2rem',
-              fontWeight: '600'
-            }}>
-              Quick Links
-            </h4>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px'
-            }}>
-              <a href="/" style={{
-                color: 'white',
+          <p style={{ 
+            margin: 0, 
+            fontSize: isMobile ? '14px' : '16px' 
+          }}>
+            &copy; 2025 THE MEATRIX CO. All rights reserved.
+          </p>
+          <p style={{ 
+            margin: '10px 0 0 0', 
+            color: '#D4AF37', 
+            fontSize: isMobile ? '12px' : '14px' 
+          }}>
+            Premium Meats & Seafood • Nairobi's Finest Butcher
+          </p>
+          <p style={{ 
+            margin: '15px 0 0 0', 
+            fontSize: isMobile ? '11px' : '13px',
+            opacity: '0.8'
+          }}>
+            <a 
+              href="/terms" 
+              style={{ 
+                color: '#D4AF37', 
                 textDecoration: 'none',
-                transition: 'color 0.3s ease'
-              }}>Home</a>
-              <a href="/products" style={{
-                color: '#D4AF37',
-                textDecoration: 'none',
-                fontWeight: '600'
-              }}>Products</a>
-              <a href="/about" style={{
-                color: 'white',
-                textDecoration: 'none',
-                transition: 'color 0.3s ease'
-              }}>About Us</a>
-              <a href="/contact" style={{
-                color: 'white',
-                textDecoration: 'none',
-                transition: 'color 0.3s ease'
-              }}>Contact</a>
-            </div>
-          </div>
+                borderBottom: '1px solid #D4AF37'
+              }}
+            >
+              Terms & Conditions
+            </a>
+          </p>
         </div>
+      </footer>
 
-        {/* Copyright */}
-        <div style={{
-          borderTop: '1px solid rgba(255,255,255,0.2)',
-          marginTop: isMobile ? '30px' : '50px',
-          paddingTop: '20px',
-          textAlign: 'center',
-          opacity: '0.8',
-          fontSize: '14px'
-        }}>
-           &copy; 2025 THE MEATRIX CO. All rights reserved.
-          
-            <p style={{ 
-              margin: '10px 0 0 0', 
-              color: '#D4AF37', 
-              fontSize: isMobile ? '12px' : '14px' 
-            }}>
-              Premium Meats & Seafood • Nairobi's Finest Butcher
-            </p>
-
-
-            {/* Add Terms Link */}
-    <p style={{ 
-      margin: '15px 0 0 0', 
-      fontSize: isMobile ? '11px' : '13px',
-      opacity: '0.8'
-    }}>
-      <a 
-        href="/terms" 
-        style={{ 
-          color: '#D4AF37', 
-          textDecoration: 'none',
-          borderBottom: '1px solid #D4AF37'
-        }}
-      >
-        Terms & Conditions
-      </a>
-    </p>
-          
-          </div>
-        </footer>
+      {/* Close menu when clicking outside */}
+      {isMenuOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 40
+          }}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
     </div>
   )
 }
@@ -689,12 +699,3 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
-
-
-
-
-
-
-
-
-
