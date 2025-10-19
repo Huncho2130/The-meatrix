@@ -1,14 +1,28 @@
 'use client'
 import { CartProvider } from '@/context/cartContext'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 export default function Contact() {
   const [isMobile, setIsMobile] = useState(false)
+  const [whatsappAvailable, setWhatsappAvailable] = useState(true)
+  const [submitMethod, setSubmitMethod] = useState<'whatsapp' | 'email' | 'sms'>('whatsapp')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
+
+    // Detect if WhatsApp is likely available
+    const checkWhatsAppAvailability = () => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isDesktopWithWhatsApp = !isMobileDevice && navigator.userAgent.includes('WhatsApp');
+      
+      setWhatsappAvailable(isMobileDevice || isDesktopWithWhatsApp);
+      setSubmitMethod(isMobileDevice || isDesktopWithWhatsApp ? 'whatsapp' : 'email');
+    }
+
+    checkWhatsAppAvailability();
 
     const navLinks = document.querySelectorAll('nav a')
     navLinks.forEach(link => {
@@ -26,15 +40,105 @@ export default function Contact() {
     return () => window.removeEventListener('resize', checkMobile);
   }, [])
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsSubmitting(true)
+    
     const formData = new FormData(e.currentTarget)
     const data = Object.fromEntries(formData)
 
+    try {
+      switch (submitMethod) {
+        case 'whatsapp':
+          await submitViaWhatsApp(data)
+          break
+        case 'email':
+          await submitViaEmail(data)
+          break
+        case 'sms':
+          await submitViaSMS(data)
+          break
+      }
+      e.currentTarget.reset()
+    } catch (error) {
+      console.error('Submission error:', error)
+      await fallbackToClipboard(data)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const submitViaWhatsApp = async (data: any) => {
     const message = `*NEW CUSTOMER MESSAGE*%0A%0A*👤 Name:* ${data.first_name} ${data.last_name}%0A*📧 Email:* ${data.email}%0A*📞 Phone:* ${data.phone || 'Not provided'}%0A*💬 Message:*%0A${data.message}%0A%0A*📍 Sent via The Matrix Co. Website*`
-    window.open(`https://wa.me/254707636105?text=${message}`, '_blank')
-    e.currentTarget.reset()
-    alert('✅ Message ready! Opening WhatsApp to send...')
+    
+    const whatsappUrl = `https://wa.me/254707636105?text=${message}`
+    
+    const newWindow = window.open(whatsappUrl, '_blank')
+    
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      setWhatsappAvailable(false)
+      setSubmitMethod('email')
+      throw new Error('WhatsApp not available')
+    }
+    
+    alert('✅ Opening WhatsApp to send your message...')
+  }
+
+  const submitViaEmail = async (data: any) => {
+    const subject = `New Customer Message from ${data.first_name} ${data.last_name}`
+    const body = `
+New Customer Message from The Matrix Co. Website:
+
+Name: ${data.first_name} ${data.last_name}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+
+Message:
+${data.message}
+
+---
+Sent via The Matrix Co. Contact Form
+    `.trim()
+
+    const mailtoUrl = `mailto:info@themeatrix.co.ke?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    
+    window.location.href = mailtoUrl
+    alert('✅ Opening your email client to send the message...')
+  }
+
+  const submitViaSMS = async (data: any) => {
+    const message = `New message from ${data.first_name} ${data.last_name}: ${data.message}. Email: ${data.email}${data.phone ? ` Phone: ${data.phone}` : ''}`
+    
+    const smsUrl = `sms:+254707636105?body=${encodeURIComponent(message)}`
+    
+    window.location.href = smsUrl
+    alert('✅ Opening SMS to send your message...')
+  }
+
+  const fallbackToClipboard = async (data: any) => {
+    const message = `
+THE MEATRIX CO. - CUSTOMER MESSAGE
+-----------------------------------
+Name: ${data.first_name} ${data.last_name}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+
+Message:
+${data.message}
+
+Please contact: +254 707 636105 or info@themeatrix.co.ke
+    `.trim()
+
+    try {
+      await navigator.clipboard.writeText(message)
+      alert(`📋 Message copied to clipboard! Please send it to:\n\n📞 Phone: +254 707 636105\n📧 Email: info@themeatrix.co.ke\n\nWe'll get back to you shortly!`)
+    } catch (err) {
+      alert(`📝 Please send this message to +254 707 636105:\n\n${message}`)
+    }
+  }
+
+  const handleMethodChange = (method: 'whatsapp' | 'email' | 'sms') => {
+    setSubmitMethod(method)
   }
 
   // Event handlers with proper TypeScript types
@@ -67,6 +171,19 @@ export default function Contact() {
       parent.style.justifyContent = 'center';
     }
   };
+
+  // Add CSS for spinner animation
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `
+    document.head.appendChild(style)
+    return () => document.head.removeChild(style)
+  }, [])
 
   return (
     <CartProvider>
@@ -209,7 +326,7 @@ export default function Contact() {
           <div style={{
             position: 'absolute',
             top: 0, left: 0, right: 0, bottom: 0,
-            backgroundImage: 'url("https://images.unsplash.com/photo-1558036117-15e82a2c9a9a?auto=format&fit=crop&w=2070&q=80")',
+            backgroundImage: 'url("https://images.unsplash.com/photo-1558036117-15e82a2c9a9a?auto=format&fit=crop&w=1200&q=80")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             zIndex: 1
@@ -405,6 +522,114 @@ export default function Contact() {
               }}>
                 Send Us a Message
               </h2>
+
+              {/* Submission Method Selector */}
+              <div style={{ 
+                marginBottom: '25px',
+                background: 'white',
+                padding: '20px',
+                borderRadius: '12px',
+                border: '2px solid #e5e7eb'
+              }}>
+                <h3 style={{ 
+                  fontSize: '1.1rem', 
+                  fontWeight: '600', 
+                  color: '#36454F', 
+                  marginBottom: '15px' 
+                }}>
+                  Choose how to send your message:
+                </h3>
+                
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => handleMethodChange('whatsapp')}
+                    style={{
+                      background: submitMethod === 'whatsapp' 
+                        ? 'linear-gradient(135deg,#25D366,#128C7E)' 
+                        : '#f3f4f6',
+                      color: submitMethod === 'whatsapp' ? 'white' : '#374151',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      flex: isMobile ? '1' : 'none'
+                    }}
+                  >
+                    <span>💬</span>
+                    WhatsApp
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleMethodChange('email')}
+                    style={{
+                      background: submitMethod === 'email' 
+                        ? 'linear-gradient(135deg,#800020,#600018)' 
+                        : '#f3f4f6',
+                      color: submitMethod === 'email' ? 'white' : '#374151',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      flex: isMobile ? '1' : 'none'
+                    }}
+                  >
+                    <span>✉️</span>
+                    Email
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleMethodChange('sms')}
+                    style={{
+                      background: submitMethod === 'sms' 
+                        ? 'linear-gradient(135deg,#36454F,#2a363f)' 
+                        : '#f3f4f6',
+                      color: submitMethod === 'sms' ? 'white' : '#374151',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      flex: isMobile ? '1' : 'none'
+                    }}
+                  >
+                    <span>📱</span>
+                    SMS
+                  </button>
+                </div>
+
+                {/* Method Description */}
+                <p style={{ 
+                  fontSize: '14px', 
+                  color: '#6b7280', 
+                  marginTop: '12px',
+                  fontStyle: 'italic'
+                }}>
+                  {submitMethod === 'whatsapp' && 'Opens WhatsApp to send your message directly'}
+                  {submitMethod === 'email' && 'Opens your email client with pre-filled message'}
+                  {submitMethod === 'sms' && 'Opens your messaging app to send as SMS'}
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                 <div style={{ 
                   display: 'grid', 
@@ -415,6 +640,7 @@ export default function Contact() {
                     name="first_name" 
                     placeholder="First Name *" 
                     required 
+                    disabled={isSubmitting}
                     style={{ 
                       padding: isMobile ? '12px' : '15px', 
                       borderRadius: '10px', 
@@ -426,6 +652,7 @@ export default function Contact() {
                     name="last_name" 
                     placeholder="Last Name *" 
                     required 
+                    disabled={isSubmitting}
                     style={{ 
                       padding: isMobile ? '12px' : '15px', 
                       borderRadius: '10px', 
@@ -439,6 +666,7 @@ export default function Contact() {
                   type="email" 
                   placeholder="Email Address *" 
                   required 
+                  disabled={isSubmitting}
                   style={{ 
                     padding: isMobile ? '12px' : '15px', 
                     borderRadius: '10px', 
@@ -450,6 +678,7 @@ export default function Contact() {
                   name="phone" 
                   type="tel" 
                   placeholder="Phone Number" 
+                  disabled={isSubmitting}
                   style={{ 
                     padding: isMobile ? '12px' : '15px', 
                     borderRadius: '10px', 
@@ -462,6 +691,7 @@ export default function Contact() {
                   placeholder="Your Message *" 
                   rows={5} 
                   required 
+                  disabled={isSubmitting}
                   style={{ 
                     padding: isMobile ? '12px' : '15px', 
                     borderRadius: '10px', 
@@ -470,40 +700,75 @@ export default function Contact() {
                     fontSize: isMobile ? '14px' : '16px'
                   }} 
                 />
+                
                 <button 
                   type="submit" 
+                  disabled={isSubmitting}
                   style={{
-                    background: 'linear-gradient(135deg,#25D366,#128C7E)',
+                    background: submitMethod === 'whatsapp' 
+                      ? 'linear-gradient(135deg,#25D366,#128C7E)'
+                      : submitMethod === 'email'
+                      ? 'linear-gradient(135deg,#800020,#600018)'
+                      : 'linear-gradient(135deg,#36454F,#2a363f)',
                     color: 'white',
                     padding: isMobile ? '16px 20px' : '18px 24px',
                     borderRadius: '10px',
                     border: 'none',
                     fontSize: isMobile ? '14px' : '16px',
                     fontWeight: 'bold',
-                    cursor: 'pointer',
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '12px',
                     transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 15px rgba(37, 211, 102, 0.3)',
-                    width: isMobile ? '100%' : 'auto'
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+                    width: isMobile ? '100%' : 'auto',
+                    opacity: isSubmitting ? 0.7 : 1
                   }}
                   onMouseOver={handleButtonHover}
                   onMouseOut={handleButtonOut}
                 >
-                  <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                    alt="WhatsApp" 
-                    style={{ 
-                      width: isMobile ? '20px' : '24px', 
-                      height: isMobile ? '20px' : '24px',
-                      filter: 'brightness(0) invert(1)'
-                    }} 
-                  />
-                  Send via WhatsApp
+                  {isSubmitting ? (
+                    <>
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        border: '2px solid transparent',
+                        borderTop: '2px solid white',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                      }} />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      {submitMethod === 'whatsapp' && '💬'}
+                      {submitMethod === 'email' && '✉️'}
+                      {submitMethod === 'sms' && '📱'}
+                      Send via {submitMethod.toUpperCase()}
+                    </>
+                  )}
                 </button>
               </form>
+
+              {/* Fallback instructions */}
+              <div style={{ 
+                marginTop: '20px',
+                padding: '15px',
+                background: '#fffbeb',
+                border: '1px solid #fef3c7',
+                borderRadius: '8px',
+                fontSize: '14px',
+                color: '#92400e'
+              }}>
+                <strong>💡 Having trouble sending?</strong>
+                <p style={{ margin: '8px 0 0 0' }}>
+                  You can always reach us directly at:<br />
+                  📞 <strong>+254 707 636105</strong><br />
+                  📧 <strong>info@themeatrix.co.ke</strong>
+                </p>
+              </div>
             </div>
           </div>
         </section>
