@@ -407,14 +407,7 @@ function ProductsContent() {
                 whiteSpace: 'nowrap',
                 transition: 'color 0.2s ease'
               }}>CONTACT</a>
-              <a href="/terms" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap',
-                transition: 'color 0.2s ease'
-              }}>TERMS</a>
+             
             </nav>
           )}
 
@@ -699,3 +692,4 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
