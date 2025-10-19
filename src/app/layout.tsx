@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 // Import the promotion utilities
-/ To this (remove the @/):
+
 import { getCurrentPromotion } from '../../utils/promotions';
 import HolidayBanner from '@/components/HolidayBanner';
 
