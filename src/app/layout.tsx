@@ -1,46 +1,24 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
-// Import the promotion utilities
-
-//import { getCurrentPromotion } from '../../utils/promotions';
-//import HolidayBanner from '@/components/HolidayBanner';
-
-// Generate dynamic metadata based on current promotions
 export async function generateMetadata(): Promise<Metadata> {
-  const currentPromo = getCurrentPromotion();
-  
   const baseTitle = "THE MEATRIX CO. - Premium Meats & Seafood | Nairobi's Finest Butcher";
   const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available.";
-  
-  const title = currentPromo 
-    ? `${currentPromo.name} - ${currentPromo.discount}% OFF | THE MEATRIX CO.`
-    : baseTitle;
-    
-  const description = currentPromo
-    ? `${currentPromo.description} Get ${currentPromo.discount}% off with code ${currentPromo.couponCode}. ${baseDescription}`
-    : baseDescription;
 
   return {
-    title,
-    description,
+    title: baseTitle,
+    description: baseDescription,
     keywords: [
       'premium meats Nairobi',
       'butcher shop Kenya',
       'fresh seafood Nairobi',
-      'holiday discounts',
-      'Christmas special',
-      'Eid offers',
-      'Mashujaa day sale',
       'beef cuts Nairobi',
       'goat meat Kenya',
       'chicken breast Nairobi',
       'seafood delivery CBD',
       'City Market butcher',
       'quality meats Kenya',
-      currentPromo?.name || '',
-      currentPromo?.couponCode || ''
-    ].filter(Boolean).join(', '),
+    ].join(', '),
     authors: [{ name: 'THE MEATRIX CO.' }],
     creator: 'THE MEATRIX CO.',
     publisher: 'THE MEATRIX CO.',
@@ -58,8 +36,8 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: 'en_KE',
       url: 'https://themeatrix.co.ke',
       siteName: 'THE MEATRIX CO.',
-      title,
-      description,
+      title: baseTitle,
+      description: baseDescription,
       images: [
         {
           url: '/og-image.jpg',
@@ -71,8 +49,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
+      title: baseTitle,
+      description: baseDescription,
       creator: '@themeatrixco',
       images: ['/og-image.jpg'],
     },
@@ -87,17 +65,10 @@ export async function generateMetadata(): Promise<Metadata> {
         'max-snippet': -1,
       },
     },
-    verification: {
-      // Add your Google Search Console verification here
-      // google: 'your-google-verification-code',
-    },
   };
 }
 
-// Generate structured data for SEO
 function generateStructuredData() {
-  const currentPromo = getCurrentPromotion();
-  
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'ButcherShop',
@@ -162,21 +133,7 @@ function generateStructuredData() {
           }
         }
       ]
-    },
-    ...(currentPromo && {
-      makesOffer: {
-        '@type': 'Offer',
-        name: currentPromo.name,
-        description: currentPromo.description,
-        price: '0',
-        priceCurrency: 'KES',
-        priceValidUntil: currentPromo.endDate,
-        availability: 'https://schema.org/InStock',
-        validFrom: currentPromo.startDate,
-        validThrough: currentPromo.endDate,
-        category: currentPromo.couponCode
-      }
-    })
+    }
   };
 
   return structuredData;
@@ -184,44 +141,28 @@ function generateStructuredData() {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const structuredData = generateStructuredData();
-  const currentPromo = getCurrentPromotion();
 
   return (
     <html lang="en-KE">
       <head>
-        {/* Essential Meta Tags */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#36454F" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         
-        {/* Favicon and Icons */}
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         
-        {/* Preload Critical Resources */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Structured Data for SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-        
-        {/* Additional Promotion Meta Tags */}
-        {currentPromo && (
-          <>
-            <meta name="promotion:title" content={currentPromo.name} />
-            <meta name="promotion:discount" content={currentPromo.discount.toString()} />
-            <meta name="promotion:code" content={currentPromo.couponCode} />
-            <meta name="promotion:valid_until" content={currentPromo.endDate} />
-          </>
-        )}
 
-        {/* Performance Optimizations */}
         <link rel="dns-prefetch" href="//images.unsplash.com" />
         <link rel="dns-prefetch" href="//maps.googleapis.com" />
       </head>
@@ -235,49 +176,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         color: '#36454F',
         backgroundColor: 'white'
       }}>
-        {/* Holiday Banner - Shows automatic promotions */}
-        <HolidayBanner />
-        
-        {/* Main Content */}
         {children}
         
-        {/* Performance Monitoring Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Simple performance monitoring
               window.addEventListener('load', function() {
                 if ('connection' in navigator) {
                   console.log('User network type:', navigator.connection.effectiveType);
                 }
-                
-                // Track promotion views
-                const promotion = ${JSON.stringify(currentPromo)};
-                if (promotion) {
-                  console.log('Active promotion:', promotion.name);
-                  // You can add analytics tracking here
-                  if (typeof gtag !== 'undefined') {
-                    gtag('event', 'promotion_view', {
-                      'event_category': 'promotion',
-                      'event_label': promotion.name,
-                      'value': promotion.discount
-                    });
-                  }
-                }
               });
 
-              // Enhanced error tracking for promotions
               window.addEventListener('error', function(e) {
                 console.error('Page error:', e.error);
-                // You can send this to your error tracking service
-              });
-
-              // Track user engagement with promotions
-              document.addEventListener('click', function(e) {
-                if (e.target.closest('[data-promotion]')) {
-                  console.log('User clicked promotion element');
-                  // Add analytics tracking for promotion clicks
-                }
               });
             `
           }}
