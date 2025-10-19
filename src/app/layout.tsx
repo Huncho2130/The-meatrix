@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 // Import the promotion utilities
-import { getCurrentPromotion } from '@/utils/promotions';
+/ To this (remove the @/):
+import { getCurrentPromotion } from '../../utils/promotions';
 import HolidayBanner from '@/components/HolidayBanner';
 
 // Generate dynamic metadata based on current promotions
