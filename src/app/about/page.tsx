@@ -618,10 +618,9 @@ export default function About() {
             <p style={{ 
               margin: '10px 0 0 0', 
               color: '#D4AF37', 
-              fontSize: isMobile ? '12px' : '14px',
-              fontWeight: '500'
+              fontSize: isMobile ? '12px' : '14px' 
             }}>
-              Premium Meats & Seafood • Nairobi's Trusted Butcher Since 2020
+              Premium Meats & Seafood • Nairobi's Finest Butcher
             </p>
           </div>
         </footer>
@@ -629,3 +628,4 @@ export default function About() {
     </CartProvider>
   )
 }
+
