@@ -436,6 +436,22 @@ function ProductsContent() {
               fontWeight: '600',
               fontSize: '14px'
             }}>Contact</a>
+
+            {/* Add Terms to Mobile Menu */}
+    <a 
+      href="/terms" 
+      style={{ 
+        display: 'block', 
+        color: 'white', 
+        textDecoration: 'none', 
+        padding: '12px 20px',
+        fontSize: '14px',
+        fontWeight: '600'
+      }}
+      onClick={() => setIsMenuOpen(false)}
+    >
+      TERMS
+    </a>
           </nav>
         )}
       </header>
@@ -687,6 +703,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
