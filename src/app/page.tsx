@@ -1,11 +1,11 @@
-
-    "use client";
+"use client";
 
 import { CartProvider } from '@/context/cartContext';
 import { useState, useEffect } from 'react';
 
 function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -13,6 +13,10 @@ function HomePage() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleButtonHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const target = e.currentTarget;
@@ -55,35 +59,33 @@ function HomePage() {
   return (
     <CartProvider>
       <div style={{ minHeight: '100vh', background: 'white' }}>
-        {/* Header */}
+        {/* Header - Clean & Minimal */}
         <header style={{
           background: '#36454F',
           color: 'white',
-          padding: isMobile ? '12px 15px' : '15px 20px',
+          padding: isMobile ? '15px 20px' : '20px 40px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
           position: 'sticky',
           top: 0,
-          zIndex: 40
+          zIndex: 50
         }}>
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center', 
             maxWidth: '1200px', 
-            margin: '0 auto',
-            flexWrap: isMobile ? 'wrap' : 'nowrap',
-            gap: isMobile ? '10px' : '0',
-            flexDirection: isMobile ? 'column' : 'row'
+            margin: '0 auto'
           }}>
+            {/* Logo & Brand */}
             <div style={{ 
               display: 'flex', 
               alignItems: 'center', 
-              gap: isMobile ? '12px' : '15px',
+              gap: '15px',
               flexShrink: 0 
             }}>
               <div style={{
-                width: isMobile ? '50px' : '60px',
-                height: isMobile ? '50px' : '60px',
+                width: isMobile ? '45px' : '55px',
+                height: isMobile ? '45px' : '55px',
                 borderRadius: '12px',
                 overflow: 'hidden',
                 background: '#D4AF37',
@@ -100,19 +102,19 @@ function HomePage() {
                   onError={handleImageError}
                 />
               </div>
-              <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+              <div style={{ textAlign: 'left' }}>
                 <h1 style={{ 
-                  fontSize: isMobile ? '1.4rem' : '1.8rem', 
+                  fontSize: isMobile ? '1.3rem' : '1.6rem', 
                   fontWeight: 'bold', 
                   color: '#D4AF37', 
                   margin: 0, 
-                  lineHeight: '1.2' 
+                  lineHeight: '1.1' 
                 }}>
                   THE MEATRIX CO.
                 </h1>
                 <p style={{
                   color: 'white',
-                  fontSize: isMobile ? '12px' : '14px',
+                  fontSize: isMobile ? '10px' : '12px',
                   margin: '2px 0 0 0',
                   fontWeight: '500',
                   opacity: '0.9'
@@ -122,76 +124,159 @@ function HomePage() {
               </div>
             </div>
             
-            <nav style={{ 
-              display: 'flex', 
-              gap: isMobile ? '12px' : '20px',
-              flexWrap: 'wrap',
-              justifyContent: isMobile ? 'center' : 'flex-end'
-            }}>
-              <a href="/" style={{ 
-                color: '#D4AF37', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>HOME</a>
-              <a href="/products" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>PRODUCTS</a>
-              <a href="/about" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>ABOUT</a>
-              <a href="/contact" style={{ 
-                color: 'white', 
-                textDecoration: 'none', 
-                fontSize: isMobile ? '12px' : '14px', 
-                fontWeight: '600',
-                whiteSpace: 'nowrap'
-              }}>CONTACT</a>
-            </nav>
-          </div>
+            {/* Desktop Navigation */}
+            {!isMobile && (
+              <nav style={{ 
+                display: 'flex', 
+                gap: '25px'
+              }}>
+                <a href="/" style={{ 
+                  color: '#D4AF37', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>HOME</a>
+                <a href="/products" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>PRODUCTS</a>
+                <a href="/about" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>ABOUT</a>
+                <a href="/contact" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>CONTACT</a>
+              </nav>
+            )}
 
-          {/* Top Info Bar */}
-          <div style={{
-            background: '#2f3a42',
-            color: '#D4AF37',
-            padding: isMobile ? '8px 15px' : '6px 20px',
-            fontSize: isMobile ? '11px' : '13px',
-            fontWeight: '500',
-            textAlign: 'center',
-            marginTop: isMobile ? '8px' : '0'
-          }}>
-            <div style={{
-              maxWidth: '1200px',
-              margin: '0 auto',
-              display: 'flex',
-              justifyContent: 'space-between',
-              flexWrap: isMobile ? 'wrap' : 'nowrap',
-              gap: isMobile ? '8px' : '5px',
-              alignItems: 'center'
-            }}>
-              <span style={{ whiteSpace: 'nowrap' }}>📍 City Market, Nairobi CBD</span>
-              <span style={{ whiteSpace: 'nowrap' }}>📞 +254 707 636105</span>
-              <span style={{ whiteSpace: 'nowrap' }}>⭐ Premium Quality</span>
-            </div>
+            {/* Mobile Hamburger Menu */}
+            {isMobile && (
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'white',
+                    fontSize: '24px',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    borderRadius: '6px',
+                    transition: 'background 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  ☰
+                </button>
+
+                {/* Dropdown Menu */}
+                {isMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    background: '#36454F',
+                    border: '1px solid #D4AF37',
+                    borderRadius: '8px',
+                    padding: '15px 0',
+                    minWidth: '150px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    zIndex: 100
+                  }}>
+                    <a 
+                      href="/" 
+                      style={{ 
+                        display: 'block', 
+                        color: '#D4AF37', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      HOME
+                    </a>
+                    <a 
+                      href="/products" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      PRODUCTS
+                    </a>
+                    <a 
+                      href="/about" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      ABOUT
+                    </a>
+                    <a 
+                      href="/contact" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      CONTACT
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </header>
 
-        {/* Hero Section */}
+        {/* Hero Section - Spacious & Clean */}
         <section style={{ 
           position: 'relative', 
           color: 'white', 
-          padding: isMobile ? '60px 20px' : '120px 20px', 
+          padding: isMobile ? '80px 20px' : '140px 20px', 
           textAlign: 'center', 
-          minHeight: isMobile ? '400px' : '600px', 
+          minHeight: isMobile ? '70vh' : '85vh', 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
@@ -215,7 +300,7 @@ function HomePage() {
             left: 0, 
             right: 0, 
             bottom: 0, 
-            background: 'linear-gradient(135deg, rgba(128, 0, 32, 0.28) 0%, rgba(54, 69, 79, 0.28) 100%)', 
+            background: 'linear-gradient(135deg, rgba(128, 0, 32, 0.35) 0%, rgba(54, 69, 79, 0.35) 100%)', 
             zIndex: 2 
           }} />
           <div style={{ 
@@ -223,24 +308,28 @@ function HomePage() {
             zIndex: 3, 
             maxWidth: isMobile ? '90vw' : '800px', 
             margin: '0 auto',
-            padding: isMobile ? '0 10px' : '0'
+            padding: isMobile ? '0' : '0 20px'
           }}>
             <h1 style={{ 
-              fontSize: isMobile ? '2.2rem' : '3.8rem', 
+              fontSize: isMobile ? '2.5rem' : '4rem', 
               fontWeight: 'bold', 
-              marginBottom: isMobile ? '20px' : '25px', 
-              lineHeight: '1.2', 
-              textShadow: '2px 2px 4px rgba(0,0,0,0.3)' 
+              marginBottom: isMobile ? '25px' : '30px', 
+              lineHeight: '1.1', 
+              textShadow: '2px 2px 8px rgba(0,0,0,0.4)',
+              letterSpacing: isMobile ? '0.5px' : '1px'
             }}>
               CRAFTED CUTS<br />
-              <span style={{ color: '#D4AF37' }}>UNCOMPROMISED QUALITY</span>
+              <span style={{ color: '#D4AF37', display: 'block', marginTop: '10px' }}>
+                UNCOMPROMISED QUALITY
+              </span>
             </h1>
             <p style={{ 
-              fontSize: isMobile ? '1.1rem' : '1.4rem', 
-              margin: `0 auto ${isMobile ? '30px' : '50px'}`, 
-              lineHeight: '1.5', 
+              fontSize: isMobile ? '1.2rem' : '1.5rem', 
+              margin: `0 auto ${isMobile ? '40px' : '60px'}`, 
+              lineHeight: '1.4', 
               maxWidth: isMobile ? '90vw' : '600px', 
-              textShadow: '1px 1px 2px rgba(0,0,0,0.3)' 
+              textShadow: '1px 1px 3px rgba(0,0,0,0.4)',
+              opacity: '0.95'
             }}>
               Nairobi's modern meat house — where quality meets flavor. 
             </p>
@@ -248,7 +337,7 @@ function HomePage() {
             {/* Hero Buttons */}
             <div style={{ 
               display: 'flex', 
-              gap: isMobile ? '15px' : '20px', 
+              gap: isMobile ? '20px' : '25px', 
               justifyContent: 'center', 
               flexWrap: 'wrap',
               flexDirection: isMobile ? 'column' : 'row'
@@ -258,18 +347,18 @@ function HomePage() {
                 style={{
                   background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
                   color: '#36454F',
-                  padding: isMobile ? '14px 24px' : '16px 32px',
-                  borderRadius: '10px',
+                  padding: isMobile ? '16px 28px' : '18px 36px',
+                  borderRadius: '12px',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: isMobile ? '14px' : '16px',
-                  boxShadow: '0 4px 15px rgba(212, 175, 55, 0.3)',
+                  fontSize: isMobile ? '15px' : '17px',
+                  boxShadow: '0 6px 20px rgba(212, 175, 55, 0.4)',
                   transition: 'all 0.3s ease',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  minWidth: isMobile ? '200px' : 'auto'
+                  gap: '10px',
+                  minWidth: isMobile ? '220px' : '240px'
                 }}
                 onMouseOver={handleButtonHover}
                 onMouseOut={handleButtonOut}
@@ -282,19 +371,19 @@ function HomePage() {
                 style={{
                   background: 'rgba(255, 255, 255, 0.15)',
                   color: 'white',
-                  padding: isMobile ? '14px 24px' : '16px 32px',
-                  borderRadius: '10px',
+                  padding: isMobile ? '16px 28px' : '18px 36px',
+                  borderRadius: '12px',
                   textDecoration: 'none',
                   fontWeight: 'bold',
-                  fontSize: isMobile ? '14px' : '16px',
-                  border: '2px solid rgba(212, 175, 55, 0.5)',
+                  fontSize: isMobile ? '15px' : '17px',
+                  border: '2px solid rgba(212, 175, 55, 0.6)',
                   backdropFilter: 'blur(10px)',
                   transition: 'all 0.3s ease',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  minWidth: isMobile ? '200px' : 'auto'
+                  gap: '10px',
+                  minWidth: isMobile ? '220px' : '240px'
                 }}
                 onMouseOver={handleSecondaryButtonHover}
                 onMouseOut={handleSecondaryButtonOut}
@@ -331,9 +420,24 @@ function HomePage() {
             </p>
           </div>
         </footer>
+
+        {/* Close menu when clicking outside */}
+        {isMenuOpen && (
+          <div 
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 40
+            }}
+            onClick={() => setIsMenuOpen(false)}
+          />
+        )}
       </div>
     </CartProvider>
   );
 }
 
-export default HomePage; 
+export default HomePage;
