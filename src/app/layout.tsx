@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react'; // ← ADD THIS IMPORT
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX CO. - Premium Meats & Seafood | Nairobi's Finest Butcher";
@@ -197,15 +198,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-import { Analytics } from '@vercel/analytics/react';
 
-export default function RootLayout({ children }) {
-  return (
-    <html>
-      <body>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
-}
+    
