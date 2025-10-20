@@ -1,7 +1,7 @@
 'use client'
 import { CartProvider, useCart } from '@/context/cartContext'
 import Cart from '@/components/Cart'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 
 const products = [
   // Beef
@@ -26,6 +26,9 @@ const products = [
   { id: '13', name: 'Nile Perch', price: 600, category: 'Seafood' },
   { id: '14', name: 'Salmon Fillet', price: 5500, category: 'Seafood' },
 ]
+
+// Get unique categories
+const categories = [...new Set(products.map(product => product.category))]
 
 function ProductCard({ product, isMobile }) {
   const { addToCart } = useCart();
@@ -210,12 +213,281 @@ function ProductCard({ product, isMobile }) {
   );
 }
 
+// Search and Filter Component
+function SearchFilter({ 
+  searchTerm, 
+  setSearchTerm, 
+  selectedCategory, 
+  setSelectedCategory, 
+  priceRange, 
+  setPriceRange, 
+  isMobile 
+}) {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handlePriceRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPriceRange(e.target.value);
+  };
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('All');
+    setPriceRange('All');
+  };
+
+  const hasActiveFilters = searchTerm || selectedCategory !== 'All' || priceRange !== 'All';
+
+  return (
+    <div style={{
+      background: "white",
+      borderRadius: "16px",
+      padding: isMobile ? "20px" : "30px",
+      marginBottom: isMobile ? "25px" : "40px",
+      boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
+      border: "1px solid rgba(212, 175, 55, 0.1)"
+    }}>
+      {/* Search Bar */}
+      <div style={{
+        position: "relative",
+        marginBottom: isMobile ? "20px" : "25px"
+      }}>
+        <input
+          type="text"
+          placeholder="Search products... (e.g., 'steak', 'chicken', 'fish')"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          style={{
+            width: "100%",
+            padding: isMobile ? "14px 50px 14px 20px" : "16px 60px 16px 25px",
+            borderRadius: "12px",
+            border: "2px solid #e2e8f0",
+            fontSize: isMobile ? "14px" : "16px",
+            background: "#f7fafc",
+            transition: "all 0.3s ease",
+            outline: "none"
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = "#D4AF37";
+            e.target.style.background = "white";
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = "#e2e8f0";
+            e.target.style.background = "#f7fafc";
+          }}
+        />
+        <span style={{
+          position: "absolute",
+          right: isMobile ? "20px" : "25px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          color: "#D4AF37",
+          fontSize: "20px"
+        }}>
+          🔍
+        </span>
+      </div>
+
+      {/* Filter Controls */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr auto",
+        gap: isMobile ? "15px" : "20px",
+        alignItems: "end"
+      }}>
+        {/* Category Filter */}
+        <div>
+          <label style={{
+            display: "block",
+            marginBottom: "8px",
+            fontWeight: "600",
+            color: "#36454F",
+            fontSize: isMobile ? "14px" : "15px"
+          }}>
+            Category
+          </label>
+          <select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            style={{
+              width: "100%",
+              padding: isMobile ? "12px 16px" : "14px 20px",
+              borderRadius: "10px",
+              border: "2px solid #e2e8f0",
+              background: "#f7fafc",
+              fontSize: isMobile ? "14px" : "15px",
+              color: "#36454F",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              outline: "none"
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "#D4AF37";
+              e.target.style.background = "white";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "#e2e8f0";
+              e.target.style.background = "#f7fafc";
+            }}
+          >
+            <option value="All">All Categories</option>
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Price Range Filter */}
+        <div>
+          <label style={{
+            display: "block",
+            marginBottom: "8px",
+            fontWeight: "600",
+            color: "#36454F",
+            fontSize: isMobile ? "14px" : "15px"
+          }}>
+            Price Range
+          </label>
+          <select
+            value={priceRange}
+            onChange={handlePriceRangeChange}
+            style={{
+              width: "100%",
+              padding: isMobile ? "12px 16px" : "14px 20px",
+              borderRadius: "10px",
+              border: "2px solid #e2e8f0",
+              background: "#f7fafc",
+              fontSize: isMobile ? "14px" : "15px",
+              color: "#36454F",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              outline: "none"
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "#D4AF37";
+              e.target.style.background = "white";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "#e2e8f0";
+              e.target.style.background = "#f7fafc";
+            }}
+          >
+            <option value="All">All Prices</option>
+            <option value="0-500">Under KSh 500</option>
+            <option value="500-1000">KSh 500 - 1,000</option>
+            <option value="1000-2000">KSh 1,000 - 2,000</option>
+            <option value="2000+">Over KSh 2,000</option>
+          </select>
+        </div>
+
+        {/* Clear Filters Button */}
+        <button
+          onClick={clearFilters}
+          disabled={!hasActiveFilters}
+          style={{
+            background: hasActiveFilters 
+              ? "linear-gradient(135deg, #718096 0%, #4a5568 100%)"
+              : "linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%)",
+            color: hasActiveFilters ? "white" : "#a0aec0",
+            border: "none",
+            padding: isMobile ? "12px 16px" : "14px 20px",
+            borderRadius: "10px",
+            cursor: hasActiveFilters ? "pointer" : "not-allowed",
+            fontWeight: "600",
+            fontSize: isMobile ? "14px" : "15px",
+            transition: "all 0.3s ease",
+            whiteSpace: "nowrap",
+            opacity: hasActiveFilters ? 1 : 0.6
+          }}
+          onMouseOver={(e) => {
+            if (hasActiveFilters) {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(113, 128, 150, 0.4)";
+            }
+          }}
+          onMouseOut={(e) => {
+            if (hasActiveFilters) {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }
+          }}
+        >
+          Clear Filters
+        </button>
+      </div>
+
+      {/* Active Filters Display */}
+      {hasActiveFilters && (
+        <div style={{
+          marginTop: "15px",
+          padding: "12px 16px",
+          background: "linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%)",
+          borderRadius: "8px",
+          border: "1px solid #feb2b2"
+        }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            fontSize: isMobile ? "13px" : "14px",
+            color: "#c53030",
+            fontWeight: "500"
+          }}>
+            <span>🎯</span>
+            <span>Active filters: </span>
+            {searchTerm && (
+              <span style={{
+                background: "#feb2b2",
+                padding: "4px 8px",
+                borderRadius: "6px",
+                fontSize: "12px"
+              }}>
+                Search: "{searchTerm}"
+              </span>
+            )}
+            {selectedCategory !== 'All' && (
+              <span style={{
+                background: "#feb2b2",
+                padding: "4px 8px",
+                borderRadius: "6px",
+                fontSize: "12px"
+              }}>
+                Category: {selectedCategory}
+              </span>
+            )}
+            {priceRange !== 'All' && (
+              <span style={{
+                background: "#feb2b2",
+                padding: "4px 8px",
+                borderRadius: "6px",
+                fontSize: "12px"
+              }}>
+                Price: {priceRange}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ProductsContent() {
   const { cart, itemCount } = useCart()
   const [isMounted, setIsMounted] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [priceRange, setPriceRange] = useState('All')
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -241,6 +513,43 @@ function ProductsContent() {
 
     return () => window.removeEventListener('resize', checkMobile);
   }, [])
+
+  // Filter products based on search, category, and price
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      // Search filter
+      const matchesSearch = searchTerm === '' || 
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      
+      // Category filter
+      const matchesCategory = selectedCategory === 'All' || 
+        product.category === selectedCategory
+      
+      // Price range filter
+      let matchesPrice = true
+      if (priceRange !== 'All') {
+        switch (priceRange) {
+          case '0-500':
+            matchesPrice = product.price < 500
+            break
+          case '500-1000':
+            matchesPrice = product.price >= 500 && product.price <= 1000
+            break
+          case '1000-2000':
+            matchesPrice = product.price >= 1000 && product.price <= 2000
+            break
+          case '2000+':
+            matchesPrice = product.price > 2000
+            break
+          default:
+            matchesPrice = true
+        }
+      }
+      
+      return matchesSearch && matchesCategory && matchesPrice
+    })
+  }, [searchTerm, selectedCategory, priceRange])
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -407,7 +716,6 @@ function ProductsContent() {
                 whiteSpace: 'nowrap',
                 transition: 'color 0.2s ease'
               }}>CONTACT</a>
-             
             </nav>
           )}
 
@@ -434,7 +742,6 @@ function ProductsContent() {
                 transition: 'all 0.3s ease'
               }}
             >
-              
               <span style={{ fontSize: isMobile ? '14px' : '16px' }}>🛒</span>
               <span>{itemCount}</span>
             </button>
@@ -608,21 +915,110 @@ function ProductsContent() {
           )}
         </div>
 
-        {/* Products Grid */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: isMobile ? '20px' : '30px',
-          padding: isMobile ? '0 5px' : '0'
+        {/* Search and Filter Component */}
+        <SearchFilter
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          isMobile={isMobile}
+        />
+
+        {/* Results Count */}
+        <div style={{
+          marginBottom: isMobile ? '20px' : '30px',
+          textAlign: 'center'
         }}>
-          {products.map(product => (
-            <ProductCard 
-              key={product.id} 
-              product={product} 
-              isMobile={isMobile}
-            />
-          ))}
+          <p style={{
+            color: '#4a5568',
+            fontSize: isMobile ? '14px' : '16px',
+            margin: 0
+          }}>
+            Showing {filteredProducts.length} of {products.length} products
+            {(searchTerm || selectedCategory !== 'All' || priceRange !== 'All') && 
+              ' (filtered)'}
+          </p>
         </div>
+
+        {/* Products Grid */}
+        {filteredProducts.length > 0 ? (
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: isMobile ? '20px' : '30px',
+            padding: isMobile ? '0 5px' : '0'
+          }}>
+            {filteredProducts.map(product => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                isMobile={isMobile}
+              />
+            ))}
+          </div>
+        ) : (
+          /* No Results State */
+          <div style={{
+            textAlign: 'center',
+            padding: isMobile ? '60px 20px' : '80px 40px',
+            background: 'white',
+            borderRadius: '16px',
+            boxShadow: '0 8px 25px rgba(0,0,0,0.08)'
+          }}>
+            <div style={{
+              fontSize: '4rem',
+              marginBottom: '20px'
+            }}>
+              🔍
+            </div>
+            <h3 style={{
+              color: '#36454F',
+              fontSize: isMobile ? '1.5rem' : '2rem',
+              marginBottom: '15px'
+            }}>
+              No products found
+            </h3>
+            <p style={{
+              color: '#4a5568',
+              fontSize: isMobile ? '1rem' : '1.1rem',
+              marginBottom: '30px',
+              maxWidth: '400px',
+              margin: '0 auto 30px'
+            }}>
+              Try adjusting your search or filter criteria to find what you're looking for.
+            </p>
+            <button
+              onClick={() => {
+                setSearchTerm('');
+                setSelectedCategory('All');
+                setPriceRange('All');
+              }}
+              style={{
+                background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
+                color: '#36454F',
+                border: 'none',
+                padding: isMobile ? '12px 24px' : '14px 28px',
+                borderRadius: '10px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontSize: isMobile ? '14px' : '16px',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(212, 175, 55, 0.4)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              Clear All Filters
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Footer - Matching Home Page */}
@@ -693,5 +1089,3 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
-
-
