@@ -1226,8 +1226,8 @@ function ProductsContent() {
         </div>
       </footer>
 
-     {/* Close menu when clicking outside */}
-{isMenuOpen && (
+    {/* Overlay for mobile menu - Only show when menu is open */}
+{isMenuOpen && isMobile && (
   <div 
     style={{
       position: 'fixed',
@@ -1235,7 +1235,9 @@ function ProductsContent() {
       left: 0,
       right: 0,
       bottom: 0,
-      zIndex: 40
+      background: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 999,
+      transition: 'opacity 0.3s ease'
     }}
     onClick={() => setIsMenuOpen(false)}
   />
@@ -1252,6 +1254,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
