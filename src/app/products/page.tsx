@@ -274,7 +274,8 @@ function SearchFilter({
             fontSize: isMobile ? "14px" : "16px",
             background: "#f7fafc",
             transition: "all 0.3s ease",
-            outline: "none"
+            outline: "none",
+            boxSizing: "border-box" // Add this to prevent overflow
           }}
           onFocus={(e) => {
             e.target.style.borderColor = "#D4AF37";
@@ -287,11 +288,16 @@ function SearchFilter({
         />
         <span style={{
           position: "absolute",
-          right: isMobile ? "20px" : "25px",
+          
+      right: "15px", // Changed from 20px/25px to be closer to edge
           top: "50%",
           transform: "translateY(-50%)",
           color: "#D4AF37",
-          fontSize: "20px"
+          fontSize: "18px",
+      background: "#f7fafc",
+    padding: "5px",
+    borderRadius: "4px",
+    pointerEvents: "none" // Prevents icon from blocking input
         }}>
           🔍
         </span>
@@ -1137,4 +1143,5 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
