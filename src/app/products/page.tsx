@@ -872,121 +872,134 @@ function ProductsContent() {
         </button>
       </div>
 
-      {/* Menu Items */}
-      <div style={{
-        padding: '20px 0',
-        flex: 1
-      }}>
-        <a 
-          href="/" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          🏠 HOME
-        </a>
-        <a 
-          href="/products" 
-          style={{ 
-            display: 'block', 
-            color: '#D4AF37', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          🥩 PRODUCTS
-        </a>
-        <a 
-          href="/about" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          ℹ️ ABOUT
-        </a>
-        <a 
-          href="/contact" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          📞 CONTACT
-        </a>
-        <a 
-          href="/terms" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          📄 TERMS
-        </a>
-      </div>
+
+{/* Menu Items */}
+<div style={{
+  padding: '15px 0',
+  flex: 1
+}}>
+  <a 
+    href="/" 
+    style={{ 
+      display: 'block', 
+      color: 'white', 
+      textDecoration: 'none', 
+      padding: '12px 20px',
+      fontSize: '14px',
+      fontWeight: '600',
+      borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={() => setIsMenuOpen(false)}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+      e.currentTarget.style.paddingLeft = '25px';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = 'transparent';
+      e.currentTarget.style.paddingLeft = '20px';
+    }}
+  >
+    HOME
+  </a>
+  <a 
+    href="/products" 
+    style={{ 
+      display: 'block', 
+      color: '#D4AF37', 
+      textDecoration: 'none', 
+      padding: '12px 20px',
+      fontSize: '14px',
+      fontWeight: '600',
+      borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={() => setIsMenuOpen(false)}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+      e.currentTarget.style.paddingLeft = '25px';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = 'transparent';
+      e.currentTarget.style.paddingLeft = '20px';
+    }}
+  >
+    PRODUCTS
+  </a>
+  <a 
+    href="/about" 
+    style={{ 
+      display: 'block', 
+      color: 'white', 
+      textDecoration: 'none', 
+      padding: '12px 20px',
+      fontSize: '14px',
+      fontWeight: '600',
+      borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={() => setIsMenuOpen(false)}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+      e.currentTarget.style.paddingLeft = '25px';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = 'transparent';
+      e.currentTarget.style.paddingLeft = '20px';
+    }}
+  >
+    ABOUT
+  </a>
+  <a 
+    href="/contact" 
+    style={{ 
+      display: 'block', 
+      color: 'white', 
+      textDecoration: 'none', 
+      padding: '12px 20px',
+      fontSize: '14px',
+      fontWeight: '600',
+      borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={() => setIsMenuOpen(false)}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+      e.currentTarget.style.paddingLeft = '25px';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = 'transparent';
+      e.currentTarget.style.paddingLeft = '20px';
+    }}
+  >
+    CONTACT
+  </a>
+  <a 
+    href="/terms" 
+    style={{ 
+      display: 'block', 
+      color: 'white', 
+      textDecoration: 'none', 
+      padding: '12px 20px',
+      fontSize: '14px',
+      fontWeight: '600',
+      transition: 'all 0.2s ease'
+    }}
+    onClick={() => setIsMenuOpen(false)}
+    onMouseOver={(e) => {
+      e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+      e.currentTarget.style.paddingLeft = '25px';
+    }}
+    onMouseOut={(e) => {
+      e.currentTarget.style.background = 'transparent';
+      e.currentTarget.style.paddingLeft = '20px';
+    }}
+  >
+    TERMS
+  </a>
+</div>
+      
+      
 
       {/* Menu Footer */}
       <div style={{
@@ -1254,6 +1267,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
