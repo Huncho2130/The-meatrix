@@ -1222,32 +1222,17 @@ function ProductsContent() {
           </p>
         </div>
       </footer>
+      
+    
 
-     {/* Close menu when clicking outside - Only show overlay when menu is open */}
-{isMenuOpen && (
-  <div 
-    style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0, 0, 0, 0.5)',
-      zIndex: 999,
-      transition: 'opacity 0.3s ease'
-    }}
-    onClick={() => setIsMenuOpen(false)}
-  />
-)}
+     export default function ProductsPage() {
+      return (
+       <CartProvider>
+        <ProductsContent />
+      </CartProvider>
+       )
+     }
 
-
-export default function ProductsPage() {
-  return (
-    <CartProvider>
-      <ProductsContent />
-    </CartProvider>
-  )
-}
 
 
 
