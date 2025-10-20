@@ -213,7 +213,7 @@ function ProductCard({ product, isMobile }) {
   );
 }
 
-// Enhanced SearchFilter component with mobile optimizations
+// Search and Filter Component
 function SearchFilter({ 
   searchTerm, 
   setSearchTerm, 
@@ -223,8 +223,6 @@ function SearchFilter({
   setPriceRange, 
   isMobile 
 }) {
-  const [filtersOpen, setFiltersOpen] = useState(!isMobile); // Auto-open on desktop
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -254,7 +252,7 @@ function SearchFilter({
       boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
       border: "1px solid rgba(212, 175, 55, 0.1)"
     }}>
-      {/* Search Bar - Always Visible */}
+      {/* Search Bar */}
       <div style={{
         position: "relative",
         marginBottom: isMobile ? "20px" : "25px"
@@ -272,8 +270,7 @@ function SearchFilter({
             fontSize: isMobile ? "14px" : "16px",
             background: "#f7fafc",
             transition: "all 0.3s ease",
-            outline: "none",
-            boxSizing: "border-box" // Add this to prevent overflow
+            outline: "none"
           }}
           onFocus={(e) => {
             e.target.style.borderColor = "#D4AF37";
@@ -286,190 +283,143 @@ function SearchFilter({
         />
         <span style={{
           position: "absolute",
-          right:  "15px" ,
-            
+          right: isMobile ? "20px" : "25px",
           top: "50%",
           transform: "translateY(-50%)",
           color: "#D4AF37",
-          fontSize: "18px",
-      background: "#f7fafc",
-    padding: "5px",
-    borderRadius: "4px",
-      pointerEvents: "none" // Prevents icon from blocking input
+          fontSize: "20px"
         }}>
           🔍
         </span>
       </div>
 
-      {/* Mobile Filter Toggle Button */}
-      {isMobile && (
-        <button
-          onClick={() => setFiltersOpen(!filtersOpen)}
-          style={{
-            width: "100%",
-            background: "linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)",
+      {/* Filter Controls */}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr auto",
+        gap: isMobile ? "15px" : "20px",
+        alignItems: "end"
+      }}>
+        {/* Category Filter */}
+        <div>
+          <label style={{
+            display: "block",
+            marginBottom: "8px",
+            fontWeight: "600",
             color: "#36454F",
+            fontSize: isMobile ? "14px" : "15px"
+          }}>
+            Category
+          </label>
+          <select
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            style={{
+              width: "100%",
+              padding: isMobile ? "12px 16px" : "14px 20px",
+              borderRadius: "10px",
+              border: "2px solid #e2e8f0",
+              background: "#f7fafc",
+              fontSize: isMobile ? "14px" : "15px",
+              color: "#36454F",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              outline: "none"
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "#D4AF37";
+              e.target.style.background = "white";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "#e2e8f0";
+              e.target.style.background = "#f7fafc";
+            }}
+          >
+            <option value="All">All Categories</option>
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Price Range Filter */}
+        <div>
+          <label style={{
+            display: "block",
+            marginBottom: "8px",
+            fontWeight: "600",
+            color: "#36454F",
+            fontSize: isMobile ? "14px" : "15px"
+          }}>
+            Price Range
+          </label>
+          <select
+            value={priceRange}
+            onChange={handlePriceRangeChange}
+            style={{
+              width: "100%",
+              padding: isMobile ? "12px 16px" : "14px 20px",
+              borderRadius: "10px",
+              border: "2px solid #e2e8f0",
+              background: "#f7fafc",
+              fontSize: isMobile ? "14px" : "15px",
+              color: "#36454F",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              outline: "none"
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "#D4AF37";
+              e.target.style.background = "white";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "#e2e8f0";
+              e.target.style.background = "#f7fafc";
+            }}
+          >
+            <option value="All">All Prices</option>
+            <option value="0-500">Under KSh 500</option>
+            <option value="500-1000">KSh 500 - 1,000</option>
+            <option value="1000-2000">KSh 1,000 - 2,000</option>
+            <option value="2000+">Over KSh 2,000</option>
+          </select>
+        </div>
+
+        {/* Clear Filters Button */}
+        <button
+          onClick={clearFilters}
+          disabled={!hasActiveFilters}
+          style={{
+            background: hasActiveFilters 
+              ? "linear-gradient(135deg, #718096 0%, #4a5568 100%)"
+              : "linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%)",
+            color: hasActiveFilters ? "white" : "#a0aec0",
             border: "none",
-            padding: "14px 20px",
+            padding: isMobile ? "12px 16px" : "14px 20px",
             borderRadius: "10px",
-            fontWeight: "bold",
-            fontSize: "15px",
-            marginBottom: "15px",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px",
-            transition: "all 0.3s ease"
+            cursor: hasActiveFilters ? "pointer" : "not-allowed",
+            fontWeight: "600",
+            fontSize: isMobile ? "14px" : "15px",
+            transition: "all 0.3s ease",
+            whiteSpace: "nowrap",
+            opacity: hasActiveFilters ? 1 : 0.6
           }}
           onMouseOver={(e) => {
-            if (!isMobile) {
+            if (hasActiveFilters) {
               e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 6px 20px rgba(212, 175, 55, 0.4)";
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(113, 128, 150, 0.4)";
             }
           }}
           onMouseOut={(e) => {
-            if (!isMobile) {
+            if (hasActiveFilters) {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "none";
             }
           }}
         >
-          <span>{filtersOpen ? "▲" : "▼"}</span>
-          <span>Filters {hasActiveFilters && "•"}</span>
+          Clear Filters
         </button>
-      )}
-
-      {/* Filter Controls - Conditionally visible on mobile */}
-      {(filtersOpen || !isMobile) && (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr auto",
-          gap: isMobile ? "15px" : "20px",
-          alignItems: "end"
-        }}>
-          {/* Category Filter */}
-          <div>
-            <label style={{
-              display: "block",
-              marginBottom: "8px",
-              fontWeight: "600",
-              color: "#36454F",
-              fontSize: isMobile ? "14px" : "15px"
-            }}>
-              Category
-            </label>
-            <select
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-              style={{
-                width: "100%",
-                padding: isMobile ? "12px 16px" : "14px 20px",
-                borderRadius: "10px",
-                border: "2px solid #e2e8f0",
-                background: "#f7fafc",
-                fontSize: isMobile ? "14px" : "15px",
-                color: "#36454F",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                outline: "none"
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "#D4AF37";
-                e.target.style.background = "white";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.background = "#f7fafc";
-              }}
-            >
-              <option value="All">All Categories</option>
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Price Range Filter */}
-          <div>
-            <label style={{
-              display: "block",
-              marginBottom: "8px",
-              fontWeight: "600",
-              color: "#36454F",
-              fontSize: isMobile ? "14px" : "15px"
-            }}>
-              Price Range
-            </label>
-            <select
-              value={priceRange}
-              onChange={handlePriceRangeChange}
-              style={{
-                width: "100%",
-                padding: isMobile ? "12px 16px" : "14px 20px",
-                borderRadius: "10px",
-                border: "2px solid #e2e8f0",
-                background: "#f7fafc",
-                fontSize: isMobile ? "14px" : "15px",
-                color: "#36454F",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                outline: "none"
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "#D4AF37";
-                e.target.style.background = "white";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "#e2e8f0";
-                e.target.style.background = "#f7fafc";
-              }}
-            >
-              <option value="All">All Prices</option>
-              <option value="0-500">Under KSh 500</option>
-              <option value="500-1000">KSh 500 - 1,000</option>
-              <option value="1000-2000">KSh 1,000 - 2,000</option>
-              <option value="2000+">Over KSh 2,000</option>
-            </select>
-          </div>
-
-          {/* Clear Filters Button */}
-          <button
-            onClick={clearFilters}
-            disabled={!hasActiveFilters}
-            style={{
-              background: hasActiveFilters 
-                ? "linear-gradient(135deg, #718096 0%, #4a5568 100%)"
-                : "linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%)",
-              color: hasActiveFilters ? "white" : "#a0aec0",
-              border: "none",
-              padding: isMobile ? "12px 16px" : "14px 20px",
-              borderRadius: "10px",
-              cursor: hasActiveFilters ? "pointer" : "not-allowed",
-              fontWeight: "600",
-              fontSize: isMobile ? "14px" : "15px",
-              transition: "all 0.3s ease",
-              whiteSpace: "nowrap",
-              opacity: hasActiveFilters ? 1 : 0.6,
-              width: isMobile ? "100%" : "auto"
-            }}
-            onMouseOver={(e) => {
-              if (hasActiveFilters && !isMobile) {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(113, 128, 150, 0.4)";
-              }
-            }}
-            onMouseOut={(e) => {
-              if (hasActiveFilters && !isMobile) {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }
-            }}
-          >
-            Clear Filters
-          </button>
-        </div>
-      )}
+      </div>
 
       {/* Active Filters Display */}
       {hasActiveFilters && (
@@ -486,8 +436,7 @@ function SearchFilter({
             gap: "8px",
             fontSize: isMobile ? "13px" : "14px",
             color: "#c53030",
-            fontWeight: "500",
-            flexWrap: isMobile ? "wrap" : "nowrap"
+            fontWeight: "500"
           }}>
             <span>🎯</span>
             <span>Active filters: </span>
@@ -797,235 +746,127 @@ function ProductsContent() {
               <span>{itemCount}</span>
             </button>
 
+            {/* Mobile Hamburger Menu */}
+            {isMobile && (
+              <div style={{ position: 'relative' }}>
+                <button
+                  onClick={toggleMenu}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'white',
+                    fontSize: '24px',
+                    cursor: 'pointer',
+                    padding: '8px',
+                    borderRadius: '6px',
+                    transition: 'background 0.2s ease'
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  ☰
+                </button>
 
-            
-           {/* Mobile Hamburger Menu */}
-{isMobile && (
-  <div style={{ position: 'relative' }}>
-    <button
-      onClick={toggleMenu}
-      style={{
-        background: 'transparent',
-        border: 'none',
-        color: 'white',
-        fontSize: '24px',
-        cursor: 'pointer',
-        padding: '8px',
-        borderRadius: '6px',
-        transition: 'background 0.2s ease'
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.background = 'transparent';
-      }}
-    >
-      ☰
-    </button>
+                {/* Dropdown Menu */}
+                {isMenuOpen && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '100%',
+                    right: 0,
+                    background: '#36454F',
+                    border: '1px solid #D4AF37',
+                    borderRadius: '8px',
+                    padding: '15px 0',
+                    minWidth: '150px',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                    zIndex: 100
+                  }}>
+                    <a 
+                      href="/" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      HOME
+                    </a>
+                    <a 
+                      href="/products" 
+                      style={{ 
+                        display: 'block', 
+                        color: '#D4AF37', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      PRODUCTS
+                    </a>
+                    <a 
+                      href="/about" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      ABOUT
+                    </a>
+                    <a 
+                      href="/contact" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      CONTACT
+                    </a>
+                    <a 
+                      href="/terms" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      TERMS
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
 
-    {/* Slide-Out Overlay Menu */}
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      right: isMenuOpen ? 0 : '-100%', // Slides in from right
-      width: '280px',
-      height: '100vh',
-      background: '#36454F',
-      boxShadow: '-4px 0 20px rgba(0,0,0,0.3)',
-      zIndex: 1000,
-      transition: 'right 0.3s ease-in-out',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
-      {/* Menu Header */}
-      <div style={{
-        padding: '20px',
-        borderBottom: '1px solid #D4AF37',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <span style={{
-          color: '#D4AF37',
-          fontWeight: 'bold',
-          fontSize: '18px'
-        }}>
-          MENU
-        </span>
-        <button
-          onClick={toggleMenu}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: 'white',
-            fontSize: '24px',
-            cursor: 'pointer',
-            padding: '5px'
-          }}
-        >
-          ✕
-        </button>
-      </div>
-
-      {/* Menu Items */}
-      <div style={{
-        padding: '20px 0',
-        flex: 1
-      }}>
-        <a 
-          href="/" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          🏠 HOME
-        </a>
-        <a 
-          href="/products" 
-          style={{ 
-            display: 'block', 
-            color: '#D4AF37', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          🥩 PRODUCTS
-        </a>
-        <a 
-          href="/about" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          ℹ️ ABOUT
-        </a>
-        <a 
-          href="/contact" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          📞 CONTACT
-        </a>
-        <a 
-          href="/terms" 
-          style={{ 
-            display: 'block', 
-            color: 'white', 
-            textDecoration: 'none', 
-            padding: '16px 25px',
-            fontSize: '16px',
-            fontWeight: '600',
-            transition: 'background 0.2s ease'
-          }}
-          onClick={() => setIsMenuOpen(false)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = 'transparent';
-          }}
-        >
-          📄 TERMS
-        </a>
-      </div>
-
-      {/* Menu Footer */}
-      <div style={{
-        padding: '20px',
-        borderTop: '1px solid rgba(212, 175, 55, 0.2)',
-        textAlign: 'center'
-      }}>
-        <p style={{
-          color: '#D4AF37',
-          fontSize: '12px',
-          margin: 0,
-          opacity: 0.8
-        }}>
-          THE MEATRIX CO.
-        </p>
-      </div>
-    </div>
-
-    {/* Overlay Background */}
-    {isMenuOpen && (
-      <div 
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 999,
-          transition: 'opacity 0.3s ease'
-        }}
-        onClick={() => setIsMenuOpen(false)}
-      />
-    )}
-  </div>
-)}
-
-
-
-
-
-
-      
       {/* Cart Sidebar */}
       {isCartOpen && (
         <Cart onClose={() => setIsCartOpen(false)} />
@@ -1222,18 +1063,29 @@ function ProductsContent() {
           </p>
         </div>
       </footer>
-      
-    
 
-     export default function ProductsPage() {
-      return (
-       <CartProvider>
-        <ProductsContent />
-      </CartProvider>
-       )
-     }
+      {/* Close menu when clicking outside */}
+      {isMenuOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 40
+          }}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+    </div>
+  )
+}
 
-
-
-
-
+export default function ProductsPage() {
+  return (
+    <CartProvider>
+      <ProductsContent />
+    </CartProvider>
+  )
+}
