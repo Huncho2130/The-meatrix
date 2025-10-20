@@ -797,127 +797,235 @@ function ProductsContent() {
               <span>{itemCount}</span>
             </button>
 
-            {/* Mobile Hamburger Menu */}
-            {isMobile && (
-              <div style={{ position: 'relative' }}>
-                <button
-                  onClick={toggleMenu}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: 'white',
-                    fontSize: '24px',
-                    cursor: 'pointer',
-                    padding: '8px',
-                    borderRadius: '6px',
-                    transition: 'background 0.2s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.background = 'transparent';
-                  }}
-                >
-                  ☰
-                </button>
 
-                {/* Dropdown Menu */}
-                {isMenuOpen && (
-                  <div style={{
-                    position: 'absolute',
-                    top: '100%',
-                    right: 0,
-                    background: '#36454F',
-                    border: '1px solid #D4AF37',
-                    borderRadius: '8px',
-                    padding: '15px 0',
-                    minWidth: '150px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                    zIndex: 100
-                  }}>
-                    <a 
-                      href="/" 
-                      style={{ 
-                        display: 'block', 
-                        color: 'white', 
-                        textDecoration: 'none', 
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
-                      }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      HOME
-                    </a>
-                    <a 
-                      href="/products" 
-                      style={{ 
-                        display: 'block', 
-                        color: '#D4AF37', 
-                        textDecoration: 'none', 
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
-                      }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      PRODUCTS
-                    </a>
-                    <a 
-                      href="/about" 
-                      style={{ 
-                        display: 'block', 
-                        color: 'white', 
-                        textDecoration: 'none', 
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
-                      }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      ABOUT
-                    </a>
-                    <a 
-                      href="/contact" 
-                      style={{ 
-                        display: 'block', 
-                        color: 'white', 
-                        textDecoration: 'none', 
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600',
-                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
-                      }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      CONTACT
-                    </a>
-                    <a 
-                      href="/terms" 
-                      style={{ 
-                        display: 'block', 
-                        color: 'white', 
-                        textDecoration: 'none', 
-                        padding: '12px 20px',
-                        fontSize: '14px',
-                        fontWeight: '600'
-                      }}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      TERMS
-                    </a>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+            
+           {/* Mobile Hamburger Menu */}
+{isMobile && (
+  <div style={{ position: 'relative' }}>
+    <button
+      onClick={toggleMenu}
+      style={{
+        background: 'transparent',
+        border: 'none',
+        color: 'white',
+        fontSize: '24px',
+        cursor: 'pointer',
+        padding: '8px',
+        borderRadius: '6px',
+        transition: 'background 0.2s ease'
+      }}
+      onMouseOver={(e) => {
+        e.currentTarget.style.background = 'rgba(212, 175, 55, 0.2)';
+      }}
+      onMouseOut={(e) => {
+        e.currentTarget.style.background = 'transparent';
+      }}
+    >
+      ☰
+    </button>
 
+    {/* Slide-Out Overlay Menu */}
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      right: isMenuOpen ? 0 : '-100%', // Slides in from right
+      width: '280px',
+      height: '100vh',
+      background: '#36454F',
+      boxShadow: '-4px 0 20px rgba(0,0,0,0.3)',
+      zIndex: 1000,
+      transition: 'right 0.3s ease-in-out',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {/* Menu Header */}
+      <div style={{
+        padding: '20px',
+        borderBottom: '1px solid #D4AF37',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <span style={{
+          color: '#D4AF37',
+          fontWeight: 'bold',
+          fontSize: '18px'
+        }}>
+          MENU
+        </span>
+        <button
+          onClick={toggleMenu}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'white',
+            fontSize: '24px',
+            cursor: 'pointer',
+            padding: '5px'
+          }}
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* Menu Items */}
+      <div style={{
+        padding: '20px 0',
+        flex: 1
+      }}>
+        <a 
+          href="/" 
+          style={{ 
+            display: 'block', 
+            color: 'white', 
+            textDecoration: 'none', 
+            padding: '16px 25px',
+            fontSize: '16px',
+            fontWeight: '600',
+            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+            transition: 'background 0.2s ease'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          🏠 HOME
+        </a>
+        <a 
+          href="/products" 
+          style={{ 
+            display: 'block', 
+            color: '#D4AF37', 
+            textDecoration: 'none', 
+            padding: '16px 25px',
+            fontSize: '16px',
+            fontWeight: '600',
+            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+            transition: 'background 0.2s ease'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          🥩 PRODUCTS
+        </a>
+        <a 
+          href="/about" 
+          style={{ 
+            display: 'block', 
+            color: 'white', 
+            textDecoration: 'none', 
+            padding: '16px 25px',
+            fontSize: '16px',
+            fontWeight: '600',
+            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+            transition: 'background 0.2s ease'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          ℹ️ ABOUT
+        </a>
+        <a 
+          href="/contact" 
+          style={{ 
+            display: 'block', 
+            color: 'white', 
+            textDecoration: 'none', 
+            padding: '16px 25px',
+            fontSize: '16px',
+            fontWeight: '600',
+            borderBottom: '1px solid rgba(212, 175, 55, 0.2)',
+            transition: 'background 0.2s ease'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          📞 CONTACT
+        </a>
+        <a 
+          href="/terms" 
+          style={{ 
+            display: 'block', 
+            color: 'white', 
+            textDecoration: 'none', 
+            padding: '16px 25px',
+            fontSize: '16px',
+            fontWeight: '600',
+            transition: 'background 0.2s ease'
+          }}
+          onClick={() => setIsMenuOpen(false)}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = 'transparent';
+          }}
+        >
+          📄 TERMS
+        </a>
+      </div>
+
+      {/* Menu Footer */}
+      <div style={{
+        padding: '20px',
+        borderTop: '1px solid rgba(212, 175, 55, 0.2)',
+        textAlign: 'center'
+      }}>
+        <p style={{
+          color: '#D4AF37',
+          fontSize: '12px',
+          margin: 0,
+          opacity: 0.8
+        }}>
+          THE MEATRIX CO.
+        </p>
+      </div>
+    </div>
+
+    {/* Overlay Background */}
+    {isMenuOpen && (
+      <div 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 999,
+          transition: 'opacity 0.3s ease'
+        }}
+        onClick={() => setIsMenuOpen(false)}
+      />
+    )}
+  </div>
+)}
+
+
+
+
+
+
+      
       {/* Cart Sidebar */}
       {isCartOpen && (
         <Cart onClose={() => setIsCartOpen(false)} />
@@ -1140,5 +1248,6 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
