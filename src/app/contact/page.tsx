@@ -271,7 +271,7 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                   margin: 0,
                   lineHeight: '1.1'
                 }}>
-                  THE MEATRIX CO.
+                  THE MEATRIX SUPPLIES.
                 </h1>
                 <p style={{
                   color: 'white',
@@ -1033,7 +1033,7 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
                   lineHeight: '1.5'
                 }}>
                   Mon - Sat: 7:00 AM - 8:00 PM<br />
-                  Sunday: 9:00 AM - 6:00 PM
+                  Sunday: Closed
                 </p>
               </div>
 
@@ -1135,7 +1135,7 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
               margin: 0, 
               fontSize: isMobile ? '14px' : '16px' 
             }}>
-              &copy; 2025 THE MEATRIX CO. All rights reserved.
+              &copy; 2025 THE MEATRIX SUPPLIES. All rights reserved.
             </p>
             <p style={{ 
               margin: '10px 0 0 0', 
@@ -1168,4 +1168,5 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
     </CartProvider>
   )
 }
+
 
