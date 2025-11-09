@@ -718,7 +718,7 @@ function ProductsContent() {
                 margin: 0, 
                 lineHeight: '1.1' 
               }}>
-                THE MEATRIX CO.
+                THE MEATRIX SUPPLIES.
               </h1>
               <p style={{
                 color: 'white',
@@ -1090,7 +1090,7 @@ function ProductsContent() {
             margin: 0, 
             fontSize: isMobile ? '14px' : '16px' 
           }}>
-            &copy; 2025 THE MEATRIX CO. All rights reserved.
+            &copy; 2025 THE MEATRIX SUPPLIES. All rights reserved.
           </p>
           <p style={{ 
             margin: '10px 0 0 0', 
@@ -1143,3 +1143,4 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
