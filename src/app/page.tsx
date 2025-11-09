@@ -59,6 +59,43 @@ function HomePage() {
   return (
     <CartProvider>
       <div style={{ minHeight: '100vh', background: 'white' }}>
+
+        {/* JSON-LD for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              "name": "The Meatrix Supplies",
+              "image": "https://www.themeatrix.co.ke/log.png",
+              "@id": "https://www.themeatrix.co.ke",
+              "url": "https://www.themeatrix.co.ke",
+              "telephone": "+254707636305",
+              "email": "info@themeatrix.co.ke",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "063 Muindi Mbingu Street",
+                "addressLocality": "Nairobi",
+                "postalCode": "00100",
+                "addressCountry": "KE"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": -1.2921,
+                "longitude": 36.8219
+              },
+              "sameAs": [
+                "https://www.facebook.com/yourpage",
+                "https://www.instagram.com/yourprofile",
+                "https://twitter.com/yourprofile"
+              ],
+              "priceRange": "500-5500",
+              "openingHours": "Mo-Sa 08:00-18:00"
+            })
+          }}
+        />
+
         {/* Header - Clean & Minimal */}
         <header style={{
           background: '#36454F',
@@ -97,7 +134,7 @@ function HomePage() {
               }}>
                 <img 
                   src="/log.png" 
-                  alt="The Matrix Co. Logo" 
+                  alt="The Meatrix  Logo" 
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   onError={handleImageError}
                 />
@@ -110,7 +147,7 @@ function HomePage() {
                   margin: 0, 
                   lineHeight: '1.1' 
                 }}>
-                  THE MEATRIX CO.
+                  THE MEATRIX SUPPLIES.
                 </h1>
                 <p style={{
                   color: 'white',
@@ -265,20 +302,20 @@ function HomePage() {
                       CONTACT
                     </a>
                     {/* Add Terms to Mobile Menu */}
-    <a 
-      href="/terms" 
-      style={{ 
-        display: 'block', 
-        color: 'white', 
-        textDecoration: 'none', 
-        padding: '12px 20px',
-        fontSize: '14px',
-        fontWeight: '600'
-      }}
-      onClick={() => setIsMenuOpen(false)}
-    >
-      TERMS
-    </a>
+                    <a 
+                      href="/terms" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      TERMS
+                    </a>
                   </div>
                 )}
               </div>
@@ -293,12 +330,10 @@ function HomePage() {
           padding: isMobile ? '80px 20px' : '140px 20px', 
           textAlign: 'center', 
           minHeight: isMobile ? '70vh' : '85vh', 
-          
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center',
           overflow: 'hidden'
-           
         }}>
           <div style={{ 
             position: 'absolute', 
@@ -427,7 +462,7 @@ function HomePage() {
               margin: 0, 
               fontSize: isMobile ? '14px' : '16px' 
             }}>
-              &copy; 2025 THE MEATRIX CO. All rights reserved.
+              &copy; 2025 THE MEATRIX SUPPLIES. All rights reserved.
             </p>
             <p style={{ 
               margin: '10px 0 0 0', 
@@ -438,22 +473,22 @@ function HomePage() {
             </p>
 
             {/* Add Terms Link */}
-    <p style={{ 
-      margin: '15px 0 0 0', 
-      fontSize: isMobile ? '11px' : '13px',
-      opacity: '0.8'
-    }}>
-      <a 
-        href="/terms" 
-        style={{ 
-          color: '#D4AF37', 
-          textDecoration: 'none',
-          borderBottom: '1px solid #D4AF37'
-        }}
-      >
-        Terms & Conditions
-      </a>
-    </p>
+            <p style={{ 
+              margin: '15px 0 0 0', 
+              fontSize: isMobile ? '11px' : '13px',
+              opacity: '0.8'
+            }}>
+              <a 
+                href="/terms" 
+                style={{ 
+                  color: '#D4AF37', 
+                  textDecoration: 'none',
+                  borderBottom: '1px solid #D4AF37'
+                }}
+              >
+                Terms & Conditions
+              </a>
+            </p>
           </div>
         </footer>
 
