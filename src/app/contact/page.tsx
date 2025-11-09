@@ -84,7 +84,7 @@ Message:
 ${data.message}
 
 ---
-Sent via The Matrix Co. Website
+Sent via The Meatrix Website
   `.trim()
   
   const whatsappUrl = `https://wa.me/254707636105?text=${encodeURIComponent(message)}`
@@ -102,7 +102,7 @@ Sent via The Matrix Co. Website
 
   const submitViaEmail = async (data: any) => {
     const body = `
-Dear The Matrix Co. Team,
+Dear The Meatrix Team,
 
 I would like to get in touch with you regarding the following:
 
@@ -149,7 +149,7 @@ ${data.first_name} ${data.last_name}
 
   const fallbackToClipboard = async (data: any) => {
     const message = `
-THE MEATRIX CO. - CUSTOMER MESSAGE
+THE MEATRIX  - CUSTOMER MESSAGE
 -----------------------------------
 Name: ${data.first_name} ${data.last_name}
 Email: ${data.email}
@@ -1168,5 +1168,6 @@ Please contact: +254 707 636105 or info@themeatrix.co.ke
     </CartProvider>
   )
 }
+
 
 
