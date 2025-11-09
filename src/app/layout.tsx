@@ -3,7 +3,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react'; // ← ADD THIS IMPORT
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseTitle = "THE MEATRIX CO. - Premium Meats & Seafood | Nairobi's Finest Butcher";
+  const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher";
   const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available.";
 
   return {
@@ -20,9 +20,9 @@ export async function generateMetadata(): Promise<Metadata> {
       'City Market butcher',
       'quality meats Kenya',
     ].join(', '),
-    authors: [{ name: 'THE MEATRIX CO.' }],
-    creator: 'THE MEATRIX CO.',
-    publisher: 'THE MEATRIX CO.',
+    authors: [{ name: 'THE MEATRIX SUPPLIES.' }],
+    creator: 'THE MEATRIX SUPPLIES.',
+    publisher: 'THE MEATRIX SUPPLIES.',
     formatDetection: {
       email: false,
       address: false,
@@ -36,7 +36,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       locale: 'en_KE',
       url: 'https://themeatrix.co.ke',
-      siteName: 'THE MEATRIX CO.',
+      siteName: 'THE MEATRIX SUPPLIES.',
       title: baseTitle,
       description: baseDescription,
       images: [
@@ -73,7 +73,7 @@ function generateStructuredData() {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'ButcherShop',
-    name: 'THE MEATRIX CO.',
+    name: 'THE MEATRIX SUPPLIES.',
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
     url: 'https://themeatrix.co.ke',
     telephone: '+254-707-636105',
