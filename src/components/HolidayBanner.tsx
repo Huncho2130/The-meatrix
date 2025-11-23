@@ -1,5 +1,4 @@
 'use client'
-// To this (remove the @/):
 import { getCurrentPromotion } from '../utils/promotions';
 import { useEffect, useState } from 'react'
 
@@ -110,7 +109,11 @@ export default function HolidayBanner() {
             fontSize: '16px',
             animation: 'pulse 2s infinite'
           }} className="pulse">
-            🎉
+            {promotion.name.includes('Christmas') ? '🎄' : 
+             promotion.name.includes('Eid') ? '🌙' :
+             promotion.name.includes('Valentine') ? '❤️' :
+             promotion.name.includes('Easter') ? '🐣' :
+             promotion.name.includes('Black Friday') ? '⚫' : '🎉'}
           </div>
           
           <div style={{
@@ -136,47 +139,63 @@ export default function HolidayBanner() {
               {promotion.description}
             </span>
             
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'rgba(212, 175, 55, 0.9)',
-              padding: '6px 12px',
-              borderRadius: '20px',
-              border: '2px solid rgba(255,255,255,0.3)'
-            }}>
-              <span style={{
-                fontWeight: '700',
-                fontSize: isMobile ? '12px' : '13px',
-                color: '#36454F'
+            {promotion.discount > 0 && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(212, 175, 55, 0.9)',
+                padding: '6px 12px',
+                borderRadius: '20px',
+                border: '2px solid rgba(255,255,255,0.3)'
               }}>
-                USE CODE:
-              </span>
-              <code style={{
-                background: '#36454F',
-                color: '#D4AF37',
-                padding: '4px 8px',
-                borderRadius: '6px',
-                fontWeight: 'bold',
-                fontSize: isMobile ? '12px' : '13px',
-                fontFamily: 'monospace',
-                letterSpacing: '1px'
-              }}>
-                {promotion.couponCode}
-              </code>
-            </div>
+                <span style={{
+                  fontWeight: '700',
+                  fontSize: isMobile ? '12px' : '13px',
+                  color: '#36454F'
+                }}>
+                  USE CODE:
+                </span>
+                <code style={{
+                  background: '#36454F',
+                  color: '#D4AF37',
+                  padding: '4px 8px',
+                  borderRadius: '6px',
+                  fontWeight: 'bold',
+                  fontSize: isMobile ? '12px' : '13px',
+                  fontFamily: 'monospace',
+                  letterSpacing: '1px'
+                }}>
+                  {promotion.couponCode}
+                </code>
+              </div>
+            )}
 
-            <div style={{
-              background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
-              color: '#36454F',
-              padding: '6px 12px',
-              borderRadius: '15px',
-              fontWeight: '800',
-              fontSize: isMobile ? '12px' : '13px',
-              boxShadow: '0 2px 8px rgba(212, 175, 55, 0.4)'
-            }}>
-              {promotion.discount}% OFF
-            </div>
+            {promotion.discount > 0 ? (
+              <div style={{
+                background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
+                color: '#36454F',
+                padding: '6px 12px',
+                borderRadius: '15px',
+                fontWeight: '800',
+                fontSize: isMobile ? '12px' : '13px',
+                boxShadow: '0 2px 8px rgba(212, 175, 55, 0.4)'
+              }}>
+                {promotion.discount}% OFF
+              </div>
+            ) : (
+              <div style={{
+                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '15px',
+                fontWeight: '800',
+                fontSize: isMobile ? '12px' : '13px',
+                boxShadow: '0 2px 8px rgba(16, 185, 129, 0.4)'
+              }}>
+                FREE DELIVERY
+              </div>
+            )}
           </div>
         </div>
 
@@ -271,4 +290,4 @@ export default function HolidayBanner() {
       </div>
     </div>
   )
-}
+    }
