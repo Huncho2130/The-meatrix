@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
+import HolidayBanner from '@/components/HolidayBanner'; // ADD THIS IMPORT
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher";
