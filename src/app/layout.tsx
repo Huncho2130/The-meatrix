@@ -1,13 +1,17 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Analytics } from '@vercel/analytics/react'; // ← ADD THIS IMPORT
+import { Analytics } from '@vercel/analytics/react';
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher";
   const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available.";
 
   return {
-    title: baseTitle,
+    // FIX: Use title object for better Google display
+    title: {
+      default: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
+      template: "%s | THE MEATRIX SUPPLIES."
+    },
     description: baseDescription,
     keywords: [
       'premium meats Nairobi',
@@ -32,25 +36,31 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: '/',
     },
+    // ADD: Icons for better branding
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-32x32.png',
+      apple: '/apple-touch-icon.png',
+    },
     openGraph: {
       type: 'website',
       locale: 'en_KE',
       url: 'https://themeatrix.co.ke',
       siteName: 'THE MEATRIX SUPPLIES.',
-      title: baseTitle,
+      title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
       description: baseDescription,
       images: [
         {
           url: '/og-image.jpg',
           width: 1200,
           height: 630,
-          alt: 'THE MEATRIX CO. - Premium Meats & Seafood',
+          alt: 'THE MEATRIX SUPPLIES. - Premium Meats & Seafood',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: baseTitle,
+      title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
       description: baseDescription,
       creator: '@themeatrixco',
       images: ['/og-image.jpg'],
@@ -74,6 +84,8 @@ function generateStructuredData() {
     '@context': 'https://schema.org',
     '@type': 'ButcherShop',
     name: 'THE MEATRIX SUPPLIES.',
+    logo: "https://www.themeatrix.co.ke/logo.png",
+    image: "https://www.themeatrix.co.ke/og-image.jpg",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
     url: 'https://themeatrix.co.ke',
     telephone: '+254-707-636105',
@@ -140,28 +152,56 @@ function generateStructuredData() {
   return structuredData;
 }
 
+// ADD: Organization structured data specifically for branding
+function generateOrganizationStructuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "THE MEATRIX SUPPLIES.",
+    "url": "https://www.themeatrix.co.ke",
+    "logo": "https://www.themeatrix.co.ke/logo.png",
+    "description": "Nairobi's premier butcher shop offering premium meats and seafood",
+    "sameAs": [
+      "https://instagram.com/themeatrixco",
+      "https://twitter.com/themeatrixco"
+    ]
+  };
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const structuredData = generateStructuredData();
+  const organizationStructuredData = generateOrganizationStructuredData();
 
   return (
     <html lang="en-KE">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#36454F" />
+        <meta name="theme-color" content="#8B0000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="THE MEATRIX" />
         
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         
+        {/* ADD: Web App Manifest for better mobile branding */}
+        <link rel="manifest" href="/manifest.json" />
+        
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
+        {/* Business structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        
+        {/* ADD: Organization structured data for Google branding */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
         />
 
         <link rel="dns-prefetch" href="//images.unsplash.com" />
@@ -178,6 +218,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         backgroundColor: 'white'
       }}>
         {children}
+        <Analytics />
         
         <script
           dangerouslySetInnerHTML={{
@@ -198,5 +239,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
-    
