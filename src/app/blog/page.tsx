@@ -2,12 +2,31 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Meat Blog Nairobi | Cooking Tips & Recipes | The Meatrix supplies',
+  title: 'Meat Blog Nairobi | Cooking Tips & Recipes | The Meatrix Supplies',
   description:
     "Learn about meat cuts, cooking techniques, and recipes from Nairobi's premier butcher shop.",
+  keywords: 'Nairobi meat blog, beef cuts Nairobi, fresh chicken Nairobi, goat meat Kenya, broiler vs kienyeji, meat tips Nairobi',
 }
 
 const blogPosts = [
+  {
+    slug: 'how-to-tell-if-meat-is-fresh-nairobi-2025',
+    title: 'How to Tell If Meat Is Fresh — Nairobi Butchery Guide 2025',
+    description:
+      'Simple, practical checklist to tell if your beef, chicken or goat meat is fresh in Nairobi markets and butcheries.',
+    date: '2025-11-29',
+    readTime: '6 min read',
+    image: '/blog/meat-fresh-hero.jpg',
+  },
+  {
+    slug: 'broiler-vs-kienyeji-which-chicken-should-you-buy',
+    title: 'Broiler vs Kienyeji: Which Chicken Should You Buy in Nairobi?',
+    description:
+      'Compare broiler and kienyeji chickens: flavor, nutrition, price and best uses for Nairobi kitchens.',
+    date: '2025-11-29',
+    readTime: '6 min read',
+    image: '/blog/broiler-kienyeji-hero.jpg',
+  },
   {
     slug: 'best-cuts-beef-nyama-choma-nairobi',
     title: 'Best Cuts of Beef for Nyama Choma in Nairobi',
@@ -40,7 +59,6 @@ const blogPosts = [
 export default function BlogPage() {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      
       {/* HEADER */}
       <div style={{ textAlign: 'center', marginBottom: '50px' }}>
         <h1 style={{ fontSize: '34px', marginBottom: '10px' }}>Nairobi Meat Blog</h1>
