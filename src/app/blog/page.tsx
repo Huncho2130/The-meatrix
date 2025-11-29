@@ -15,7 +15,7 @@ const blogPosts = [
     readTime: '5 min read'
   },
   {
-    slug: 'how-choose-fresh-chicken-nairobi',
+    slug: 'how-to-choose-fresh-chicken-in-nairobi-markets',
     title: 'How to Choose Fresh Chicken in Nairobi Markets',
     description: 'Learn the signs of fresh chicken and avoid common mistakes when buying poultry in Nairobi.',
     date: '2024-01-10', 
