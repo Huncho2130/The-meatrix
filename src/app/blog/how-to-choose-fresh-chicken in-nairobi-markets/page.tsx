@@ -1,4 +1,4 @@
-'use client'
+
 
 import type { Metadata } from 'next'
 
@@ -102,24 +102,23 @@ export default function BlogPost() {
         <h3 style={{ marginTop: 0, fontSize: '22px' }}>🍗 Ready to Cook Fresh Chicken?</h3>
         <p style={{ fontSize: '16px' }}>Order your fresh chicken from The Meatrix and enjoy premium quality delivered across Nairobi.</p>
 
-        <a
-          href="https://www.themeatrix.co.ke/products"
-          style={{
-            display: 'inline-block',
-            backgroundColor: '#e53e3e',
-            color: 'white',
-            padding: '14px 28px',
-            borderRadius: '8px',
-            textDecoration: 'none',
-            marginTop: '12px',
-            fontWeight: 600,
-            transition: 'background-color 0.2s ease-in-out'
-          }}
-          onMouseOver={e => (e.currentTarget.style.backgroundColor = '#c53030')}
-          onMouseOut={e => (e.currentTarget.style.backgroundColor = '#e53e3e')}
-        >
-          Order Fresh Chicken Now
-        </a>
+       <a
+  href="https://www.themeatrix.co.ke/products"
+  style={{
+    display: 'inline-block',
+    backgroundColor: '#e53e3e',
+    color: 'white',
+    padding: '14px 28px',
+    borderRadius: '8px',
+    textDecoration: 'none',
+    marginTop: '12px',
+    fontWeight: 600,
+    transition: 'background-color 0.2s ease-in-out'
+  }}
+>
+  Order Fresh Chicken Now
+</a>
+
       </div>
 
       {/* Footer */}
