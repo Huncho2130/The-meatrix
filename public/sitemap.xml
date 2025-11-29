@@ -85,6 +85,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+<url>
+  <loc>https://www.themeatrix.co.ke/blog/how-to-tell-if-meat-is-fresh-nairobi-2025</loc>
+  <lastmod>2025-11-29</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.75</priority>
+</url>
+<url>
+  <loc>https://www.themeatrix.co.ke/blog/broiler-vs-kienyeji-which-chicken-should-you-buy</loc>
+  <lastmod>2025-11-29</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.75</priority>
+</url>
+
+
+ 
   <url>
     <loc>https://www.themeatrix.co.ke/blog/mutton-vs-goat-meat-difference</loc>
     <lastmod>2024-01-15</lastmod>
