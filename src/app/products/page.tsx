@@ -7,13 +7,14 @@ const products = [
   // Beef
   { id: '1', name: 'Rib Eye Steak', price: 1399, category: 'Beef' },
   { id: '2', name: 'Beef Steak', price: 799, category: 'Beef' },
+  { id: '21', name: 'Sirloine steak', price: 950, category: 'Beef' },
   { id: '3', name: 'Beef on Bone', price: 680, category: 'Beef' },
-   { id: '16', name: 'Minced beef', price: 680, category: 'Beef' },
+   { id: '16', name: 'Minced beef', price: 750, category: 'Beef' },
   { id: '15', name: 'Beef fillet', price: 1400, category: 'Beef' },
   // Goat & Mutton
-  { id: '4', name: 'Goat Meat', price: 750, category: 'Goat & Mutton' },
-   { id: '19', name: 'lamb chops', price: 750, category: 'Goat & Mutton' },
-   { id: '20', name: 'lamb mince', price: 750, category: 'Goat & Mutton' },
+  { id: '4', name: 'Goat Meat', price: 850, category: 'Goat & Mutton' },
+   { id: '19', name: 'Lamb chops', price: 1400, category: 'Goat & Mutton' },
+   { id: '20', name: 'Lamb mince', price: 1300, category: 'Goat & Mutton' },
   
   // Chicken
   { id: '5', name: 'Whole Chicken', price: 650, category: 'Chicken' },
@@ -22,15 +23,15 @@ const products = [
   { id: '8', name: 'Chicken Gizzard', price: 550, category: 'Chicken' },
   
   // Seafood
-  { id: '9', name: 'Fish Fillet', price: 999, category: 'Seafood' },
-  { id: '10', name: 'Tuna', price: 1349, category: 'Seafood' },
+  { id: '9', name: 'Fish Fillet', price: 1100, category: 'Seafood' },
+  { id: '10', name: 'Tuna', price: 1300, category: 'Seafood' },
   { id: '11', name: 'Kingfish', price: 1199, category: 'Seafood' },
   { id: '12', name: 'Mackerel', price: 749, category: 'Seafood' },
-  { id: '17', name: 'Red snapper', price: 749, category: 'Seafood' },
-  { id: '18', name: 'Prawns', price: 749, category: 'Seafood' },
-   { id: '18', name: 'Shrimbs', price: 749, category: 'Seafood' },
+  { id: '17', name: 'Red snapper', price: 1200, category: 'Seafood' },
+  { id: '18', name: 'Prawns', price: 4500, category: 'Seafood' },
+   { id: '18', name: 'Shrimps', price: 5000, category: 'Seafood' },
   { id: '13', name: 'Nile Perch', price: 600, category: 'Seafood' },
-  { id: '14', name: 'Salmon Fillet', price: 5500, category: 'Seafood' },
+  { id: '14', name: 'Salmon Fillet', price: 6500, category: 'Seafood' },
 ]
 
 // Get unique categories
@@ -1149,5 +1150,6 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
