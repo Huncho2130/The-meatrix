@@ -15,7 +15,7 @@ const blogPosts = [
       'Discover which beef cuts make the perfect nyama choma and where to find them in Nairobi.',
     date: '2024-01-15',
     readTime: '5 min read',
-    image: '/blog/beef-nyama.jpg',
+    image: '/blog/nyama-choma.jpg',
   },
   {
     slug: 'how-to-choose-fresh-chicken-in-nairobi-markets',
