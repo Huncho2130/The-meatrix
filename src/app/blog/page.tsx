@@ -40,7 +40,8 @@ const blogPosts = [
 export default function BlogPage() {
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      {/* PAGE HEADER */}
+      
+      {/* HEADER */}
       <div style={{ textAlign: 'center', marginBottom: '50px' }}>
         <h1 style={{ fontSize: '34px', marginBottom: '10px' }}>Nairobi Meat Blog</h1>
         <p style={{ color: '#555', fontSize: '16px' }}>
@@ -63,16 +64,9 @@ export default function BlogPage() {
               borderRadius: '14px',
               padding: '16px',
               boxShadow: '0 3px 10px rgba(0,0,0,0.07)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              transition: 'transform 0.25s ease, box-shadow 0.25s ease',
             }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)'
-              e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)'
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '0 3px 10px rgba(0,0,0,0.07)'
-            }}
+            className="blog-card"
           >
             {/* Thumbnail */}
             <img
@@ -87,14 +81,16 @@ export default function BlogPage() {
               }}
             />
 
-            {/* Text Content */}
+            {/* Text */}
             <div>
               <h2 style={{ fontSize: '20px', marginBottom: '6px', color: '#d33' }}>
                 {post.title}
               </h2>
+
               <p style={{ color: '#666', fontSize: '14px', marginBottom: '6px' }}>
                 {post.description}
               </p>
+
               <div style={{ color: '#999', fontSize: '13px' }}>
                 {post.date} • {post.readTime}
               </div>
@@ -102,6 +98,16 @@ export default function BlogPage() {
           </Link>
         ))}
       </div>
+
+      {/* HOVER EFFECT STYLE */}
+      <style>
+        {`
+          .blog-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+          }
+        `}
+      </style>
     </div>
   )
 }
