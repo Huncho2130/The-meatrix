@@ -39,7 +39,7 @@ export default function BlogPost() {
         }}
       >
         <img
-          src="https://images.unsplash.com/photo-1556911073-52527ac437f5?auto=format&fit=crop&w=1200&q=80"
+          src="/blog/nyama-choma.jpg"
           alt="Nyama Choma Beef Cuts"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
