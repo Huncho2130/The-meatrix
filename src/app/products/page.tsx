@@ -27,7 +27,7 @@ const products = [
   { id: '10', name: 'Tuna', price: 1300, category: 'Seafood' },
   { id: '11', name: 'Kingfish', price: 1199, category: 'Seafood' },
   { id: '12', name: 'Mackerel', price: 749, category: 'Seafood' },
-  { id: '17', name: 'Red snapper', price: 1200, category: 'Seafood' },
+  { id: '17', name: 'Red Snapper', price: 1200, category: 'Seafood' },
   { id: '18', name: 'Prawns', price: 4500, category: 'Seafood' },
    { id: '18', name: 'Shrimps', price: 5000, category: 'Seafood' },
   { id: '13', name: 'Nile Perch', price: 600, category: 'Seafood' },
@@ -1150,6 +1150,7 @@ export default function ProductsPage() {
     </CartProvider>
   )
 }
+
 
 
 
