@@ -5,7 +5,7 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 //import HolidayBanner from '@/components/HolidayBanner'
 //import PromotionPopup from '@/components/PromotionPopup'
-import { useEffect, useState } from 'react'
+//import { useEffect, useState } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher"
