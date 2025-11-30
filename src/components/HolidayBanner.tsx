@@ -1,6 +1,8 @@
 
 'use client'
-import { usePromotion } from '../utils/usePromotion'
+
+import { usePromotion } from '@/utils/usePromotion';
+
 import { useState, useEffect } from 'react'
 
 export default function HolidayBanner() {
