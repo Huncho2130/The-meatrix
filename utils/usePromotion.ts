@@ -1,49 +1,54 @@
+
 'use client'
+
 import { useState, useEffect } from 'react'
-import { getCurrentPromotion, type Promotion } from './promotions'
 
 export function usePromotion() {
-  const [promotion, setPromotion] = useState<Promotion | null>(null)
-  const [bannerVisible, setBannerVisible] = useState(false)
+  const [promotion, setPromotion] = useState<any>(null)
   const [popupVisible, setPopupVisible] = useState(false)
+  const [bannerVisible, setBannerVisible] = useState(true)
 
   useEffect(() => {
-    const promo = getCurrentPromotion()
-    if (!promo) return
+    // Mock current promotion
+    const currentPromo = {
+      id: 1,
+      name: 'Holiday Special',
+      description: 'Get 20% off premium meats!',
+      discount: 20,
+      couponCode: 'HOLIDAY20',
+      endDate: '2025-12-31'
+    }
 
-    setPromotion(promo)
+    setPromotion(currentPromo)
 
     const today = new Date().toDateString()
-    const bannerKey = `banner_dismissed_${promo.id}`
-    const popupKey = `popup_seen_${promo.id}`
 
-    const bannerDismissed = localStorage.getItem(bannerKey) === today
-    const popupSeen = localStorage.getItem(popupKey) === today
+    // Popup logic
+    const lastSeen = localStorage.getItem(`promo_seen_${currentPromo.id}`)
+    if (!lastSeen || lastSeen !== today) {
+      setTimeout(() => setPopupVisible(true), 2000) // 2s delay
+    }
 
-    if (!bannerDismissed) setBannerVisible(true)
-    if (!popupSeen) setTimeout(() => setPopupVisible(true), 2000) // 2s delay
-
+    // Banner logic
+    const lastDismissed = localStorage.getItem(`banner_dismissed_${currentPromo.id}`)
+    if (lastDismissed === today) {
+      setBannerVisible(false)
+    }
   }, [])
 
-  const closeBanner = () => {
-    if (!promotion) return
-    const today = new Date().toDateString()
-    localStorage.setItem(`banner_dismissed_${promotion.id}`, today)
-    setBannerVisible(false)
-  }
-
   const closePopup = () => {
-    if (!promotion) return
-    const today = new Date().toDateString()
-    localStorage.setItem(`popup_seen_${promotion.id}`, today)
     setPopupVisible(false)
+    if (promotion) {
+      localStorage.setItem(`promo_seen_${promotion.id}`, new Date().toDateString())
+    }
   }
 
-  return {
-    promotion,
-    bannerVisible,
-    popupVisible,
-    closeBanner,
-    closePopup
+  const closeBanner = () => {
+    setBannerVisible(false)
+    if (promotion) {
+      localStorage.setItem(`banner_dismissed_${promotion.id}`, new Date().toDateString())
+    }
   }
+
+  return { promotion, popupVisible, bannerVisible, closePopup, closeBanner }
 }
