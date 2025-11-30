@@ -6,7 +6,6 @@ import { Analytics } from '@vercel/analytics/react'
 import HolidayBanner from '@/components/HolidayBanner'
 import PromotionPopup from '@/components/PromotionPopup'
 import { useEffect, useState } from 'react'
-import { getCurrentPromotion } from '@/utils/usePromotion'
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher"
@@ -32,24 +31,16 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: 'THE MEATRIX SUPPLIES.' }],
     creator: 'THE MEATRIX SUPPLIES.',
     publisher: 'THE MEATRIX SUPPLIES.',
-    formatDetection: {
-      email: false,
-      address: false,
-      telephone: false,
-    },
+    formatDetection: { email: false, address: false, telephone: false },
     metadataBase: new URL('https://themeatrix.co.ke'),
-    alternates: {
-      canonical: '/',
-    },
+    alternates: { canonical: '/' },
     icons: {
       icon: [
         { url: '/favicon.ico', sizes: '48x48' },
         { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
         { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
       ],
-      apple: [
-        { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
-      ],
+      apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
       other: [
         { rel: 'manifest', url: '/manifest.json' },
         { rel: 'icon', url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
@@ -63,14 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: 'THE MEATRIX SUPPLIES.',
       title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
       description: baseDescription,
-      images: [
-        {
-          url: '/og-image.png',
-          width: 1200,
-          height: 630,
-          alt: 'THE MEATRIX SUPPLIES. - Premium Meats & Seafood',
-        },
-      ],
+      images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'THE MEATRIX SUPPLIES. - Premium Meats & Seafood' }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -82,13 +66,7 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
+      googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 },
     },
   }
 }
@@ -101,7 +79,7 @@ function generateStructuredData() {
     logo: "https://www.themeatrix.co.ke/logo.png",
     image: "https://www.themeatrix.co.ke/og-image.png",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
-    url: 'https://themeatrix.co.ke',
+    url: 'https://www.themeatrix.co.ke',
     telephone: '+254-789-609951',
     email: 'info@themeatrix.co.ke',
     address: {
@@ -112,18 +90,11 @@ function generateStructuredData() {
       postalCode: '00100',
       addressCountry: 'KE'
     },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: -1.2841,
-      longitude: 36.8155
-    },
+    geo: { '@type': 'GeoCoordinates', latitude: -1.2841, longitude: 36.8155 },
     openingHours: ['Mo-Sa 07:00-20:00', 'Su 09:00-18:00'],
     priceRange: '$$',
     servesCuisine: 'Kenyan',
-    sameAs: [
-      'https://instagram.com/themeatrixco',
-      'https://twitter.com/themeatrixco'
-    ],
+    sameAs: ['https://instagram.com/themeatrixco', 'https://twitter.com/themeatrixco'],
   }
 }
 
@@ -131,14 +102,11 @@ function generateOrganizationStructuredData() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "THE MEATRIX SUPPLIES.",
-    "url": "https://www.themeatrix.co.ke",
-    "logo": "https://www.themeatrix.co.ke/og-image.png",
-    "description": "Nairobi's premier butcher shop offering premium meats and seafood",
-    "sameAs": [
-      "https://instagram.com/themeatrixco",
-      "https://twitter.com/themeatrixco"
-    ]
+    name: "THE MEATRIX SUPPLIES.",
+    url: "https://www.themeatrix.co.ke",
+    logo: "https://www.themeatrix.co.ke/og-image.png",
+    description: "Nairobi's premier butcher shop offering premium meats and seafood",
+    sameAs: ["https://instagram.com/themeatrixco", "https://twitter.com/themeatrixco"]
   }
 }
 
@@ -146,16 +114,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const structuredData = generateStructuredData()
   const organizationStructuredData = generateOrganizationStructuredData()
 
-  const [isMobile, setIsMobile] = useState(false)
   const [hasWindow, setHasWindow] = useState(false)
 
-  useEffect(() => {
-    setHasWindow(true)
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  useEffect(() => { setHasWindow(true) }, [])
 
   return (
     <html lang="en-KE">
@@ -170,14 +131,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
 
         {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }} />
       </head>
 
       <body style={{
@@ -197,12 +152,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
 
         {/* Promotion Popup */}
-        {hasWindow && (
-          <PromotionPopup
-            isMobile={isMobile}
-            onClose={() => console.log('Promotion popup closed')}
-          />
-        )}
+        {hasWindow && <PromotionPopup />}
 
         <Analytics />
       </body>
