@@ -3,13 +3,13 @@ import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher"
+  const baseTitle = "THE MEATRIX SUPPLIES - Premium Meats & Seafood | Nairobi's Finest Butcher"
   const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available."
 
   return {
     title: {
-      default: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
-      template: "%s | THE MEATRIX SUPPLIES."
+      default: "THE MEATRIX SUPPLIES",  // Simplified for Google first line
+      template: "%s | THE MEATRIX SUPPLIES"  // Removed period
     },
     description: baseDescription,
     keywords: [
@@ -23,9 +23,9 @@ export async function generateMetadata(): Promise<Metadata> {
       'City Market butcher',
       'quality meats Kenya',
     ].join(', '),
-    authors: [{ name: 'THE MEATRIX SUPPLIES.' }],
-    creator: 'THE MEATRIX SUPPLIES.',
-    publisher: 'THE MEATRIX SUPPLIES.',
+    authors: [{ name: 'THE MEATRIX SUPPLIES' }],  // Removed period
+    creator: 'THE MEATRIX SUPPLIES',  // Removed period
+    publisher: 'THE MEATRIX SUPPLIES',  // Removed period
     formatDetection: { email: false, address: false, telephone: false },
     metadataBase: new URL('https://themeatrix.co.ke'),
     alternates: { canonical: '/' },
@@ -46,14 +46,14 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       locale: 'en_KE',
       url: 'https://themeatrix.co.ke',
-      siteName: 'THE MEATRIX SUPPLIES.',
-      title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
+      siteName: 'THE MEATRIX SUPPLIES',  // Removed period
+      title: "THE MEATRIX SUPPLIES - Premium Meats & Seafood",  // Removed period
       description: baseDescription,
-      images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'THE MEATRIX SUPPLIES. - Premium Meats & Seafood' }],
+      images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'THE MEATRIX SUPPLIES - Premium Meats & Seafood' }],  // Removed period
     },
     twitter: {
       card: 'summary_large_image',
-      title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
+      title: "THE MEATRIX SUPPLIES - Premium Meats & Seafood",  // Removed period
       description: baseDescription,
       creator: '@themeatrixco',
       images: ['/og-image.png'],
@@ -70,7 +70,7 @@ function generateStructuredData() {
   return {
     '@context': 'https://schema.org',
     '@type': 'ButcherShop',
-    name: 'THE MEATRIX SUPPLIES.',
+    name: 'THE MEATRIX SUPPLIES',  // Removed period
     logo: "https://www.themeatrix.co.ke/logo.png",
     image: "https://www.themeatrix.co.ke/og-image.png",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
@@ -97,7 +97,7 @@ function generateOrganizationStructuredData() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "THE MEATRIX SUPPLIES.",
+    name: "THE MEATRIX SUPPLIES",  // Removed period
     url: "https://www.themeatrix.co.ke",
     logo: "https://www.themeatrix.co.ke/og-image.png",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
