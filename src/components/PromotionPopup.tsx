@@ -1,11 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { getCurrentPromotion, type Promotion } from '../utils/promotions'
 
-// To this (remove the @/):
-import { getCurrentPromotion, type Promotion } from '../utils/promotions';
 interface PromotionPopupProps {
-  isMobile: boolean;
-  onClose: () => void;
+  isMobile: boolean
+  onClose?: () => void
 }
 
 export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProps) {
@@ -14,14 +13,17 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
 
   useEffect(() => {
     const currentPromo = getCurrentPromotion()
+    if (!currentPromo) return console.log('No promotion right now.')
+
     setPromotion(currentPromo)
-    
-    // Check if user has seen this promotion today
-    const lastSeen = localStorage.getItem(`promo_seen_${currentPromo?.id}`)
+
+    const lastSeen = localStorage.getItem(`promo_seen_${currentPromo.id}`)
     const today = new Date().toDateString()
-    
-    if (currentPromo && lastSeen !== today) {
-      setTimeout(() => setIsVisible(true), 2000) // Show after 2 seconds
+
+    if (lastSeen !== today) {
+      // Show popup after 2 seconds
+      const timer = setTimeout(() => setIsVisible(true), 2000)
+      return () => clearTimeout(timer)
     }
   }, [])
 
@@ -30,7 +32,7 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
     if (promotion) {
       localStorage.setItem(`promo_seen_${promotion.id}`, new Date().toDateString())
     }
-    setTimeout(onClose, 300)
+    onClose?.()
   }
 
   if (!promotion || !isVisible) return null
@@ -42,25 +44,13 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0,0,0,0.8)',
+      background: 'rgba(0,0,0,0.7)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      zIndex: 1000,
+      zIndex: 9999,
       padding: '20px',
-      animation: 'fadeIn 0.3s ease'
     }}>
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes slideUp {
-          from { transform: translateY(50px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-      `}</style>
-      
       <div style={{
         background: 'linear-gradient(135deg, #D4AF37 0%, #B8941F 100%)',
         padding: isMobile ? '25px' : '40px',
@@ -68,11 +58,11 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
         maxWidth: isMobile ? '90vw' : '500px',
         width: '100%',
         textAlign: 'center',
-        color: '#36454F',
         position: 'relative',
-        animation: 'slideUp 0.5s ease',
-        boxShadow: '0 25px 50px rgba(0,0,0,0.5)'
+        boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+        animation: 'slideUp 0.5s ease'
       }}>
+        {/* Close button */}
         <button
           onClick={handleClose}
           style={{
@@ -93,37 +83,15 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
           ✕
         </button>
 
-        <div style={{
-          background: 'white',
-          padding: isMobile ? '25px' : '30px',
-          borderRadius: '15px',
-          marginBottom: '20px'
-        }}>
-          <div style={{
-            fontSize: isMobile ? '3rem' : '4rem',
-            marginBottom: '15px'
-          }}>
-            🎉
-          </div>
-          
-          <h2 style={{
-            fontSize: isMobile ? '1.5rem' : '2rem',
-            fontWeight: 'bold',
-            marginBottom: '10px',
-            color: '#36454F'
-          }}>
+        {/* Promo content */}
+        <div style={{ background: 'white', padding: isMobile ? '25px' : '30px', borderRadius: '15px', marginBottom: '20px' }}>
+          <div style={{ fontSize: isMobile ? '3rem' : '4rem', marginBottom: '15px' }}>🎉</div>
+          <h2 style={{ fontSize: isMobile ? '1.5rem' : '2rem', fontWeight: 'bold', marginBottom: '10px', color: '#36454F' }}>
             {promotion.name}
           </h2>
-          
-          <p style={{
-            fontSize: isMobile ? '1rem' : '1.1rem',
-            marginBottom: '20px',
-            color: '#4a5568',
-            lineHeight: '1.5'
-          }}>
+          <p style={{ fontSize: isMobile ? '1rem' : '1.1rem', marginBottom: '20px', color: '#4a5568', lineHeight: '1.5' }}>
             {promotion.description}
           </p>
-          
           <div style={{
             background: 'linear-gradient(135deg, #800020 0%, #600018 100%)',
             color: 'white',
@@ -136,48 +104,18 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
           }}>
             {promotion.discount}% OFF
           </div>
-          
-          <div style={{
-            background: '#f8f9fa',
-            padding: '15px',
-            borderRadius: '10px',
-            marginBottom: '20px'
-          }}>
-            <p style={{
-              fontSize: '14px',
-              color: '#36454F',
-              margin: '0 0 8px 0',
-              fontWeight: '600'
-            }}>
-              Use Code:
-            </p>
-            <div style={{
-              background: 'white',
-              padding: '12px',
-              borderRadius: '8px',
-              border: '2px dashed #D4AF37',
-              fontSize: '1.2rem',
-              fontWeight: 'bold',
-              color: '#800020'
-            }}>
+          <div style={{ background: '#f8f9fa', padding: '15px', borderRadius: '10px', marginBottom: '20px' }}>
+            <p style={{ fontSize: '14px', color: '#36454F', margin: '0 0 8px 0', fontWeight: '600' }}>Use Code:</p>
+            <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '2px dashed #D4AF37', fontSize: '1.2rem', fontWeight: 'bold', color: '#800020' }}>
               {promotion.couponCode}
             </div>
           </div>
-          
-          <p style={{
-            fontSize: '14px',
-            color: '#6b7280',
-            fontStyle: 'italic'
-          }}>
-            * Offer valid until {new Date(promotion.endDate).toLocaleDateString('en-KE', { 
-              weekday: 'long', 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
+          <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
+            * Offer valid until {new Date(promotion.endDate).toLocaleDateString('en-KE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
         </div>
-        
+
+        {/* Shop Now button */}
         <button
           onClick={handleClose}
           style={{
@@ -192,18 +130,19 @@ export default function PromotionPopup({ isMobile, onClose }: PromotionPopupProp
             width: '100%',
             transition: 'all 0.3s ease'
           }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.background = '#2a363f';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.background = '#36454F';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
+          onMouseOver={(e) => { e.currentTarget.style.background = '#2a363f'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+          onMouseOut={(e) => { e.currentTarget.style.background = '#36454F'; e.currentTarget.style.transform = 'translateY(0)'; }}
         >
           🛒 Shop Now & Save!
         </button>
       </div>
+
+      <style jsx>{`
+        @keyframes slideUp {
+          from { transform: translateY(50px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+      `}</style>
     </div>
   )
 }
