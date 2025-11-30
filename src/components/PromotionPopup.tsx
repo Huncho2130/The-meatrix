@@ -1,6 +1,6 @@
 'use client'
-
-import { usePromotion } from '@/utils/usePromotion';
+import { useState, useEffect } from 'react'
+import { usePromotion } from '@/utils/usePromotion'
 
 
 export default function PromotionPopup() {
