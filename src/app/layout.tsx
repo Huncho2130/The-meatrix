@@ -1,14 +1,12 @@
 
-//'use client'; // if using useState on this page
-
-
+'use client'; // if using useState on this page
 
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { useEffect, useState } from 'react' // Uncommented and added useState
 //import HolidayBanner from '@/components/HolidayBanner'
 //import PromotionPopup from '@/components/PromotionPopup'
-//import { useEffect, useState } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher"
@@ -148,14 +146,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         color: '#36454F',
         backgroundColor: 'white'
       }}>
-        {/* Holiday Banner at top */}
-        <HolidayBanner />
+        {/* Holiday Banner at top - commented out for now */}
+        {/* <HolidayBanner /> */}
 
         {/* Page Content */}
         {children}
 
-        {/* Promotion Popup */}
-        {hasWindow && <PromotionPopup />}
+        {/* Promotion Popup - commented out for now */}
+        {/* {hasWindow && <PromotionPopup />} */}
 
         <Analytics />
       </body>
