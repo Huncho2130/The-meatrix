@@ -63,7 +63,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: baseDescription,
       images: [
         {
-          url: '/log.png',
+          url: '/og-image.png',
           width: 1200,
           height: 630,
           alt: 'THE MEATRIX SUPPLIES. - Premium Meats & Seafood',
@@ -75,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
       description: baseDescription,
       creator: '@themeatrixco',
-      images: ['/log.png'],
+      images: ['/og-image.png'],
     },
     robots: {
       index: true,
@@ -97,7 +97,7 @@ function generateStructuredData() {
     '@type': 'ButcherShop',
     name: 'THE MEATRIX SUPPLIES.',
     logo: "https://www.themeatrix.co.ke/logo.png",
-    image: "https://www.themeatrix.co.ke/og-image.jpg",
+    image: "https://www.themeatrix.co.ke/og-image.png",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
     url: 'https://themeatrix.co.ke',
     telephone: '+254-789-609951',
@@ -171,7 +171,7 @@ function generateOrganizationStructuredData() {
     "@type": "Organization",
     "name": "THE MEATRIX SUPPLIES.",
     "url": "https://www.themeatrix.co.ke",
-    "logo": "https://www.themeatrix.co.ke/logo.png",
+    "logo": "https://www.themeatrix.co.ke/og-image.png",
     "description": "Nairobi's premier butcher shop offering premium meats and seafood",
     "sameAs": [
       "https://instagram.com/themeatrixco",
