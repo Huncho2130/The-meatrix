@@ -1,4 +1,7 @@
 
+'use client'; // if using useState on this page
+
+import { useState } from 'react';
 
 import type { Metadata } from 'next'
 import './globals.css'
