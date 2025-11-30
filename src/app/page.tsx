@@ -183,6 +183,14 @@ function HomePage() {
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s ease'
                 }}>PRODUCTS</a>
+                <a href="/blog" style={{ 
+                  color: 'white', 
+                  textDecoration: 'none', 
+                  fontSize: '14px', 
+                  fontWeight: '600',
+                  whiteSpace: 'nowrap',
+                  transition: 'color 0.2s ease'
+                }}>BLOG</a>
                 <a href="/about" style={{ 
                   color: 'white', 
                   textDecoration: 'none', 
@@ -199,7 +207,6 @@ function HomePage() {
                   whiteSpace: 'nowrap',
                   transition: 'color 0.2s ease'
                 }}>CONTACT</a>
-               
               </nav>
             )}
 
@@ -271,6 +278,21 @@ function HomePage() {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       PRODUCTS
+                    </a>
+                    <a 
+                      href="/blog" 
+                      style={{ 
+                        display: 'block', 
+                        color: 'white', 
+                        textDecoration: 'none', 
+                        padding: '12px 20px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      BLOG
                     </a>
                     <a 
                       href="/about" 
