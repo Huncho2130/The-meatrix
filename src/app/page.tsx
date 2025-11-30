@@ -12,8 +12,8 @@ function HomePage() {
   const heroImages = [
     '/hero-bg (3).jpg',
     '/hero-2.jpg', // Add your second image
-    '/hero-3.jpg', // Add your third image
-    '/hero-4.jpg'  // Add your fourth image
+    '/hero-1.jpg', // Add your third image
+    '/hero-0.jpg'  // Add your fourth image
   ];
 
   // Step 2: Use the custom hook for image rotation
