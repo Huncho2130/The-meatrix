@@ -1,5 +1,7 @@
 'use client'
-import { usePromotion } from '../utils/usePromotion'
+
+import { usePromotion } from '@/utils/usePromotion';
+
 
 export default function PromotionPopup() {
   const { promotion, popupVisible, closePopup } = usePromotion()
