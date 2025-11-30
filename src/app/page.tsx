@@ -2,10 +2,22 @@
 
 import { CartProvider } from '@/context/cartContext';
 import { useState, useEffect } from 'react';
+import { useImageSlider } from '@/hooks/useImageSlider';
 
 function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Step 1: Define your hero images array
+  const heroImages = [
+    '/hero-bg (3).jpg',
+    '/hero-2.jpg', // Add your second image
+    '/hero-3.jpg', // Add your third image
+    '/hero-4.jpg'  // Add your fourth image
+  ];
+
+  // Step 2: Use the custom hook for image rotation
+  const currentImageIndex = useImageSlider(heroImages, 5000); // Changes every 5 seconds
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -345,7 +357,7 @@ function HomePage() {
           </div>
         </header>
 
-        {/* Hero Section - Spacious & Clean */}
+        {/* Step 3: Updated Hero Section with Image Slider */}
         <section style={{ 
           position: 'relative', 
           color: 'white', 
@@ -357,18 +369,28 @@ function HomePage() {
           justifyContent: 'center',
           overflow: 'hidden'
         }}>
-          <div style={{ 
-            position: 'absolute', 
-            top: 0, 
-            left: 0, 
-            right: 0, 
-            bottom: 0, 
-            backgroundImage: 'url("/hero-bg (3).jpg")', 
-            backgroundSize: 'cover', 
-            backgroundPosition: 'center', 
-            backgroundRepeat: 'no-repeat', 
-            zIndex: 1 
-          }} />
+          {/* Multiple Background Images with Smooth Transitions */}
+          {heroImages.map((image, index) => (
+            <div
+              key={image}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `url('${image}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                transition: 'opacity 1.5s ease-in-out',
+                opacity: index === currentImageIndex ? 1 : 0,
+                zIndex: 1
+              }}
+            />
+          ))}
+          
+          {/* Gradient Overlay */}
           <div style={{ 
             position: 'absolute', 
             top: 0, 
@@ -378,6 +400,8 @@ function HomePage() {
             background: 'linear-gradient(135deg, rgba(128, 0, 32, 0.35) 0%, rgba(54, 69, 79, 0.35) 100%)', 
             zIndex: 2 
           }} />
+          
+          {/* Content - Same as before */}
           <div style={{ 
             position: 'relative', 
             zIndex: 3, 
@@ -466,6 +490,36 @@ function HomePage() {
                 📖 View Our Story
               </a>
             </div>
+          </div>
+
+          {/* Optional: Slide Indicators */}
+          <div style={{
+            position: 'absolute',
+            bottom: '30px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '10px',
+            zIndex: 3
+          }}>
+            {heroImages.map((_, index) => (
+              <button
+                key={index}
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  border: 'none',
+                  background: index === currentImageIndex ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s ease'
+                }}
+                onClick={() => {
+                  // You'll need to add state management for manual control
+                  // For now, this is just visual
+                }}
+              />
+            ))}
           </div>
         </section>
 
