@@ -3,8 +3,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
-import HolidayBanner from '@/components/HolidayBanner'
-import PromotionPopup from '@/components/PromotionPopup'
+//import HolidayBanner from '@/components/HolidayBanner'
+//import PromotionPopup from '@/components/PromotionPopup'
 import { useEffect, useState } from 'react'
 
 export async function generateMetadata(): Promise<Metadata> {
