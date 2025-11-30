@@ -1,17 +1,30 @@
-'use client';
+import type { Metadata } from 'next'
+import './globals.css'
+import { Analytics } from '@vercel/analytics/react'
+import HolidayBanner from '@/components/HolidayBanner'
+import PromotionPopup from '@/components/PromotionPopup'
 
-import './globals.css';
-import { useEffect, useState } from 'react';
-import { Analytics } from '@vercel/analytics/react';
-import HolidayBanner from '@/components/HolidayBanner';
-import PromotionPopup from '@/components/PromotionPopup';
+export async function generateMetadata(): Promise<Metadata> {
+  const baseTitle = "THE MEATRIX SUPPLIES. - Premium Meats & Seafood | Nairobi's Finest Butcher"
+  const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available."
+
+  return {
+    title: {
+      default: "THE MEATRIX SUPPLIES. - Premium Meats & Seafood",
+      template: "%s | THE MEATRIX SUPPLIES."
+    },
+    description: baseDescription,
+    metadataBase: new URL('https://themeatrix.co.ke'),
+    alternates: { canonical: '/' },
+  }
+}
+
+function generateStructuredData() { /* keep your structured data */ }
+function generateOrganizationStructuredData() { /* keep your structured data */ }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [hasWindow, setHasWindow] = useState(false);
-
-  useEffect(() => {
-    setHasWindow(true);
-  }, []);
+  const structuredData = generateStructuredData()
+  const organizationStructuredData = generateOrganizationStructuredData()
 
   return (
     <html lang="en-KE">
@@ -19,9 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#8B0000" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }} />
       </head>
+
       <body style={{
         margin: 0,
         padding: 0,
@@ -34,10 +49,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {children}
 
-        {hasWindow && <PromotionPopup />}
+        {/* Render PromotionPopup as a client component */}
+        <PromotionPopup />
 
         <Analytics />
       </body>
     </html>
-  );
+  )
 }
