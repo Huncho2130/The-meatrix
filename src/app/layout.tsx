@@ -39,10 +39,21 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     // ADD: Icons for better branding
     icons: {
-      icon: '/favicon.ico',
-      shortcut: '/favicon-32x32.png',
-      apple: '/apple-touch-icon.png',
-    },
+  icon: [
+    { url: '/favicon.ico', sizes: '48x48' },
+    { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+  ],
+  apple: [
+    { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }
+  ],
+  other: [
+    { rel: 'manifest', url: '/manifest.json' },
+    { rel: 'icon', url: '/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+    { rel: 'icon', url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' }
+  ]
+},
+
     openGraph: {
       type: 'website',
       locale: 'en_KE',
@@ -89,7 +100,7 @@ function generateStructuredData() {
     image: "https://www.themeatrix.co.ke/og-image.jpg",
     description: "Nairobi's premier butcher shop offering premium meats and seafood",
     url: 'https://themeatrix.co.ke',
-    telephone: '+254-707-636105',
+    telephone: '+254-789-609951',
     email: 'info@themeatrix.co.ke',
     address: {
       '@type': 'PostalAddress',
