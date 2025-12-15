@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useImageSlider(images: string[], interval: number = 5000) {
+export function useImageSlider(images: string[], interval: number = 8000) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
