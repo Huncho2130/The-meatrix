@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import Script from 'next/script'
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES - Premium Meats & Seafood | Nairobi's Finest Butcher"
@@ -125,6 +126,25 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
 
+
+{/* Google Analytics */}
+  <Script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-DMY0JKWTNL"
+  />
+  <Script id="google-analytics">
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-DMY0JKWTNL', {
+        page_path: window.location.pathname,
+      });
+    `}
+  </Script>
+
+
+        
         {/* Structured Data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationStructuredData) }} />
