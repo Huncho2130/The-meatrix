@@ -159,6 +159,14 @@ export default function RootLayout({
         color: '#36454F',
         backgroundColor: 'white'
       }}>
+
+
+  {children}
+  <WhatsAppButton />
+
+        
+
+        
         {children}
         <Analytics />
       </body>
