@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
 import Script from 'next/script'
-
+import WhatsAppButton from "@/components/WhatsAppButton"
 export async function generateMetadata(): Promise<Metadata> {
   const baseTitle = "THE MEATRIX SUPPLIES - Premium Meats & Seafood | Nairobi's Finest Butcher"
   const baseDescription = "Nairobi's premier butcher shop offering premium beef, goat, mutton, chicken, and seafood. Free CBD delivery. Holiday specials available."
