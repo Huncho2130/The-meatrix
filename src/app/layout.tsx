@@ -161,8 +161,7 @@ export default function RootLayout({
       }}>
 
 
-  {children}
-  <WhatsAppButton />
+  
 
         
 
