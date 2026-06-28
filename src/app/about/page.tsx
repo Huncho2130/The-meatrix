@@ -613,7 +613,7 @@ export default function About() {
               margin: 0, 
               fontSize: isMobile ? '14px' : '16px' 
             }}>
-              &copy; 2025 THE MEATRIX SUPPLIES. All rights reserved.
+              &copy; 2026 THE MEATRIX SUPPLIES. All rights reserved.
             </p>
             <p style={{ 
               margin: '10px 0 0 0', 
